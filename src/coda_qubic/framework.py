@@ -39,6 +39,17 @@ class QubiCFramework:
     calibrated connectivity graph), translates IR circuits into QubiC
     gate-level programs, and executes via ``JobManager`` (RPC client or
     local runner).
+
+    Protocol Compliance
+    -------------------
+    This class implements the ``Framework`` protocol from
+    ``self_service.frameworks.base``, which is decorated with
+    ``@runtime_checkable``, allowing runtime type checks via ``isinstance``.
+
+    The ``QubiCJobRunner`` returned by ``create_executor()`` implements the
+    ``JobExecutor`` protocol from ``self_service.server.executor``.  Note that
+    ``JobExecutor`` is NOT decorated with ``@runtime_checkable``, so runtime
+    ``isinstance`` checks will fail, but structural compatibility is guaranteed.
     """
 
     @property

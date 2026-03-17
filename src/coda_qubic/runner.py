@@ -23,7 +23,13 @@ from coda_qubic.translator import (
 class QubiCJobRunner:
     """Executes NativeGateIR circuits on a QubiC stack.
 
-    Implements the JobExecutor protocol for QubiC-based quantum hardware.
+    Implements the ``JobExecutor`` protocol from
+    ``self_service.server.executor``.  The protocol requires a single async
+    ``run(ir, shots)`` method that returns ``ExecutionResult``.
+
+    Note: ``JobExecutor`` is NOT decorated with ``@runtime_checkable``, so
+    runtime ``isinstance`` checks will fail even though this class correctly
+    implements the protocol structurally.
     """
 
     def __init__(
