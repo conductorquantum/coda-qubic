@@ -1,0 +1,21 @@
+{
+    "_comment": "Minimal GMM classifier placeholder for testing",
+    "_note": "Replace with actual GMM classifier parameters from calibration",
+    "qubits": {
+        "Q1": {
+            "means": [[0.0, 0.0], [1.0, 0.0]],
+            "covariances": [[[0.1, 0.0], [0.0, 0.1]], [[0.1, 0.0], [0.0, 0.1]]],
+            "weights": [0.5, 0.5]
+        },
+        "Q2": {
+            "means": [[0.0, 0.0], [1.0, 0.0]],
+            "covariances": [[[0.1, 0.0], [0.0, 0.1]], [[0.1, 0.0], [0.0, 0.1]]],
+            "weights": [0.5, 0.5]
+        },
+        "Q3": {
+            "means": [[0.0, 0.0], [1.0, 0.0]],
+            "covariances": [[[0.1, 0.0], [0.0, 0.1]], [[0.1, 0.0], [0.0, 0.1]]],
+            "weights": [0.5, 0.5]
+        }
+    }
+}

@@ -45,11 +45,19 @@ dependencies = [
 - `coda-self-service` (installed automatically as editable dependency from `../coda-self-service`)
 - QubiC vendor dependencies (optional, only required for actual hardware execution)
 
+## Quick Start
+
+See the `examples/` directory for complete working examples including:
+- Real hardware calibration files (`qubitcfg.json`, `channel_config.json`)
+- Device configuration templates for RPC, simulation, and hardware modes
+- Example GMM classifier
+- Detailed usage documentation
+
 ## Usage
 
 ### Device Configuration
 
-Create a `device.yaml` file:
+Create a `device.yaml` file (see `examples/` for templates):
 
 ```yaml
 framework: qubic

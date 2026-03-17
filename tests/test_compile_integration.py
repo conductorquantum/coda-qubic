@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
@@ -10,9 +9,10 @@ from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.support import load_qubic_dependencies
 from coda_qubic.translator import QubiCCircuitTranslator
 
-QUBIC_ROOT = Path(os.environ.get("QUBIC_ROOT", ""))
-EXAMPLE_QUBITCFG = QUBIC_ROOT / "software" / "examples" / "qubitcfg.json"
-EXAMPLE_CHANNEL_CONFIG = QUBIC_ROOT / "software" / "examples" / "channel_config.json"
+# Use example files from coda-qubic repo
+REPO_ROOT = Path(__file__).resolve().parents[1]
+EXAMPLE_QUBITCFG = REPO_ROOT / "examples" / "qubitcfg.json"
+EXAMPLE_CHANNEL_CONFIG = REPO_ROOT / "examples" / "channel_config.json"
 
 
 def _metadata() -> IRMetadata:
