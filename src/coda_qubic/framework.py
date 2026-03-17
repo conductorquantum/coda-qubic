@@ -47,9 +47,8 @@ class QubiCFramework:
     ``@runtime_checkable``, allowing runtime type checks via ``isinstance``.
 
     The ``QubiCJobRunner`` returned by ``create_executor()`` implements the
-    ``JobExecutor`` protocol from ``self_service.server.executor``.  Note that
-    ``JobExecutor`` is NOT decorated with ``@runtime_checkable``, so runtime
-    ``isinstance`` checks will fail, but structural compatibility is guaranteed.
+    ``JobExecutor`` protocol from ``self_service.server.executor``, which is
+    also decorated with ``@runtime_checkable``, enabling runtime type checks.
     """
 
     @property

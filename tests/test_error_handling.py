@@ -322,6 +322,8 @@ class TestProtocolCompliance:
         self, qubic_example_qubitcfg_path: Path
     ):
         """Verify QubiCJobRunner has required protocol methods."""
+        from self_service.server.executor import JobExecutor
+
         from coda_qubic.device import QubiCDeviceSpec
 
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
@@ -331,8 +333,8 @@ class TestProtocolCompliance:
         assert hasattr(runner, "run")
         assert callable(runner.run)
 
-        # Note: JobExecutor protocol is not decorated with @runtime_checkable,
-        # so we can't use isinstance. The structural check above is sufficient.
+        # Verify runtime type checking works (JobExecutor is @runtime_checkable)
+        assert isinstance(runner, JobExecutor)
 
     def test_framework_protocol_has_all_required_methods(self):
         """Verify QubiCFramework has all protocol methods."""

@@ -27,9 +27,8 @@ class QubiCJobRunner:
     ``self_service.server.executor``.  The protocol requires a single async
     ``run(ir, shots)`` method that returns ``ExecutionResult``.
 
-    Note: ``JobExecutor`` is NOT decorated with ``@runtime_checkable``, so
-    runtime ``isinstance`` checks will fail even though this class correctly
-    implements the protocol structurally.
+    The ``JobExecutor`` protocol is decorated with ``@runtime_checkable``,
+    enabling runtime type checks via ``isinstance``.
     """
 
     def __init__(
