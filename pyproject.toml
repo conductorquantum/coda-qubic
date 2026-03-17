@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "coda-qubic"
+version = "0.1.0"
+description = "QubiC execution framework for coda-self-service."
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+    "coda-self-service",
+]
+
+[project.entry-points."coda.frameworks"]
+qubic = "coda_qubic.framework:QubiCFramework"
+
+[tool.uv.sources]
+coda-self-service = { path = "../coda-self-service", editable = true }
+
+[dependency-groups]
+dev = [
+    "mypy>=1.10.0",
+    "numpy>=1.26.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.11.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/coda_qubic"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --strict-config"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src/coda_qubic"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.",
+    "@overload",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "TID", "SIM", "RUF", "C4", "PTH", "PIE"]
+ignore = ["E501"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+    "distproc.*",
+    "qubic.*",
+    "qubitconfig.*",
+]
+ignore_missing_imports = true
