@@ -75,9 +75,7 @@ def hardware_runner() -> Any:
 
     if not os.environ.get("CODA_QUBIC_HARDWARE"):
         pytest.skip("Set CODA_QUBIC_HARDWARE=1 to run hardware tests")
-    raise NotImplementedError(
-        "Wire up a real QubiCJobRunner from environment config"
-    )
+    raise NotImplementedError("Wire up a real QubiCJobRunner from environment config")
 
 
 # ===================================================================
@@ -95,32 +93,28 @@ class TestUniversalGateSet:
 
         if "x90" in ir_gates:
             for q in device.qubits.values():
-                assert (
-                    q.x90_duration_ns > 0
-                ), f"Missing X90 calibration on {q.hardware_qubit}"
-                assert (
-                    q.drive_amplitude > 0
-                ), f"Zero X90 amplitude on {q.hardware_qubit}"
+                assert q.x90_duration_ns > 0, (
+                    f"Missing X90 calibration on {q.hardware_qubit}"
+                )
+                assert q.drive_amplitude > 0, (
+                    f"Zero X90 amplitude on {q.hardware_qubit}"
+                )
 
         if "cnot" in ir_gates:
-            assert (
-                len(device.directed_cnot_edges) > 0
-            ), "No calibrated CNOT edges"
+            assert len(device.directed_cnot_edges) > 0, "No calibrated CNOT edges"
             for (ctrl, tgt), edge in device.directed_cnot_edges.items():
-                assert (
-                    edge.cr_duration_ns > 0
-                ), f"Zero CR duration for CNOT({ctrl},{tgt})"
-                assert (
-                    abs(edge.cr_amplitude) > 0
-                ), f"Zero CR amplitude for CNOT({ctrl},{tgt})"
+                assert edge.cr_duration_ns > 0, (
+                    f"Zero CR duration for CNOT({ctrl},{tgt})"
+                )
+                assert abs(edge.cr_amplitude) > 0, (
+                    f"Zero CR amplitude for CNOT({ctrl},{tgt})"
+                )
 
         for q in device.qubits.values():
-            assert (
-                q.readout_duration_ns > 0
-            ), f"Missing readout on {q.hardware_qubit}"
-            assert (
-                q.readout_amplitude > 0
-            ), f"Zero readout amplitude on {q.hardware_qubit}"
+            assert q.readout_duration_ns > 0, f"Missing readout on {q.hardware_qubit}"
+            assert q.readout_amplitude > 0, (
+                f"Zero readout amplitude on {q.hardware_qubit}"
+            )
 
     def test_superconducting_cz_decompositions_have_calibrations(
         self, device: QubiCDeviceSpec
@@ -129,14 +123,14 @@ class TestUniversalGateSet:
 
         if any(g in ir_gates for g in ("rx", "ry", "cz")):
             for q in device.qubits.values():
-                assert (
-                    q.x90_duration_ns > 0
-                ), f"Missing X90 for ZXZXZ decomposition on {q.hardware_qubit}"
+                assert q.x90_duration_ns > 0, (
+                    f"Missing X90 for ZXZXZ decomposition on {q.hardware_qubit}"
+                )
 
         if "cz" in ir_gates:
-            assert (
-                len(device.directed_cnot_edges) > 0
-            ), "CZ needs CNOT edges for H-CNOT-H decomposition"
+            assert len(device.directed_cnot_edges) > 0, (
+                "CZ needs CNOT edges for H-CNOT-H decomposition"
+            )
 
     def test_every_ir_gate_is_translatable(self, device: QubiCDeviceSpec) -> None:
         translator = QubiCCircuitTranslator(device)
@@ -183,9 +177,7 @@ class TestUniversalGateSet:
 class TestGateOrdering:
     """Verify the translator preserves gate order from IR to QubiC program."""
 
-    def test_sequential_gates_maintain_order(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_sequential_gates_maintain_order(self, device: QubiCDeviceSpec) -> None:
         translator = QubiCCircuitTranslator(device)
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
@@ -203,9 +195,7 @@ class TestGateOrdering:
             metadata=_metadata(),
         )
 
-        program = [
-            g for g in translator.translate(ir).program if g["name"] != "read"
-        ]
+        program = [g for g in translator.translate(ir).program if g["name"] != "read"]
         ctrl_hw = device.hardware_qubit(ctrl)
         tgt_hw = device.hardware_qubit(tgt)
 
@@ -221,9 +211,7 @@ class TestGateOrdering:
             and tgt_hw in g["qubit"]
             and g.get("phase") == 0.5
         )
-        cnot_idx = next(
-            i for i, g in enumerate(program) if g["name"] == "CNOT"
-        )
+        cnot_idx = next(i for i, g in enumerate(program) if g["name"] == "CNOT")
         ym90_idx = next(
             i
             for i, g in enumerate(program)
@@ -232,9 +220,7 @@ class TestGateOrdering:
 
         assert x90_idx < vz_idx < cnot_idx < ym90_idx
 
-    def test_gate_qubit_targets_are_correct(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_gate_qubit_targets_are_correct(self, device: QubiCDeviceSpec) -> None:
         translator = QubiCCircuitTranslator(device)
         ir = NativeGateIR(
             target="superconducting_cnot",
@@ -248,9 +234,7 @@ class TestGateOrdering:
             metadata=_metadata(),
         )
 
-        program = [
-            g for g in translator.translate(ir).program if g["name"] != "read"
-        ]
+        program = [g for g in translator.translate(ir).program if g["name"] != "read"]
         assert program[0] == {"name": "X90", "qubit": [device.hardware_qubit(0)]}
         assert program[1] == {"name": "Y-90", "qubit": [device.hardware_qubit(1)]}
         assert program[2] == {
@@ -273,26 +257,20 @@ class TestGateOrdering:
             metadata=_metadata(),
         )
 
-        program = [
-            g for g in translator.translate(ir).program if g["name"] != "read"
-        ]
-        cnot_pos = next(
-            i for i, g in enumerate(program) if g["name"] == "CNOT"
-        )
+        program = [g for g in translator.translate(ir).program if g["name"] != "read"]
+        cnot_pos = next(i for i, g in enumerate(program) if g["name"] == "CNOT")
 
         pre_cnot = program[:cnot_pos]
         assert any(g["name"] == "Y-90" for g in pre_cnot)
         assert any(
-            g["name"] == "virtual_z"
-            and math.isclose(g["phase"], math.pi)
+            g["name"] == "virtual_z" and math.isclose(g["phase"], math.pi)
             for g in pre_cnot
         )
 
         post_cnot = program[cnot_pos + 1 :]
         assert any(g["name"] == "Y-90" for g in post_cnot)
         assert any(
-            g["name"] == "virtual_z"
-            and math.isclose(g["phase"], math.pi)
+            g["name"] == "virtual_z" and math.isclose(g["phase"], math.pi)
             for g in post_cnot
         )
 
@@ -387,9 +365,9 @@ class TestCliffordGroup:
     def test_all_elements_are_unitary(self) -> None:
         for i, mat in enumerate(CLIFFORD_1Q_MATRICES):
             product = mat @ mat.conj().T
-            assert np.allclose(
-                product, np.eye(2), atol=1e-10
-            ), f"Clifford {i} is not unitary"
+            assert np.allclose(product, np.eye(2), atol=1e-10), (
+                f"Clifford {i} is not unitary"
+            )
 
     def test_all_elements_are_distinct(self) -> None:
         from coda_qubic.benchmarks import _matrices_equal_up_to_phase
@@ -505,9 +483,7 @@ class TestTwoQubitBenchmark:
     ) -> None:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
-        circuits = cnot_truth_table_circuits(
-            ctrl, tgt, device.num_qubits
-        )
+        circuits = cnot_truth_table_circuits(ctrl, tgt, device.num_qubits)
 
         counts_list: list[dict[str, int]] = []
         expected_list: list[str] = []
@@ -517,26 +493,18 @@ class TestTwoQubitBenchmark:
             expected_list.append(expected)
 
         fidelity = cnot_average_gate_fidelity(counts_list, expected_list)
-        assert fidelity > 0.80, (
-            f"CNOT average gate fidelity {fidelity:.4f} below 0.80"
-        )
+        assert fidelity > 0.80, f"CNOT average gate fidelity {fidelity:.4f} below 0.80"
 
-    def test_cnot_truth_table_circuits_are_valid(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_cnot_truth_table_circuits_are_valid(self, device: QubiCDeviceSpec) -> None:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
-        circuits = cnot_truth_table_circuits(
-            ctrl, tgt, device.num_qubits
-        )
+        circuits = cnot_truth_table_circuits(ctrl, tgt, device.num_qubits)
         assert len(circuits) == 4
         for ir, expected in circuits:
             assert len(expected) == 2
             assert ir.target == "superconducting_cnot"
 
-    def test_bell_state_circuit_is_valid(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_bell_state_circuit_is_valid(self, device: QubiCDeviceSpec) -> None:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
         ir = bell_state_circuit(ctrl, tgt, device.num_qubits)

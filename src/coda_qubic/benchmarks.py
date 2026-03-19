@@ -53,35 +53,35 @@ _NativeOp = tuple[str, list[float]]
 
 CLIFFORD_1Q_DECOMPOSITIONS: list[list[_NativeOp]] = [
     # --- Face I: +Z stays at +Z ---
-    [],                                                                     # 0:  I
-    [("virtual_z", [_HP])],                                                 # 1:  Z90
-    [("virtual_z", [_PI])],                                                 # 2:  Z180
-    [("virtual_z", [_NHP])],                                                # 3:  Z-90
+    [],  # 0:  I
+    [("virtual_z", [_HP])],  # 1:  Z90
+    [("virtual_z", [_PI])],  # 2:  Z180
+    [("virtual_z", [_NHP])],  # 3:  Z-90
     # --- Face X90: +Z → -Y ---
-    [("x90", [])],                                                          # 4:  X90
-    [("x90", []), ("virtual_z", [_HP])],                                    # 5:  X90·Z90
-    [("x90", []), ("virtual_z", [_PI])],                                    # 6:  X90·Z180
-    [("x90", []), ("virtual_z", [_NHP])],                                   # 7:  X90·Z-90
+    [("x90", [])],  # 4:  X90
+    [("x90", []), ("virtual_z", [_HP])],  # 5:  X90·Z90
+    [("x90", []), ("virtual_z", [_PI])],  # 6:  X90·Z180
+    [("x90", []), ("virtual_z", [_NHP])],  # 7:  X90·Z-90
     # --- Face X180: +Z → -Z ---
-    [("x90", []), ("x90", [])],                                             # 8:  X180
-    [("x90", []), ("x90", []), ("virtual_z", [_HP])],                       # 9:  X180·Z90
-    [("x90", []), ("x90", []), ("virtual_z", [_PI])],                       # 10: X180·Z180
-    [("x90", []), ("x90", []), ("virtual_z", [_NHP])],                      # 11: X180·Z-90
+    [("x90", []), ("x90", [])],  # 8:  X180
+    [("x90", []), ("x90", []), ("virtual_z", [_HP])],  # 9:  X180·Z90
+    [("x90", []), ("x90", []), ("virtual_z", [_PI])],  # 10: X180·Z180
+    [("x90", []), ("x90", []), ("virtual_z", [_NHP])],  # 11: X180·Z-90
     # --- Face X-90: +Z → +Y ---
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_PI])],              # 12: X-90
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_NHP])],             # 13: X-90·Z90
-    [("virtual_z", [_PI]), ("x90", [])],                                    # 14: X-90·Z180
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_HP])],              # 15: X-90·Z-90
+    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_PI])],  # 12: X-90
+    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_NHP])],  # 13: X-90·Z90
+    [("virtual_z", [_PI]), ("x90", [])],  # 14: X-90·Z180
+    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_HP])],  # 15: X-90·Z-90
     # --- Face Y-90: +Z → -X ---
-    [("y_minus_90", [])],                                                   # 16: Y-90
-    [("y_minus_90", []), ("virtual_z", [_HP])],                             # 17: Y-90·Z90
-    [("y_minus_90", []), ("virtual_z", [_PI])],                             # 18: Y-90·Z180
-    [("y_minus_90", []), ("virtual_z", [_NHP])],                            # 19: Y-90·Z-90
+    [("y_minus_90", [])],  # 16: Y-90
+    [("y_minus_90", []), ("virtual_z", [_HP])],  # 17: Y-90·Z90
+    [("y_minus_90", []), ("virtual_z", [_PI])],  # 18: Y-90·Z180
+    [("y_minus_90", []), ("virtual_z", [_NHP])],  # 19: Y-90·Z-90
     # --- Face Y90: +Z → +X ---
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_HP])],             # 20: Y90
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_PI])],             # 21: Y90·Z90
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_NHP])],            # 22: Y90·Z180
-    [("virtual_z", [_NHP]), ("x90", [])],                                   # 23: Y90·Z-90
+    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_HP])],  # 20: Y90
+    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_PI])],  # 21: Y90·Z90
+    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_NHP])],  # 22: Y90·Z180
+    [("virtual_z", [_NHP]), ("x90", [])],  # 23: Y90·Z-90
 ]
 
 
@@ -205,7 +205,9 @@ def rb_ir_circuit_1q(
     gates: list[GateOp] = []
     for idx in clifford_indices:
         for gate_name, params in CLIFFORD_1Q_DECOMPOSITIONS[idx]:
-            gates.append(GateOp(gate=NativeGate(gate_name), qubits=[qubit], params=params))
+            gates.append(
+                GateOp(gate=NativeGate(gate_name), qubits=[qubit], params=params)
+            )
 
     return NativeGateIR(
         target=target,
@@ -298,14 +300,29 @@ def cnot_truth_table_circuits(
 
     cases: list[tuple[list[GateOp], str]] = [
         ([], "00"),
-        ([GateOp(gate=_x90, qubits=[ctrl], params=[]),
-          GateOp(gate=_x90, qubits=[ctrl], params=[])], "11"),
-        ([GateOp(gate=_x90, qubits=[tgt], params=[]),
-          GateOp(gate=_x90, qubits=[tgt], params=[])], "01"),
-        ([GateOp(gate=_x90, qubits=[ctrl], params=[]),
-          GateOp(gate=_x90, qubits=[ctrl], params=[]),
-          GateOp(gate=_x90, qubits=[tgt], params=[]),
-          GateOp(gate=_x90, qubits=[tgt], params=[])], "10"),
+        (
+            [
+                GateOp(gate=_x90, qubits=[ctrl], params=[]),
+                GateOp(gate=_x90, qubits=[ctrl], params=[]),
+            ],
+            "11",
+        ),
+        (
+            [
+                GateOp(gate=_x90, qubits=[tgt], params=[]),
+                GateOp(gate=_x90, qubits=[tgt], params=[]),
+            ],
+            "01",
+        ),
+        (
+            [
+                GateOp(gate=_x90, qubits=[ctrl], params=[]),
+                GateOp(gate=_x90, qubits=[ctrl], params=[]),
+                GateOp(gate=_x90, qubits=[tgt], params=[]),
+                GateOp(gate=_x90, qubits=[tgt], params=[]),
+            ],
+            "10",
+        ),
     ]
 
     circuits: list[tuple[NativeGateIR, str]] = []
