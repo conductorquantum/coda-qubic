@@ -131,7 +131,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "coda-self-service", editable = "../coda-self-service" }]
+requires-dist = [{ name = "coda-self-service", editable = "coda-self-service" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -147,7 +147,7 @@ dev = [
 [[package]]
 name = "coda-self-service"
 version = "0.1.0"
-source = { editable = "../coda-self-service" }
+source = { editable = "coda-self-service" }
 dependencies = [
     { name = "cryptography" },
     { name = "fastapi" },
