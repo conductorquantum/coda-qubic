@@ -18,7 +18,6 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import math
-from contextlib import chdir
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
@@ -50,11 +49,9 @@ def _metadata() -> IRMetadata:
 
 @pytest.fixture(scope="module")
 def sim_executor() -> Any:
-    # device_sim.yaml uses ./qubitcfg.json paths resolved from cwd
-    with chdir(EXAMPLES_DIR):
-        config = DeviceConfig.from_yaml(str(EXAMPLES_DIR / "device_sim.yaml"))
-        framework = QubiCFramework()
-        return framework.create_executor(config, MagicMock(), dependencies=_deps)
+    config = DeviceConfig.from_yaml(str(EXAMPLES_DIR / "device_sim.yaml"))
+    framework = QubiCFramework()
+    return framework.create_executor(config, MagicMock(), dependencies=_deps)
 
 
 def _run(executor: Any, ir: NativeGateIR, shots: int = 1000) -> ExecutionResult:

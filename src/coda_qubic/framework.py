@@ -77,10 +77,12 @@ class QubiCFramework:
         elif not cal_path.exists():
             errors.append(f"Calibration file not found: {cal_path}")
 
-        if not device_config.get_option("channel_config_path"):
+        raw_channel = device_config.get_option("channel_config_path")
+        if not raw_channel:
             errors.append("channel_config_path is required (set in device config)")
 
-        if not device_config.get_option("classifier_path"):
+        raw_classifier = device_config.get_option("classifier_path")
+        if not raw_classifier:
             errors.append("classifier_path is required (set in device config)")
 
         runner_mode = device_config.get_option("runner_mode", "rpc")
@@ -128,16 +130,16 @@ class QubiCFramework:
 
         circuit_runner = _build_circuit_runner(device_config, deps)
         qchip = deps.QChip(str(cal_path))
-        channel_config_path = device_config.get_option("channel_config_path")
-        channel_configs = deps.load_channel_configs(channel_config_path)
+        channel_config_path = _resolve_option_path(device_config, "channel_config_path")
+        channel_configs = deps.load_channel_configs(str(channel_config_path))
         fpga_config = deps.FPGAConfig()
-        classifier_path = device_config.get_option("classifier_path")
+        classifier_path = _resolve_option_path(device_config, "classifier_path")
         job_manager = deps.JobManager(
             fpga_config,
             channel_configs,
             circuit_runner,
             qchip=qchip,
-            gmm_manager=classifier_path,
+            gmm_manager=str(classifier_path),
         )
 
         return QubiCJobRunner(
@@ -147,11 +149,33 @@ class QubiCFramework:
         )
 
 
+def _resolve_option_path(device_config: DeviceConfig, key: str) -> Path:
+    """Resolve a file-path option relative to the YAML file's directory.
+
+    Uses the same ``_source_dir`` that :pymethod:`DeviceConfig.from_yaml`
+    stores, falling back to the current working directory for
+    programmatically constructed instances (mirrors
+    ``resolved_calibration_path``).
+    """
+    raw = device_config.get_option(key)
+    if raw is None:
+        raise ExecutorError(f"{key} is required (set in device config)")
+    p = Path(raw)
+    if p.is_absolute():
+        return p
+    base: Path = getattr(device_config, "_source_dir", None) or Path.cwd()
+    return base / p
+
+
 def _resolve_qubic_root(device_config: DeviceConfig) -> Path | None:
     raw = device_config.get_option("qubic_root")
     if raw is None:
         return None
-    return Path(raw)
+    p = Path(raw)
+    if p.is_absolute():
+        return p
+    base: Path = getattr(device_config, "_source_dir", None) or Path.cwd()
+    return base / p
 
 
 def _validate_device_size(device_config: DeviceConfig, device: QubiCDeviceSpec) -> None:
