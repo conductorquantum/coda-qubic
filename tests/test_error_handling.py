@@ -10,11 +10,11 @@ from unittest.mock import MagicMock
 import numpy as np
 import pytest
 from self_service.errors import ExecutorError
-from self_service.frameworks.base import DeviceConfig
 from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
 
+from coda_qubic.config import QubiCConfig
 from coda_qubic.device import QubiCDeviceSpec
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.executor_factory import build_executor
 from coda_qubic.runner import QubiCJobRunner, _coerce_count_value, _normalize_counts
 
 
@@ -120,40 +120,7 @@ class TestRunnerErrorHandling:
 
 
 class TestFrameworkErrorHandling:
-    """Test error paths in framework.py."""
-
-    def test_validate_config_with_nonexistent_calibration_file(self, tmp_path):
-        """Test validation when calibration file doesn't exist."""
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(tmp_path / "nonexistent.json"),
-            channel_config_path="/tmp/channel.json",
-            classifier_path="/tmp/gmm.json",
-            rpc_host="localhost",
-        )
-
-        framework = QubiCFramework()
-        errors = framework.validate_config(config)
-
-        assert any("Calibration file not found" in e for e in errors)
-
-    def test_create_executor_with_missing_calibration_path(self):
-        """Test executor creation when calibration_path is None."""
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path="",  # Empty path
-            channel_config_path="/tmp/channel.json",
-            classifier_path="/tmp/gmm.json",
-        )
-        settings = MagicMock()
-        framework = QubiCFramework()
-
-        with pytest.raises(ExecutorError, match="calibration_path is required"):
-            framework.create_executor(config, settings)
+    """Test error paths in executor_factory / config."""
 
     def test_create_executor_with_qubic_root_option(
         self, qubic_example_qubitcfg_path: Path, qubic_example_channel_config_path: Path
@@ -161,7 +128,6 @@ class TestFrameworkErrorHandling:
         """Test executor creation with qubic_root option (for coverage)."""
         from coda_qubic.support import QubiCDependencies
 
-        # Create fake dependency classes (not Mock objects to avoid InvalidSpecError)
         class FakeCircuitRunner:
             def __init__(self, *args, **kwargs):
                 pass
@@ -203,8 +169,7 @@ class TestFrameworkErrorHandling:
             load_channel_configs=lambda path: {},
         )
 
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -212,13 +177,10 @@ class TestFrameworkErrorHandling:
             classifier_path="/tmp/gmm.json",
             runner_mode="local",
             use_sim=True,
-            qubic_root="/some/path/to/qubic",  # This exercises _resolve_qubic_root
+            qubic_root="/some/path/to/qubic",
         )
-        settings = MagicMock()
-        framework = QubiCFramework()
 
-        # Should work (with fake deps, qubic_root is passed but not actually used)
-        executor = framework.create_executor(config, settings, dependencies=fake_deps)
+        executor = build_executor(config, dependencies=fake_deps)
         assert executor is not None
 
 
@@ -326,16 +288,6 @@ class TestSupportErrorHandling:
 class TestProtocolCompliance:
     """Test that our implementations properly implement the protocols."""
 
-    def test_framework_is_runtime_checkable_protocol(self):
-        """Verify Framework protocol is runtime checkable."""
-        from self_service.frameworks.base import Framework
-
-        from coda_qubic.framework import QubiCFramework
-
-        # Should work with isinstance due to @runtime_checkable
-        framework = QubiCFramework()
-        assert isinstance(framework, Framework)
-
     def test_job_executor_protocol_has_required_methods(
         self, qubic_example_qubitcfg_path: Path
     ):
@@ -347,27 +299,16 @@ class TestProtocolCompliance:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         runner = QubiCJobRunner(MagicMock(), device)
 
-        # Check protocol compliance
         assert hasattr(runner, "run")
         assert callable(runner.run)
-
-        # Verify runtime type checking works (JobExecutor is @runtime_checkable)
         assert isinstance(runner, JobExecutor)
 
-    def test_framework_protocol_has_all_required_methods(self):
-        """Verify QubiCFramework has all protocol methods."""
+    def test_framework_has_expected_interface(self):
+        """Verify QubiCFramework exposes the expected interface."""
         from coda_qubic.framework import QubiCFramework
 
         framework = QubiCFramework()
 
-        # Check all required protocol methods/properties
-        assert hasattr(framework, "name")
-        assert hasattr(framework, "supported_targets")
-        assert hasattr(framework, "validate_config")
-        assert hasattr(framework, "create_executor")
-
-        # Verify they're callable/accessible
         assert isinstance(framework.name, str)
         assert isinstance(framework.supported_targets, frozenset)
-        assert callable(framework.validate_config)
         assert callable(framework.create_executor)

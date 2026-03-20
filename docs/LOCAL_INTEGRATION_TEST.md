@@ -8,8 +8,30 @@ uv run coda start --token <your-token>
 ```
 
 This single command provisions the node against production, establishes
-VPN connectivity, and starts consuming jobs — executing them against
+VPN connectivity, and starts consuming jobs -- executing them against
 QubiC's built-in simulator instead of real hardware.
+
+The runtime automatically:
+- Connects to `https://coda.conductorquantum.com` (default `CODA_WEBAPP_URL`).
+- Discovers `coda_qubic.executor_factory:create_executor` from the installed
+  `coda-qubic` package (no need to set `CODA_EXECUTOR_FACTORY`).
+- Uses the `CODA_DEVICE_CONFIG` path you provide (or `./site/device.yaml` by
+  default if the file exists).
+
+After the first successful connect, credentials are persisted to disk.
+To reconnect (e.g. after a restart or network drop), run without
+`--token`:
+
+```bash
+CODA_DEVICE_CONFIG=./examples/device_sim.yaml \
+uv run coda start
+```
+
+No new token is needed. To wipe stored credentials and start fresh:
+
+```bash
+uv run coda reset
+```
 
 To skip the VPN tunnel for initial smoke testing, add
 `CODA_VPN_REQUIRED=false`. Once you've confirmed the tunnel works,
@@ -18,7 +40,7 @@ remove that override (it defaults to `true`).
 ## How coda-qubic Integrates with coda-self-service
 
 The `coda` CLI comes from `coda-self-service`. The two repos are wired
-together at three levels:
+together at two levels:
 
 ### Dependency
 
@@ -40,20 +62,25 @@ by `coda-self-service`:
 coda = "self_service.server.cli:main"
 ```
 
-### Entry-point discovery
+### Executor factory
 
-`coda-qubic` registers itself as a framework via a Python entry point:
+`coda-self-service` is completely framework-agnostic. It knows nothing
+about QubiC, QUA, or any specific control system. At startup, it scans
+installed packages for the convention
+`<pkg>.executor_factory:create_executor` and uses the factory if
+exactly one match is found. Since `coda-qubic` is installed, the
+runtime discovers `coda_qubic.executor_factory:create_executor`
+automatically.
 
-```toml
-# pyproject.toml (coda-qubic)
-[project.entry-points."coda.frameworks"]
-qubic = "coda_qubic.framework:QubiCFramework"
+You can also set it explicitly:
+
+```
+CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor
 ```
 
-When `coda-self-service` needs to create an executor from a device
-config, its `FrameworkRegistry` discovers installed frameworks through
-`importlib.metadata.entry_points(group="coda.frameworks")`. This is how
-`coda-self-service` finds `QubiCFramework` without any hardcoded import.
+The factory receives the `Settings` object, reads
+`settings.device_config` to find the YAML path, loads a `QubiCConfig`,
+and assembles the full QubiC pipeline.
 
 ### Runtime: the `coda start` command
 
@@ -66,16 +93,18 @@ When you run `coda start --token <token>`:
    Redis URL, VPN profile, etc.
 3. If VPN is required, the runtime writes the `.ovpn` profile to disk,
    launches an OpenVPN daemon, and polls until a TUN interface appears.
-4. `load_executor(settings)` sees `CODA_DEVICE_CONFIG` is set, parses
-   the YAML, auto-detects the QubiC framework via the entry point, and
-   calls `QubiCFramework.create_executor()`.
+4. `load_executor(settings)` auto-discovers
+   `coda_qubic.executor_factory:create_executor` (or uses
+   `CODA_EXECUTOR_FACTORY` if set explicitly), and calls it with
+   `settings`. The factory reads `CODA_DEVICE_CONFIG`, parses the
+   YAML into a `QubiCConfig`, and builds a `QubiCJobRunner`.
 5. The Redis consumer starts reading jobs from `qpu:<qpu_id>:jobs` and
    dispatching them to the executor.
 
 ## How the Backend Gets Selected
 
-`QubiCFramework.create_executor()` calls `_build_circuit_runner`, which
-branches on the YAML fields `runner_mode` and `use_sim`:
+`build_executor()` in `coda_qubic.executor_factory` reads the
+`runner_mode` and `use_sim` fields from `QubiCConfig`:
 
 | `runner_mode` | `use_sim` | Backend |
 |---|---|---|
@@ -101,10 +130,10 @@ deployment.
   Optionally set `QUBIC_ROOT` to that tree, or add `qubic_root:` to the
   device YAML (usually unnecessary once editable installs are present).
 
-- **Simulator classifier file** — `examples/device_sim.yaml` points at
-  `gmm_classifier_sim.pkl` (QubiC loads string paths as pickle). Regenerate
-  with `uv run python scripts/build-example-gmm-pickle.py` after updating
-  the QubiC stack if needed.
+- **Simulator classifier file** — `examples/device_sim.yaml` points at the
+  checked-in example classifier pickle. Treat it as a local smoke-test artifact
+  only; for real hardware runs, use the classifier file or live-fit workflow
+  supplied by the lab.
 - **OpenVPN** must be on `$PATH` if VPN is required.
 - The **prod-registered QPU metadata** (`num_qubits`, `native_gate_set`)
   must be compatible with the simulator device config. The example
@@ -128,4 +157,3 @@ and OpenVPN status.
 | `VPN preflight failed` | Check that OpenVPN is installed and the token hasn't been consumed already. Run `coda doctor` for details. |
 | `QubiC dependencies are unavailable` | Set `QUBIC_ROOT` or add `qubic_root: /path/to/qubic` to the device YAML. |
 | `num_qubits does not match QubiC device size` | The YAML says `num_qubits: 3` but the `qubitcfg.json` derived a different count. Update the YAML to match. |
-| `No framework supports target` | If using `superconducting_cz`, add `framework: qubic` explicitly (QUA also supports that target). |

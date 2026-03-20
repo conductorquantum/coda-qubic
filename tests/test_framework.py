@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock
 
 import pytest
-from self_service.frameworks.base import DeviceConfig, Framework
 
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 from coda_qubic.framework import QubiCFramework
 from coda_qubic.runner import QubiCJobRunner
 from coda_qubic.support import QubiCDependencies
@@ -73,10 +73,7 @@ FAKE_DEPS = QubiCDependencies(
 )
 
 
-class TestQubiCFrameworkProtocol:
-    def test_satisfies_framework_protocol(self):
-        assert isinstance(QubiCFramework(), Framework)
-
+class TestQubiCFramework:
     def test_name(self):
         assert QubiCFramework().name == "qubic"
 
@@ -86,10 +83,9 @@ class TestQubiCFrameworkProtocol:
         assert "superconducting_cnot" in targets
 
 
-class TestValidateConfig:
+class TestQubiCConfig:
     def test_valid_rpc_config(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -98,116 +94,57 @@ class TestValidateConfig:
             rpc_host="qubic.local",
             runner_mode="rpc",
         )
+        assert config.target == "superconducting_cnot"
+        assert config.rpc_host == "qubic.local"
 
-        errors = QubiCFramework().validate_config(config)
+    def test_missing_rpc_host_raises(self, qubic_example_qubitcfg_path: Path):
+        with pytest.raises(ValueError, match="rpc_host is required"):
+            QubiCConfig(
+                target="superconducting_cnot",
+                num_qubits=3,
+                calibration_path=str(qubic_example_qubitcfg_path),
+                channel_config_path="/tmp/channel_config.json",
+                classifier_path="/tmp/gmm.json",
+                runner_mode="rpc",
+            )
 
-        assert errors == []
+    def test_unsupported_target_raises(self, qubic_example_qubitcfg_path: Path):
+        with pytest.raises(ValueError):
+            QubiCConfig(
+                target="trapped_ion",
+                num_qubits=3,
+                calibration_path=str(qubic_example_qubitcfg_path),
+                channel_config_path="/tmp/channel_config.json",
+                classifier_path="/tmp/gmm.json",
+                rpc_host="qubic.local",
+            )
 
-    def test_missing_calibration_path(self):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            channel_config_path="/tmp/channel_config.json",
-            classifier_path="/tmp/gmm.json",
-            rpc_host="qubic.local",
-        )
+    def test_unknown_runner_mode_raises(self, qubic_example_qubitcfg_path: Path):
+        with pytest.raises(ValueError):
+            QubiCConfig(
+                target="superconducting_cnot",
+                num_qubits=3,
+                calibration_path=str(qubic_example_qubitcfg_path),
+                channel_config_path="/tmp/channel_config.json",
+                classifier_path="/tmp/gmm.json",
+                runner_mode="unknown",
+            )
 
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("calibration_path" in e for e in errors)
-
-    def test_missing_classifier_path(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            channel_config_path="/tmp/channel_config.json",
-            rpc_host="qubic.local",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("classifier_path" in e for e in errors)
-
-    def test_missing_channel_config_path(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            classifier_path="/tmp/gmm.json",
-            rpc_host="qubic.local",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("channel_config_path" in e for e in errors)
-
-    def test_missing_rpc_host(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            channel_config_path="/tmp/channel_config.json",
-            classifier_path="/tmp/gmm.json",
-            runner_mode="rpc",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("rpc_host" in e for e in errors)
-
-    def test_unsupported_target(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="trapped_ion",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            channel_config_path="/tmp/channel_config.json",
-            classifier_path="/tmp/gmm.json",
-            rpc_host="qubic.local",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("not supported" in e for e in errors)
-
-    def test_unknown_runner_mode(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            channel_config_path="/tmp/channel_config.json",
-            classifier_path="/tmp/gmm.json",
-            runner_mode="unknown",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("runner_mode" in e for e in errors)
-
-    def test_local_mode_without_xsa_commit(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
-            target="superconducting_cnot",
-            num_qubits=3,
-            calibration_path=str(qubic_example_qubitcfg_path),
-            channel_config_path="/tmp/channel_config.json",
-            classifier_path="/tmp/gmm.json",
-            runner_mode="local",
-        )
-
-        errors = QubiCFramework().validate_config(config)
-
-        assert any("xsa_commit" in e for e in errors)
+    def test_local_mode_without_xsa_commit_raises(
+        self, qubic_example_qubitcfg_path: Path
+    ):
+        with pytest.raises(ValueError, match="xsa_commit is required"):
+            QubiCConfig(
+                target="superconducting_cnot",
+                num_qubits=3,
+                calibration_path=str(qubic_example_qubitcfg_path),
+                channel_config_path="/tmp/channel_config.json",
+                classifier_path="/tmp/gmm.json",
+                runner_mode="local",
+            )
 
     def test_local_mode_with_sim_skips_xsa(self, qubic_example_qubitcfg_path: Path):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -216,20 +153,47 @@ class TestValidateConfig:
             runner_mode="local",
             use_sim=True,
         )
+        assert config.use_sim is True
 
-        errors = QubiCFramework().validate_config(config)
+    def test_from_yaml(self, tmp_path: Path):
+        yaml_file = tmp_path / "device.yaml"
+        yaml_file.write_text(
+            "framework: qubic\n"
+            "target: superconducting_cnot\n"
+            "num_qubits: 3\n"
+            "calibration_path: ./qubitcfg.json\n"
+            "channel_config_path: ./channel_config.json\n"
+            "classifier_path: ./gmm.pkl\n"
+            "runner_mode: local\n"
+            "use_sim: true\n"
+        )
+        config = QubiCConfig.from_yaml(yaml_file)
+        assert config.target == "superconducting_cnot"
+        assert config.resolved_calibration_path == tmp_path / "qubitcfg.json"
 
-        assert errors == []
+    def test_from_yaml_strips_framework_field(self, tmp_path: Path):
+        yaml_file = tmp_path / "device.yaml"
+        yaml_file.write_text(
+            "framework: qubic\n"
+            "target: superconducting_cnot\n"
+            "num_qubits: 3\n"
+            "calibration_path: cal.json\n"
+            "channel_config_path: chan.json\n"
+            "classifier_path: gmm.pkl\n"
+            "runner_mode: local\n"
+            "use_sim: true\n"
+        )
+        config = QubiCConfig.from_yaml(yaml_file)
+        assert not hasattr(config, "framework")
 
 
-class TestCreateExecutor:
+class TestBuildExecutor:
     def test_creates_rpc_executor(
         self,
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
     ):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -239,11 +203,8 @@ class TestCreateExecutor:
             rpc_port=9100,
             runner_mode="rpc",
         )
-        settings = MagicMock()
 
-        executor = QubiCFramework().create_executor(
-            config, settings, dependencies=FAKE_DEPS
-        )
+        executor = build_executor(config, dependencies=FAKE_DEPS)
 
         assert isinstance(executor, QubiCJobRunner)
         assert executor._job_manager.circuit_runner.host == "qubic.local"
@@ -259,8 +220,7 @@ class TestCreateExecutor:
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
     ):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -269,11 +229,8 @@ class TestCreateExecutor:
             runner_mode="local",
             use_sim=True,
         )
-        settings = MagicMock()
 
-        executor = QubiCFramework().create_executor(
-            config, settings, dependencies=FAKE_DEPS
-        )
+        executor = build_executor(config, dependencies=FAKE_DEPS)
 
         assert isinstance(executor, QubiCJobRunner)
         assert isinstance(
@@ -285,8 +242,7 @@ class TestCreateExecutor:
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
     ):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -295,11 +251,8 @@ class TestCreateExecutor:
             runner_mode="local",
             xsa_commit="abc123",
         )
-        settings = MagicMock()
 
-        executor = QubiCFramework().create_executor(
-            config, settings, dependencies=FAKE_DEPS
-        )
+        executor = build_executor(config, dependencies=FAKE_DEPS)
 
         assert isinstance(executor, QubiCJobRunner)
         assert executor._job_manager.circuit_runner.interface.commit_hash == "abc123"
@@ -309,8 +262,7 @@ class TestCreateExecutor:
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
     ):
-        config = DeviceConfig(
-            framework="qubic",
+        config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=4,
             calibration_path=str(qubic_example_qubitcfg_path),
@@ -319,7 +271,6 @@ class TestCreateExecutor:
             rpc_host="qubic.local",
             runner_mode="rpc",
         )
-        settings = MagicMock()
 
         with pytest.raises(Exception, match="does not match QubiC device size 3"):
-            QubiCFramework().create_executor(config, settings, dependencies=FAKE_DEPS)
+            build_executor(config, dependencies=FAKE_DEPS)

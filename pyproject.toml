@@ -10,10 +10,8 @@ requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
     "coda-self-service",
+    "pyyaml>=6.0",
 ]
-
-[project.entry-points."coda.frameworks"]
-qubic = "coda_qubic.framework:QubiCFramework"
 
 [tool.uv.sources]
 coda-self-service = { path = "coda-self-service", editable = true }
@@ -27,6 +25,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.11.0",
     "scipy>=1.12.0",
+    "types-PyYAML>=6.0",
 ]
 
 [tool.hatch.build.targets.wheel]

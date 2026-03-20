@@ -18,17 +18,15 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import math
-from contextlib import chdir
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock
 
 import pytest
-from self_service.frameworks.base import DeviceConfig
 from self_service.server.executor import ExecutionResult
 from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
 
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 from coda_qubic.support import load_qubic_dependencies
 
 EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples"
@@ -50,11 +48,8 @@ def _metadata() -> IRMetadata:
 
 @pytest.fixture(scope="module")
 def sim_executor() -> Any:
-    # device_sim.yaml uses ./qubitcfg.json paths resolved from cwd
-    with chdir(EXAMPLES_DIR):
-        config = DeviceConfig.from_yaml(str(EXAMPLES_DIR / "device_sim.yaml"))
-        framework = QubiCFramework()
-        return framework.create_executor(config, MagicMock(), dependencies=_deps)
+    config = QubiCConfig.from_yaml(str(EXAMPLES_DIR / "device_sim.yaml"))
+    return build_executor(config, dependencies=_deps)
 
 
 def _run(executor: Any, ir: NativeGateIR, shots: int = 1000) -> ExecutionResult:

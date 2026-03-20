@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from self_service.frameworks.base import DeviceConfig
 from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
 
+from coda_qubic.config import QubiCConfig
 from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.framework import QubiCFramework
 from coda_qubic.translator import QubiCCircuitTranslator
@@ -31,8 +31,7 @@ class TestRealConfigurationFiles:
         assert sorted(device.directed_cnot_edges.keys()) == [(1, 0), (2, 1)]
 
     def test_real_device_configs_validate(self):
-        """Verify all example device YAML files validate correctly."""
-        framework = QubiCFramework()
+        """Verify all example device YAML files load as valid QubiCConfig."""
         configs = [
             "device_sim.yaml",
             "device_rpc.yaml",
@@ -43,9 +42,8 @@ class TestRealConfigurationFiles:
             config_path = EXAMPLES_DIR / config_name
             assert config_path.exists(), f"Example {config_name} not found"
 
-            config = DeviceConfig.from_yaml(str(config_path))
-            errors = framework.validate_config(config)
-            assert not errors, f"{config_name} validation failed: {errors}"
+            config = QubiCConfig.from_yaml(str(config_path))
+            assert config.target in ("superconducting_cz", "superconducting_cnot")
 
     def test_translation_with_real_calibration(self):
         """Test circuit translation using real calibration parameters."""
@@ -138,22 +136,10 @@ class TestRealConfigurationFiles:
         assert 0 < cnot.cr_duration_ns < 1000  # Reasonable CR pulse duration
         assert 0 < cnot.target_pulse_duration_ns < 200  # Reasonable target pulse
 
-    def test_framework_protocol_compliance_with_real_config(self):
-        """Verify framework protocol implementation with real config."""
-        from self_service.frameworks.base import Framework
-
+    def test_framework_methods_with_real_config(self):
+        """Verify framework implementation with real config."""
         framework = QubiCFramework()
 
-        # Check protocol methods
-        assert isinstance(framework, Framework)
         assert framework.name == "qubic"
         assert "superconducting_cz" in framework.supported_targets
         assert "superconducting_cnot" in framework.supported_targets
-
-        # Test validation with real config
-        config_path = EXAMPLES_DIR / "device_sim.yaml"
-        config = DeviceConfig.from_yaml(str(config_path))
-        errors = framework.validate_config(config)
-        assert not errors
-
-        # Note: Not testing create_executor since it requires QubiC dependencies

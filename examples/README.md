@@ -6,10 +6,13 @@ This directory contains example configuration files for the coda-qubic framework
 
 ### Calibration Files
 
-- **qubitcfg.json**: Real QubiC calibration file from LBNL hardware
+- **qubitcfg.json**: QubiC calibration file derived from LBNL hardware
   - Contains qubit frequencies, gate calibrations, and two-qubit connectivity
   - Includes 8 qubits (Q0-Q7) with CNOT gates for adjacent pairs
   - Framework automatically derives largest connected component (4 qubits: Q0-Q3)
+  - Readout LO phases (`rdlo`) for Q1-Q3 are set to 0 so the generic GMM
+    classifier below produces correct discrimination. On real hardware these
+    phases are non-zero and the classifier must be calibrated to match.
 
 - **channel_config.json**: FPGA channel configuration
   - Maps logical channels to physical FPGA cores
@@ -18,7 +21,8 @@ This directory contains example configuration files for the coda-qubic framework
 
 - **gmm_classifier.json**: Gaussian Mixture Model classifier (placeholder)
   - Used for single-shot readout discrimination
-  - **Note**: This is a minimal placeholder. Replace with actual calibrated parameters.
+  - Assumes readout IQ clouds align with the I-axis (rdlo phase = 0).
+    On real hardware, replace with per-qubit calibrated parameters.
 
 ### Device Configuration Examples
 
@@ -37,7 +41,7 @@ channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier.json
 runner_mode: rpc
 rpc_host: localhost
-rpc_port: 9734
+rpc_port: 9095
 ```
 
 **Use when**: QubiC is running as a service on another machine or container.
@@ -58,6 +62,9 @@ use_sim: true
 ```
 
 **Use when**: Testing without hardware or when QubiC hardware is unavailable.
+
+> **Simulator limitations** — see [Pulse Simulator Limitations](#pulse-simulator-limitations)
+> below before interpreting results from `use_sim: true`.
 
 #### 3. Local Hardware Mode (`device_hardware.yaml`)
 
@@ -81,24 +88,15 @@ xsa_commit: abc123def456789
 ### Basic Example
 
 ```python
-from pathlib import Path
-from self_service.frameworks.base import DeviceConfig
-from self_service.server.config import Settings
 from self_service.server.ir import NativeGateIR, GateOp, IRMetadata
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 
 # Load device configuration
-config = DeviceConfig.from_yaml("examples/device_sim.yaml")
-
-# Validate configuration
-framework = QubiCFramework()
-errors = framework.validate_config(config)
-if errors:
-    raise ValueError(f"Configuration errors: {errors}")
+config = QubiCConfig.from_yaml("examples/device_sim.yaml")
 
 # Create executor
-settings = Settings()
-executor = framework.create_executor(config, settings)
+executor = build_executor(config)
 
 # Define a simple circuit
 ir = NativeGateIR(
@@ -123,21 +121,12 @@ print(f"Execution time: {result.execution_time_ms}ms")
 
 ### With coda-self-service
 
-If using coda-self-service's automatic framework discovery:
+When running via coda-self-service, set the executor factory:
 
-```python
-from self_service.server.executor import load_executor
-from self_service.server.config import Settings
-import os
-
-# Set environment variable to device config
-os.environ["CODA_DEVICE_CONFIG"] = "examples/device_sim.yaml"
-
-# Load executor (automatically discovers QubiC framework)
-settings = Settings()
-executor = load_executor(settings)
-
-# Execute circuits...
+```bash
+CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+CODA_DEVICE_CONFIG=examples/device_sim.yaml \
+uv run coda start --token <your-token>
 ```
 
 ## Device Topology
@@ -157,6 +146,74 @@ This maps to logical qubits 0, 1, 2 respectively.
 - Control Q3 → Target Q2 (logical: 2 → 1)
 
 The framework will use these gates for both `superconducting_cz` (via CZ = H-CNOT-H) and `superconducting_cnot` (native) IR targets.
+
+## Pulse Simulator Limitations
+
+When `use_sim: true` is set, circuits run on LBNL's QubiC **pulse-level
+simulator** (`qubic.sim.sim_interface`), not a gate-level statevector
+simulator.  This has several important implications:
+
+### Not a perfect gate simulator
+
+The pulse simulator models microwave drive waveforms, cross-resonance
+pulses, and readout discrimination at the signal level.  Gate fidelity
+depends entirely on the calibration parameters in `qubitcfg.json`.  The
+example calibration is representative of real hardware but is **not**
+perfectly tuned, so results will diverge from ideal gate-model
+expectations — particularly for deeper circuits.
+
+The checked-in example classifier file is only for local smoke testing.  For
+real lab runs, use the classifier file or live-fit workflow provided by the
+hardware team; the current upstream simulator does not emit realistic,
+state-dependent IQ clouds for local classifier training.
+
+### Coherent error accumulation
+
+Errors from the pulse simulator are **coherent** (systematic
+over/under-rotations), not depolarising noise.  These errors compound
+predictably through a circuit rather than averaging out:
+
+- **Shallow circuits** (1–3 two-qubit gates): results are typically
+  qualitatively correct, with the dominant output state matching the
+  ideal expectation.
+- **Moderate-depth circuits** (5–15 two-qubit gates): noticeable
+  probability leakage to nearby states; the target state is still the
+  most probable.
+- **Deep circuits** (>15 two-qubit gates, e.g. multi-iteration Grover
+  with SWAP routing): accumulated phase errors can destroy the
+  interference pattern entirely, producing distributions that bear little
+  resemblance to the ideal output (e.g. a 50/50 split instead of a
+  single dominant state).
+
+### Impact of SWAP routing
+
+When the cloud compiler performs topology-aware routing (inserting SWAP
+gates to respect device connectivity), circuit depth increases
+substantially.  Each SWAP decomposes into 3 CZ gates, and each CZ is
+translated to 2 Hadamard pulse sequences + 1 cross-resonance pulse:
+
+```
+SWAP ≈ 3 × CZ ≈ 3 × (2 Hadamard + 1 CR pulse) = 6 single-qubit + 3 CR operations
+```
+
+For a 3-qubit Grover's search on a linear chain (`Q1–Q2–Q3`), a single
+Toffoli decomposition with routing can add 2–4 SWAPs, increasing the CR
+pulse count by 6–12.  On the pulse simulator, this is often enough to
+break algorithms that rely on precise multi-gate interference.
+
+### When to trust the simulator
+
+| Use case | Trustworthy? |
+|---|---|
+| Integration testing (pipeline doesn't crash) | Yes |
+| Verifying gate decomposition / translation | Yes (shallow circuits) |
+| Qualitative algorithm behaviour (1 iteration) | Roughly |
+| Quantitative algorithm fidelity | No |
+| Multi-iteration algorithms with SWAP routing | No |
+
+For quantitative verification of compiled circuits, use Qiskit's
+`Statevector` or `AerSimulator` on the NativeGateIR gate sequence before
+sending it to the QubiC translator.
 
 ## Requirements
 
