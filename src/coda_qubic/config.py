@@ -50,7 +50,7 @@ class QubiCConfig(BaseModel):
 
     runner_mode: RunnerMode = RunnerMode.RPC
     rpc_host: str = ""
-    rpc_port: int = 9734
+    rpc_port: int = 9095
     use_sim: bool = False
     xsa_commit: str = ""
     qubic_root: str = ""

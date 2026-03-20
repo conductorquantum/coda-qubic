@@ -285,7 +285,7 @@ Integration tests are automatically skipped if QubiC dependencies are unavailabl
 
 | Mode | Config | Extra |
 |---|---|---|
-| RPC (default) | `runner_mode: rpc` | `rpc_host`, `rpc_port` (default 9734) |
+| RPC (default) | `runner_mode: rpc` | `rpc_host`, `rpc_port` (default 9095) |
 | Local hardware | `runner_mode: local` | `xsa_commit` |
 | Simulator | `runner_mode: local` + `use_sim: true` | — |
 

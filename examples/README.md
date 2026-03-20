@@ -41,7 +41,7 @@ channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier.json
 runner_mode: rpc
 rpc_host: localhost
-rpc_port: 9734
+rpc_port: 9095
 ```
 
 **Use when**: QubiC is running as a service on another machine or container.

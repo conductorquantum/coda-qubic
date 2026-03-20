@@ -23,10 +23,9 @@ time on-site:
 
 #### 1. RPC server port mismatch
 
-Our `QubiCConfig` defaults to port **9734** when `rpc_port` is omitted from
-the device YAML, but QubiC's own `CircuitRunnerClient` and server config both
-default to **9095**. If they run the stock server and we omit `rpc_port`,
-connection will silently fail.
+Our `QubiCConfig` now defaults to port **9095** when `rpc_port` is omitted from
+the device YAML, matching QubiC's own `CircuitRunnerClient` and server config
+default.
 
 **Ask:** What port does your RPC server run on? Is it the stock
 `soc_rpc_server` on 9095, or a job-level server on a different port?
@@ -187,7 +186,7 @@ interface is different from the single-board `soc_rpc_server`.
 
 | Area | Our Assumption | What Breaks |
 |---|---|---|
-| RPC | Port 9734 | Connection fails if server uses 9095 |
+| RPC | Port 9095 | Connection fails if server uses a non-default port |
 | RPC | `soc_rpc_server` (single board) | Wrong RPC surface if they run `job_rpc_server` |
 | Circuit | Gate names `X90`, `Y-90`, `CNOT` | Compiler fails if QChip uses different names |
 | qubitcfg | `Qubits` and `Gates` top-level keys | Parse error if structure differs |
