@@ -243,7 +243,9 @@ class TestQubiCTranslator:
         expected_gate_program = [*h_q1, *h_q2, cnot_hw, *h_q1, *h_q2]
         assert translated.program[: len(expected_gate_program)] == expected_gate_program
 
-    def test_rejects_cnot_with_no_edge_in_either_direction(self, device: QubiCDeviceSpec):
+    def test_rejects_cnot_with_no_edge_in_either_direction(
+        self, device: QubiCDeviceSpec
+    ):
         ir = NativeGateIR(
             num_qubits=3,
             target="superconducting_cnot",
@@ -276,7 +278,11 @@ class TestQubiCTranslator:
 
         assert translated.program[0] == {"name": "X90", "qubit": ["Q1"]}
         assert {"name": "Y-90", "qubit": ["Q2"]} in translated.program
-        assert {"name": "virtual_z", "phase": 0.4, "qubit": ["Q3"]} in translated.program
+        assert {
+            "name": "virtual_z",
+            "phase": 0.4,
+            "qubit": ["Q3"],
+        } in translated.program
         assert {"name": "CNOT", "qubit": ["Q2", "Q1"]} in translated.program
 
     def test_rejects_unsupported_target(self, device: QubiCDeviceSpec):

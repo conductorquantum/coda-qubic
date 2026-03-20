@@ -143,7 +143,13 @@ class QubiCCircuitTranslator:
             return [
                 *_decompose_h([ctrl_hw]),
                 *_decompose_h([tgt_hw]),
-                {"name": "CNOT", "qubit": [reverse_edge.control_hardware, reverse_edge.target_hardware]},
+                {
+                    "name": "CNOT",
+                    "qubit": [
+                        reverse_edge.control_hardware,
+                        reverse_edge.target_hardware,
+                    ],
+                },
                 *_decompose_h([ctrl_hw]),
                 *_decompose_h([tgt_hw]),
             ]
