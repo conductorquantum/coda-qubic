@@ -53,7 +53,6 @@ def load_qubic_dependencies(
     try:
         from distproc.hwconfig import FPGAConfig, load_channel_configs
         from qubic.job_manager import JobManager
-        from qubic.rfsoc.pl_interface import PLInterface
         from qubic.rpc_client import CircuitRunnerClient
         from qubic.run import CircuitRunner
         from qubic.sim.sim_interface import SimInterface
@@ -64,12 +63,26 @@ def load_qubic_dependencies(
             "checkouts are present and that the external 'qubitconfig' package is installed."
         ) from exc
 
+    # PLInterface pulls in ``pynq`` (RFSoC); omit when only simulator/RPC/compile paths are used.
+    try:
+        from qubic.rfsoc.pl_interface import PLInterface as _PLInterface
+    except ImportError:
+
+        class _UnavailablePLInterface:
+            def __init__(self, *args: Any, **kwargs: Any) -> None:
+                raise RuntimeError(
+                    "PLInterface requires the QubiC FPGA stack (e.g. pynq on RFSoC). "
+                    "Use runner_mode: local with use_sim: true, or rpc mode."
+                )
+
+        _PLInterface = _UnavailablePLInterface
+
     return QubiCDependencies(
         CircuitRunner=CircuitRunner,
         CircuitRunnerClient=CircuitRunnerClient,
         FPGAConfig=FPGAConfig,
         JobManager=JobManager,
-        PLInterface=PLInterface,
+        PLInterface=_PLInterface,
         QChip=QChip,
         SimInterface=SimInterface,
         load_channel_configs=load_channel_configs,

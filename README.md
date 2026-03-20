@@ -28,6 +28,33 @@ cd coda-qubic
 uv sync --dev
 ```
 
+### QubiC vendor stack (simulator / compile integration tests)
+
+LBNL’s `qubic` and `distproc` packages are not on PyPI as standalone installs matching this repo; clone and install them editable:
+
+```bash
+./scripts/install-qubic-stack.sh
+```
+
+This creates `./.qubic-stack/` (gitignored), shallow-clones
+[`LBL-QubiC/software`](https://gitlab.com/LBL-QubiC/software) and
+[`LBL-QubiC/distributed_processor`](https://gitlab.com/LBL-QubiC/distributed_processor),
+then runs `uv pip install -e` on both trees (pulling `qubitconfig` and other
+deps from PyPI via `lbl-qubic`’s `pyproject.toml`).
+
+The simulator example uses `examples/gmm_classifier_sim.pkl`. Regenerate it after
+stack upgrades with:
+
+```bash
+uv run python scripts/build-example-gmm-pickle.py
+```
+
+Run QubiC integration tests:
+
+```bash
+uv run pytest tests/test_simulator_circuits.py tests/test_compile_integration.py
+```
+
 ### As a Dependency
 
 Add to your `pyproject.toml`:
@@ -50,7 +77,7 @@ dependencies = [
 See the `examples/` directory for complete working examples including:
 - Real hardware calibration files (`qubitcfg.json`, `channel_config.json`)
 - Device configuration templates for RPC, simulation, and hardware modes
-- Example GMM classifier
+- Example GMM classifier (`gmm_classifier.json` placeholder; `gmm_classifier_sim.pkl` for `device_sim.yaml`)
 - Detailed usage documentation
 
 ## Usage

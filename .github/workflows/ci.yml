@@ -72,3 +72,38 @@ jobs:
         with:
           files: ./coverage.xml
           fail_ci_if_error: false
+
+  qubic-integration:
+    name: QubiC integration (vendor stack)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install project dependencies
+        run: uv sync --dev
+
+      - name: Clone and install QubiC stack
+        run: ./scripts/install-qubic-stack.sh
+        env:
+          QUBIC_ROOT: ${{ github.workspace }}/.qubic-stack
+
+      - name: Run QubiC integration tests
+        run: >
+          uv run pytest -v
+          tests/test_simulator_circuits.py
+          tests/test_compile_integration.py
+        env:
+          QUBIC_ROOT: ${{ github.workspace }}/.qubic-stack
