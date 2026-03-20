@@ -2,7 +2,7 @@
 
 QubiC execution framework for coda-self-service.
 
-Pipeline: **OpenQASM → NativeGateIR → QubiC gate programs → hardware / simulator**.
+Pipeline: **NativeGateIR → QubiC gate programs → hardware / simulator**.
 
 ## Quick Start — Connecting to a QubiC Lab
 
