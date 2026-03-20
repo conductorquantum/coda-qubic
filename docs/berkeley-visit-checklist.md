@@ -23,7 +23,7 @@ time on-site:
 
 #### 1. RPC server port mismatch
 
-Our `framework.py` defaults to port **9734** when `rpc_port` is omitted from
+Our `QubiCConfig` defaults to port **9734** when `rpc_port` is omitted from
 the device YAML, but QubiC's own `CircuitRunnerClient` and server config both
 default to **9095**. If they run the stock server and we omit `rpc_port`,
 connection will silently fail.
@@ -76,6 +76,11 @@ test code always creates an empty `GMMManager` and fits it live with
 `fit_gmm=True`. If we hand them a stale pickle that doesn't match their
 current IQ blobs, readout classification will be wrong and every bitstring
 result will be garbage.
+
+Related local limitation: the current upstream `SimInterface` in our cloned
+QubiC stack returns state-independent synthetic readout data, so the example
+simulator pickle cannot be trusted as a quantitative proxy for real lab IQ
+discrimination.
 
 **Ask:** Do you load a pre-fitted GMM classifier from disk, or do you fit it
 live at the start of each session? If from disk, pickle or JSON? If live, how
@@ -193,6 +198,7 @@ interface is different from the single-board `soc_rpc_server`.
 | channel_config | `Q{n}.qdrv/.rdrv/.rdlo` | Assembly and GMM mapping break |
 | GMM | Channel → qubit via `split('.')[0]` | Wrong mapping if channel names differ |
 | GMM | Pre-fitted pickle matches live IQ | Garbage readout if IQ blobs shifted |
+| Simulator | Synthetic IQ is state-dependent | Local simulator classifier is meaningless if `SimInterface` returns fixed clouds |
 | Runner | `reads_per_shot=1` | Error for mid-circuit measurement |
 | Results | `CircuitCounts.qubits` sorted | Bit order wrong if result format differs |
 | FPGAConfig | Default 2 ns clock, 16 cores | Timing/compilation wrong if hardware differs |
@@ -205,7 +211,8 @@ interface is different from the single-board `soc_rpc_server`.
 - OpenQASM → NativeIR → QubiC gate-level translation (both `superconducting_cnot`
   and `superconducting_cz` targets)
 - Full compile + assemble pipeline tested against QubiC `master`
-- Simulator integration tests (GHZ, Hadamard, QFT, Grover circuits)
+- Simulator integration tests (GHZ, Hadamard, QFT, Grover circuits) for
+  pipeline smoke coverage only, not quantitative readout fidelity
 - Path resolution for all config files (relative to YAML, not cwd)
 - Lazy `PLInterface` import (simulator/RPC work without `pynq`)
 - Install script for QubiC vendor stack
@@ -216,5 +223,7 @@ interface is different from the single-board `soc_rpc_server`.
 - Actual RPC connectivity to their server
 - Compilation against their real `qubitcfg.json` / `channel_config.json`
 - GMM classifier fitting on real IQ data
+- Whether their live readout IQ blobs and classifier workflow match our
+  assumptions (pickle vs live fit, label ordering, channel naming)
 - Hardware execution and result parsing
 - Network access and latency

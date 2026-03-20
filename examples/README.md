@@ -6,10 +6,13 @@ This directory contains example configuration files for the coda-qubic framework
 
 ### Calibration Files
 
-- **qubitcfg.json**: Real QubiC calibration file from LBNL hardware
+- **qubitcfg.json**: QubiC calibration file derived from LBNL hardware
   - Contains qubit frequencies, gate calibrations, and two-qubit connectivity
   - Includes 8 qubits (Q0-Q7) with CNOT gates for adjacent pairs
   - Framework automatically derives largest connected component (4 qubits: Q0-Q3)
+  - Readout LO phases (`rdlo`) for Q1-Q3 are set to 0 so the generic GMM
+    classifier below produces correct discrimination. On real hardware these
+    phases are non-zero and the classifier must be calibrated to match.
 
 - **channel_config.json**: FPGA channel configuration
   - Maps logical channels to physical FPGA cores
@@ -18,7 +21,8 @@ This directory contains example configuration files for the coda-qubic framework
 
 - **gmm_classifier.json**: Gaussian Mixture Model classifier (placeholder)
   - Used for single-shot readout discrimination
-  - **Note**: This is a minimal placeholder. Replace with actual calibrated parameters.
+  - Assumes readout IQ clouds align with the I-axis (rdlo phase = 0).
+    On real hardware, replace with per-qubit calibrated parameters.
 
 ### Device Configuration Examples
 
@@ -157,6 +161,11 @@ depends entirely on the calibration parameters in `qubitcfg.json`.  The
 example calibration is representative of real hardware but is **not**
 perfectly tuned, so results will diverge from ideal gate-model
 expectations — particularly for deeper circuits.
+
+The checked-in example classifier file is only for local smoke testing.  For
+real lab runs, use the classifier file or live-fit workflow provided by the
+hardware team; the current upstream simulator does not emit realistic,
+state-dependent IQ clouds for local classifier training.
 
 ### Coherent error accumulation
 

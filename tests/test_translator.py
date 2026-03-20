@@ -216,7 +216,10 @@ class TestQubiCTranslator:
         ]
         assert translated.measurement_hardware_order == ["Q3", "Q1"]
 
-    def test_rejects_uncalibrated_directed_native_cnot(self, device: QubiCDeviceSpec):
+    def test_reversed_cnot_uses_h_flip(self, device: QubiCDeviceSpec):
+        """CNOT(0,1) when only CNOT(1,0) exists: should H-flip via (H⊗H)·CNOT(1,0)·(H⊗H)."""
+        import math
+
         ir = NativeGateIR(
             num_qubits=3,
             target="superconducting_cnot",
@@ -225,8 +228,56 @@ class TestQubiCTranslator:
             metadata=_metadata(),
         )
 
-        with pytest.raises(ValueError, match="no calibrated directed CNOT"):
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        h_q1 = [
+            {"name": "Y-90", "qubit": ["Q1"]},
+            {"name": "virtual_z", "phase": math.pi, "qubit": ["Q1"]},
+        ]
+        h_q2 = [
+            {"name": "Y-90", "qubit": ["Q2"]},
+            {"name": "virtual_z", "phase": math.pi, "qubit": ["Q2"]},
+        ]
+        cnot_hw = {"name": "CNOT", "qubit": ["Q2", "Q1"]}
+
+        expected_gate_program = [*h_q1, *h_q2, cnot_hw, *h_q1, *h_q2]
+        assert translated.program[: len(expected_gate_program)] == expected_gate_program
+
+    def test_rejects_cnot_with_no_edge_in_either_direction(self, device: QubiCDeviceSpec):
+        ir = NativeGateIR(
+            num_qubits=3,
+            target="superconducting_cnot",
+            gates=[GateOp(gate="cnot", qubits=[0, 2], params=[])],
+            measurements=[0, 2],
+            metadata=_metadata(),
+        )
+
+        with pytest.raises(ValueError, match="no calibrated CNOT edge"):
             QubiCCircuitTranslator(device).translate(ir)
+
+    def test_cloud_compiled_cnot_ir_with_rx_ry_rz(self, device: QubiCDeviceSpec):
+        """Cloud compiler produces {rx, ry, rz, cnot} for superconducting_cnot target."""
+        import math
+
+        ir = NativeGateIR(
+            num_qubits=3,
+            target="superconducting_cnot",
+            gates=[
+                GateOp(gate="rx", qubits=[0], params=[math.pi / 2]),
+                GateOp(gate="ry", qubits=[1], params=[-math.pi / 2]),
+                GateOp(gate="rz", qubits=[2], params=[0.4]),
+                GateOp(gate="cnot", qubits=[1, 0], params=[]),
+            ],
+            measurements=[0, 1, 2],
+            metadata=_metadata(),
+        )
+
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        assert translated.program[0] == {"name": "X90", "qubit": ["Q1"]}
+        assert {"name": "Y-90", "qubit": ["Q2"]} in translated.program
+        assert {"name": "virtual_z", "phase": 0.4, "qubit": ["Q3"]} in translated.program
+        assert {"name": "CNOT", "qubit": ["Q2", "Q1"]} in translated.program
 
     def test_rejects_unsupported_target(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(

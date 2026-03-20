@@ -130,15 +130,28 @@ class QubiCCircuitTranslator:
         self, control: int, target: int
     ) -> list[dict[str, Any]]:
         edge = self._device.directed_cnot(control, target)
-        if edge is None:
-            raise ValueError(
-                "QubiC device has no calibrated directed CNOT for logical pair "
-                f"{(control, target)}"
-            )
+        if edge is not None:
+            return [
+                {"name": "CNOT", "qubit": [edge.control_hardware, edge.target_hardware]}
+            ]
 
-        return [
-            {"name": "CNOT", "qubit": [edge.control_hardware, edge.target_hardware]}
-        ]
+        # CNOT(a→b) = (H⊗H)·CNOT(b→a)·(H⊗H) — flip using the reverse edge.
+        reverse_edge = self._device.directed_cnot(target, control)
+        if reverse_edge is not None:
+            ctrl_hw = self._device.hardware_qubit(control)
+            tgt_hw = self._device.hardware_qubit(target)
+            return [
+                *_decompose_h([ctrl_hw]),
+                *_decompose_h([tgt_hw]),
+                {"name": "CNOT", "qubit": [reverse_edge.control_hardware, reverse_edge.target_hardware]},
+                *_decompose_h([ctrl_hw]),
+                *_decompose_h([tgt_hw]),
+            ]
+
+        raise ValueError(
+            "QubiC device has no calibrated CNOT edge for logical pair "
+            f"{(control, target)}"
+        )
 
 
 def _phase_instr(hw_qubits: list[str], phase: float) -> dict[str, Any]:

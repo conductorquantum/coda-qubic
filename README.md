@@ -177,11 +177,10 @@ The install script shallow-clones
 [`LBL-QubiC/distributed_processor`](https://gitlab.com/LBL-QubiC/distributed_processor),
 then installs them editable (pulling `qubitconfig` and other deps from PyPI).
 
-Regenerate the simulator GMM pickle after stack upgrades:
-
-```bash
-uv run python scripts/build-example-gmm-pickle.py
-```
+The checked-in example simulator classifier file is intended for local smoke
+testing only. For real lab integration, use the classifier file or live-fit
+workflow provided by the Berkeley team rather than trying to regenerate a local
+simulator classifier.
 
 Run integration tests:
 

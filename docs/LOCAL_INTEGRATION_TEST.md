@@ -130,10 +130,10 @@ deployment.
   Optionally set `QUBIC_ROOT` to that tree, or add `qubic_root:` to the
   device YAML (usually unnecessary once editable installs are present).
 
-- **Simulator classifier file** — `examples/device_sim.yaml` points at
-  `gmm_classifier_sim.pkl` (QubiC loads string paths as pickle). Regenerate
-  with `uv run python scripts/build-example-gmm-pickle.py` after updating
-  the QubiC stack if needed.
+- **Simulator classifier file** — `examples/device_sim.yaml` points at the
+  checked-in example classifier pickle. Treat it as a local smoke-test artifact
+  only; for real hardware runs, use the classifier file or live-fit workflow
+  supplied by the lab.
 - **OpenVPN** must be on `$PATH` if VPN is required.
 - The **prod-registered QPU metadata** (`num_qubits`, `native_gate_set`)
   must be compatible with the simulator device config. The example
