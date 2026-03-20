@@ -41,9 +41,7 @@ def create_executor(settings: Any) -> JobExecutor:
     try:
         config = QubiCConfig.from_yaml(device_config_path)
     except FileNotFoundError:
-        raise ExecutorError(
-            f"Device config not found: {device_config_path}"
-        ) from None
+        raise ExecutorError(f"Device config not found: {device_config_path}") from None
     except Exception as exc:
         raise ExecutorError(
             f"Invalid device config {device_config_path!r}: {exc}"
