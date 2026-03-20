@@ -7,6 +7,7 @@ build/
 .eggs/
 *.egg
 .venv/
+.qubic-stack/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/

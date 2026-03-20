@@ -296,11 +296,29 @@ class TestSupportErrorHandling:
         finally:
             sys.path = original_path
 
-    def test_load_qubic_dependencies_raises_runtime_error(self):
+    def test_load_qubic_dependencies_raises_runtime_error(self, monkeypatch):
         """Test that loading QubiC dependencies raises helpful error."""
+        import builtins
+
         from coda_qubic.support import load_qubic_dependencies
 
-        # Should raise RuntimeError with helpful message
+        real_import = builtins.__import__
+        vendor_roots = frozenset({"distproc", "qubic", "qubitconfig"})
+
+        def guarded_import(
+            name: str,
+            globals: dict[str, object] | None = None,
+            locals: dict[str, object] | None = None,
+            fromlist: tuple[str, ...] = (),
+            level: int = 0,
+        ) -> object:
+            root = name.split(".", 1)[0]
+            if root in vendor_roots:
+                raise ImportError("simulated missing QubiC vendor stack")
+            return real_import(name, globals, locals, fromlist, level)
+
+        monkeypatch.setattr(builtins, "__import__", guarded_import)
+
         with pytest.raises(RuntimeError, match="QubiC dependencies are unavailable"):
             load_qubic_dependencies(Path("/nonexistent/path"))
 
