@@ -59,6 +59,9 @@ use_sim: true
 
 **Use when**: Testing without hardware or when QubiC hardware is unavailable.
 
+> **Simulator limitations** — see [Pulse Simulator Limitations](#pulse-simulator-limitations)
+> below before interpreting results from `use_sim: true`.
+
 #### 3. Local Hardware Mode (`device_hardware.yaml`)
 
 Executes directly on QubiC FPGA hardware:
@@ -139,6 +142,69 @@ This maps to logical qubits 0, 1, 2 respectively.
 - Control Q3 → Target Q2 (logical: 2 → 1)
 
 The framework will use these gates for both `superconducting_cz` (via CZ = H-CNOT-H) and `superconducting_cnot` (native) IR targets.
+
+## Pulse Simulator Limitations
+
+When `use_sim: true` is set, circuits run on LBNL's QubiC **pulse-level
+simulator** (`qubic.sim.sim_interface`), not a gate-level statevector
+simulator.  This has several important implications:
+
+### Not a perfect gate simulator
+
+The pulse simulator models microwave drive waveforms, cross-resonance
+pulses, and readout discrimination at the signal level.  Gate fidelity
+depends entirely on the calibration parameters in `qubitcfg.json`.  The
+example calibration is representative of real hardware but is **not**
+perfectly tuned, so results will diverge from ideal gate-model
+expectations — particularly for deeper circuits.
+
+### Coherent error accumulation
+
+Errors from the pulse simulator are **coherent** (systematic
+over/under-rotations), not depolarising noise.  These errors compound
+predictably through a circuit rather than averaging out:
+
+- **Shallow circuits** (1–3 two-qubit gates): results are typically
+  qualitatively correct, with the dominant output state matching the
+  ideal expectation.
+- **Moderate-depth circuits** (5–15 two-qubit gates): noticeable
+  probability leakage to nearby states; the target state is still the
+  most probable.
+- **Deep circuits** (>15 two-qubit gates, e.g. multi-iteration Grover
+  with SWAP routing): accumulated phase errors can destroy the
+  interference pattern entirely, producing distributions that bear little
+  resemblance to the ideal output (e.g. a 50/50 split instead of a
+  single dominant state).
+
+### Impact of SWAP routing
+
+When the cloud compiler performs topology-aware routing (inserting SWAP
+gates to respect device connectivity), circuit depth increases
+substantially.  Each SWAP decomposes into 3 CZ gates, and each CZ is
+translated to 2 Hadamard pulse sequences + 1 cross-resonance pulse:
+
+```
+SWAP ≈ 3 × CZ ≈ 3 × (2 Hadamard + 1 CR pulse) = 6 single-qubit + 3 CR operations
+```
+
+For a 3-qubit Grover's search on a linear chain (`Q1–Q2–Q3`), a single
+Toffoli decomposition with routing can add 2–4 SWAPs, increasing the CR
+pulse count by 6–12.  On the pulse simulator, this is often enough to
+break algorithms that rely on precise multi-gate interference.
+
+### When to trust the simulator
+
+| Use case | Trustworthy? |
+|---|---|
+| Integration testing (pipeline doesn't crash) | Yes |
+| Verifying gate decomposition / translation | Yes (shallow circuits) |
+| Qualitative algorithm behaviour (1 iteration) | Roughly |
+| Quantitative algorithm fidelity | No |
+| Multi-iteration algorithms with SWAP routing | No |
+
+For quantitative verification of compiled circuits, use Qiskit's
+`Statevector` or `AerSimulator` on the NativeGateIR gate sequence before
+sending it to the QubiC translator.
 
 ## Requirements
 
