@@ -111,16 +111,24 @@ print(result.counts)
 ### 7. Run via coda-self-service (full production path)
 
 ```bash
-sudo CODA_WEBAPP_URL=https://coda.conductorquantum.com \
-     CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
-     CODA_DEVICE_CONFIG=./site/device.yaml \
-     uv run coda start --token <your-token>
+sudo uv run coda start --token <your-token>
 ```
 
 `sudo` is required because OpenVPN needs root to create the tunnel interface.
-`CODA_WEBAPP_URL` tells the node where the Coda platform lives.
-`CODA_EXECUTOR_FACTORY` tells coda-self-service how to create the QubiC executor.
-`CODA_DEVICE_CONFIG` points at your device YAML (read by the factory).
+
+The runtime automatically:
+- Connects to `https://coda.conductorquantum.com` (the default `CODA_WEBAPP_URL`).
+- Discovers `coda_qubic.executor_factory:create_executor` as the executor factory.
+- Reads `./site/device.yaml` as the device config (the default `CODA_DEVICE_CONFIG` path).
+
+To override any of these:
+
+```bash
+sudo CODA_WEBAPP_URL=https://custom.example.com \
+     CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+     CODA_DEVICE_CONFIG=./other/device.yaml \
+     uv run coda start --token <your-token>
+```
 
 ### Things to ask the lab
 
@@ -206,7 +214,14 @@ print(result.counts)
 
 ### Via coda-self-service
 
-Set the executor factory environment variable to wire up QubiC:
+If `coda-qubic` is the only backend installed and `./site/device.yaml`
+exists, all defaults are applied automatically:
+
+```bash
+uv run coda start --token <your-token>
+```
+
+To be explicit:
 
 ```bash
 CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \

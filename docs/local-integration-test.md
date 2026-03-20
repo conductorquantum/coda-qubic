@@ -3,14 +3,20 @@
 ## Quick Start
 
 ```bash
-CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
 CODA_DEVICE_CONFIG=./examples/device_sim.yaml \
 uv run coda start --token <your-token>
 ```
 
 This single command provisions the node against production, establishes
-VPN connectivity, and starts consuming jobs — executing them against
+VPN connectivity, and starts consuming jobs -- executing them against
 QubiC's built-in simulator instead of real hardware.
+
+The runtime automatically:
+- Connects to `https://coda.conductorquantum.com` (default `CODA_WEBAPP_URL`).
+- Discovers `coda_qubic.executor_factory:create_executor` from the installed
+  `coda-qubic` package (no need to set `CODA_EXECUTOR_FACTORY`).
+- Uses the `CODA_DEVICE_CONFIG` path you provide (or `./site/device.yaml` by
+  default if the file exists).
 
 To skip the VPN tunnel for initial smoke testing, add
 `CODA_VPN_REQUIRED=false`. Once you've confirmed the tunnel works,
@@ -44,9 +50,14 @@ coda = "self_service.server.cli:main"
 ### Executor factory
 
 `coda-self-service` is completely framework-agnostic. It knows nothing
-about QubiC, QUA, or any specific control system. The only integration
-point is `CODA_EXECUTOR_FACTORY` — an import path to a callable that
-returns a `JobExecutor`:
+about QubiC, QUA, or any specific control system. At startup, it scans
+installed packages for the convention
+`<pkg>.executor_factory:create_executor` and uses the factory if
+exactly one match is found. Since `coda-qubic` is installed, the
+runtime discovers `coda_qubic.executor_factory:create_executor`
+automatically.
+
+You can also set it explicitly:
 
 ```
 CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor
@@ -67,9 +78,10 @@ When you run `coda start --token <token>`:
    Redis URL, VPN profile, etc.
 3. If VPN is required, the runtime writes the `.ovpn` profile to disk,
    launches an OpenVPN daemon, and polls until a TUN interface appears.
-4. `load_executor(settings)` sees `CODA_EXECUTOR_FACTORY` is set,
-   imports `coda_qubic.executor_factory:create_executor`, and calls it
-   with `settings`. The factory reads `CODA_DEVICE_CONFIG`, parses the
+4. `load_executor(settings)` auto-discovers
+   `coda_qubic.executor_factory:create_executor` (or uses
+   `CODA_EXECUTOR_FACTORY` if set explicitly), and calls it with
+   `settings`. The factory reads `CODA_DEVICE_CONFIG`, parses the
    YAML into a `QubiCConfig`, and builds a `QubiCJobRunner`.
 5. The Redis consumer starts reading jobs from `qpu:<qpu_id>:jobs` and
    dispatching them to the executor.
