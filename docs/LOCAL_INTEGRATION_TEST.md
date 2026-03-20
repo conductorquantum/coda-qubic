@@ -18,6 +18,21 @@ The runtime automatically:
 - Uses the `CODA_DEVICE_CONFIG` path you provide (or `./site/device.yaml` by
   default if the file exists).
 
+After the first successful connect, credentials are persisted to disk.
+To reconnect (e.g. after a restart or network drop), run without
+`--token`:
+
+```bash
+CODA_DEVICE_CONFIG=./examples/device_sim.yaml \
+uv run coda start
+```
+
+No new token is needed. To wipe stored credentials and start fresh:
+
+```bash
+uv run coda reset
+```
+
 To skip the VPN tunnel for initial smoke testing, add
 `CODA_VPN_REQUIRED=false`. Once you've confirmed the tunnel works,
 remove that override (it defaults to `true`).

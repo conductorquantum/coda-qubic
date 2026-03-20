@@ -121,7 +121,24 @@ The runtime automatically:
 - Discovers `coda_qubic.executor_factory:create_executor` as the executor factory.
 - Reads `./site/device.yaml` as the device config (the default `CODA_DEVICE_CONFIG` path).
 
-To override any of these:
+After the first successful connect, credentials are persisted to disk.
+To reconnect (e.g. after a restart, network drop, or reboot), just run
+without `--token`:
+
+```bash
+sudo uv run coda start
+```
+
+No new token is needed -- the node authenticates with its stored JWT
+credentials and resumes consuming jobs.
+
+To wipe stored credentials and start fresh (requires a new token):
+
+```bash
+sudo uv run coda reset
+```
+
+To override any of the auto-detected settings:
 
 ```bash
 sudo CODA_WEBAPP_URL=https://custom.example.com \
