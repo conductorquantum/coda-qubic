@@ -10,7 +10,16 @@ Step-by-step guide for integrating with an existing QubiC setup on-site. You
 need three files from the lab: `qubitcfg.json`, `channel_config.json`, and a
 GMM classifier pickle.
 
-### 1. Install
+### 1. Prerequisites
+
+```bash
+brew install openvpn        # required — the node connects via VPN
+```
+
+Verify with `openvpn --version`. If you're on Linux, use your package manager
+(`apt install openvpn`, etc.).
+
+### 2. Install
 
 ```bash
 git clone https://github.com/conductorquantum/coda-qubic.git
@@ -19,7 +28,7 @@ uv sync --dev
 ./scripts/install-qubic-stack.sh
 ```
 
-### 2. Copy calibration files from the lab
+### 3. Copy calibration files from the lab
 
 Place the lab's files in a working directory (e.g. `site/`):
 
@@ -31,7 +40,7 @@ mkdir site
 #   classifier.pkl       — GMM readout classifier (if they have one)
 ```
 
-### 3. Create a device YAML
+### 4. Create a device YAML
 
 Create `site/device.yaml` pointing at those files. All paths are resolved
 relative to this YAML file, so `./qubitcfg.json` means "next to the YAML".
@@ -39,7 +48,6 @@ relative to this YAML file, so `./qubitcfg.json` means "next to the YAML".
 **RPC mode** (connecting to the lab's QubiC server — most common):
 
 ```yaml
-framework: qubic
 target: superconducting_cnot
 num_qubits: 3                          # ask the lab
 calibration_path: ./qubitcfg.json
@@ -54,7 +62,6 @@ rpc_port: 9095                         # QubiC default; ask to confirm
 **Simulator mode** (no hardware needed — good for testing the pipeline):
 
 ```yaml
-framework: qubic
 target: superconducting_cnot
 num_qubits: 3
 calibration_path: ./qubitcfg.json
@@ -65,31 +72,28 @@ runner_mode: local
 use_sim: true
 ```
 
-### 4. Validate the config
+### 5. Validate the config
 
 ```bash
 uv run python -c "
-from self_service.frameworks.base import DeviceConfig
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
 
-config = DeviceConfig.from_yaml('site/device.yaml')
-errors = QubiCFramework().validate_config(config)
-print('OK' if not errors else errors)
+config = QubiCConfig.from_yaml('site/device.yaml')
+print('OK —', config.target, config.num_qubits, 'qubits')
 "
 ```
 
-### 5. Run a test circuit
+### 6. Run a test circuit
 
 ```bash
 uv run python -c "
 import asyncio
-from unittest.mock import MagicMock
-from self_service.frameworks.base import DeviceConfig
 from self_service.server.ir import NativeGateIR, GateOp, IRMetadata
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 
-config = DeviceConfig.from_yaml('site/device.yaml')
-executor = QubiCFramework().create_executor(config, MagicMock())
+config = QubiCConfig.from_yaml('site/device.yaml')
+executor = build_executor(config)
 
 ir = NativeGateIR(
     num_qubits=3,
@@ -104,13 +108,19 @@ print(result.counts)
 "
 ```
 
-### 6. Run via coda-self-service (full production path)
+### 7. Run via coda-self-service (full production path)
 
 ```bash
-CODA_DEVICE_CONFIG=./site/device.yaml uv run coda start --token <your-token>
+sudo CODA_WEBAPP_URL=https://coda.conductorquantum.com \
+     CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+     CODA_DEVICE_CONFIG=./site/device.yaml \
+     uv run coda start --token <your-token>
 ```
 
-This starts the full job loop: VPN, Redis consumer, and QubiC executor.
+`sudo` is required because OpenVPN needs root to create the tunnel interface.
+`CODA_WEBAPP_URL` tells the node where the Coda platform lives.
+`CODA_EXECUTOR_FACTORY` tells coda-self-service how to create the QubiC executor.
+`CODA_DEVICE_CONFIG` points at your device YAML (read by the factory).
 
 ### Things to ask the lab
 
@@ -159,11 +169,10 @@ editable sibling dependency).
 
 ## Features
 
-- **Framework Protocol**: Implements the `Framework` protocol from `coda-self-service`
 - **Device Derivation**: Derives device specs from `qubitcfg.json` via BFS over the calibrated connectivity graph
 - **IR Translation**: Translates `NativeGateIR` circuits into QubiC gate-level programs
 - **Multiple Backends**: RPC, local hardware (PLInterface), and simulation
-- **Entry Point Registration**: Registers as `coda.frameworks.qubic` for automatic discovery
+- **Executor Factory**: Exposes `coda_qubic.executor_factory:create_executor` for use with `CODA_EXECUTOR_FACTORY`
 
 ## Supported IR Targets
 
@@ -186,41 +195,37 @@ directory, not the working directory.
 ### Programmatic Usage
 
 ```python
-from self_service.frameworks.base import DeviceConfig
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 
-config = DeviceConfig.from_yaml("site/device.yaml")
-framework = QubiCFramework()
-errors = framework.validate_config(config)
-if errors:
-    raise ValueError(f"Invalid config: {errors}")
-
-executor = framework.create_executor(config, settings)
+config = QubiCConfig.from_yaml("site/device.yaml")
+executor = build_executor(config)
 result = await executor.run(ir, shots=1000)
 print(result.counts)
 ```
 
 ### Via coda-self-service
 
-The framework is automatically discovered via the `coda.frameworks` entry point:
+Set the executor factory environment variable to wire up QubiC:
 
-```python
-from self_service.frameworks.registry import default_registry
-
-registry = default_registry()
-framework = registry.get("qubic")
+```bash
+CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+CODA_DEVICE_CONFIG=./site/device.yaml \
+uv run coda start --token <your-token>
 ```
 
 ## Architecture
 
 ```
 src/coda_qubic/
-├── __init__.py          # Package exports
-├── device.py            # QubiCDeviceSpec derivation from qubitcfg.json
-├── support.py           # QubiC vendor dependency loading
-├── translator.py        # NativeGateIR to QubiC gate translation
-├── runner.py            # QubiCJobRunner (JobExecutor implementation)
-└── framework.py         # QubiCFramework (Framework protocol)
+├── __init__.py              # Package exports
+├── config.py                # QubiCConfig (device YAML model)
+├── device.py                # QubiCDeviceSpec derivation from qubitcfg.json
+├── executor_factory.py      # CODA_EXECUTOR_FACTORY entry point
+├── framework.py             # QubiCFramework convenience class
+├── runner.py                # QubiCJobRunner (JobExecutor implementation)
+├── support.py               # QubiC vendor dependency loading
+└── translator.py            # NativeGateIR to QubiC gate translation
 ```
 
 ## Development
@@ -239,6 +244,8 @@ Integration tests are automatically skipped if QubiC dependencies are unavailabl
 
 ### Required Options
 
+- `target`: IR target (`superconducting_cnot` or `superconducting_cz`)
+- `num_qubits`: Number of qubits (must match derived device)
 - `calibration_path`: Path to QubiC `qubitcfg.json`
 - `channel_config_path`: Path to QubiC channel configuration JSON
 - `classifier_path`: Path to GMM classifier for readout

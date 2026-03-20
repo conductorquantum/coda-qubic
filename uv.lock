@@ -117,6 +117,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "coda-self-service" },
+    { name = "pyyaml" },
 ]
 
 [package.dev-dependencies]
@@ -131,7 +132,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "coda-self-service", editable = "coda-self-service" }]
+requires-dist = [
+    { name = "coda-self-service", editable = "coda-self-service" },
+    { name = "pyyaml", specifier = ">=6.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [
@@ -155,7 +159,6 @@ dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyjwt" },
-    { name = "pyyaml" },
     { name = "redis" },
     { name = "uvicorn" },
 ]
@@ -168,7 +171,6 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.11.0" },
     { name = "pydantic-settings", specifier = ">=2.0.0" },
     { name = "pyjwt", specifier = ">=2.0.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
     { name = "redis", specifier = ">=5.0.0" },
     { name = "uvicorn", specifier = ">=0.30.0" },
 ]
@@ -181,7 +183,6 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.23.0" },
     { name = "pytest-cov", specifier = ">=5.0.0" },
     { name = "ruff", specifier = ">=0.11.0" },
-    { name = "types-pyyaml", specifier = ">=6.0" },
 ]
 
 [[package]]

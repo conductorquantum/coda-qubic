@@ -81,24 +81,15 @@ xsa_commit: abc123def456789
 ### Basic Example
 
 ```python
-from pathlib import Path
-from self_service.frameworks.base import DeviceConfig
-from self_service.server.config import Settings
 from self_service.server.ir import NativeGateIR, GateOp, IRMetadata
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 
 # Load device configuration
-config = DeviceConfig.from_yaml("examples/device_sim.yaml")
-
-# Validate configuration
-framework = QubiCFramework()
-errors = framework.validate_config(config)
-if errors:
-    raise ValueError(f"Configuration errors: {errors}")
+config = QubiCConfig.from_yaml("examples/device_sim.yaml")
 
 # Create executor
-settings = Settings()
-executor = framework.create_executor(config, settings)
+executor = build_executor(config)
 
 # Define a simple circuit
 ir = NativeGateIR(
@@ -123,21 +114,12 @@ print(f"Execution time: {result.execution_time_ms}ms")
 
 ### With coda-self-service
 
-If using coda-self-service's automatic framework discovery:
+When running via coda-self-service, set the executor factory:
 
-```python
-from self_service.server.executor import load_executor
-from self_service.server.config import Settings
-import os
-
-# Set environment variable to device config
-os.environ["CODA_DEVICE_CONFIG"] = "examples/device_sim.yaml"
-
-# Load executor (automatically discovers QubiC framework)
-settings = Settings()
-executor = load_executor(settings)
-
-# Execute circuits...
+```bash
+CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+CODA_DEVICE_CONFIG=examples/device_sim.yaml \
+uv run coda start --token <your-token>
 ```
 
 ## Device Topology

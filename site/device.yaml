@@ -1,0 +1,9 @@
+framework: qubic
+target: superconducting_cnot
+num_qubits: 3
+calibration_path: ./qubitcfg.json
+channel_config_path: ./channel_config.json
+classifier_path: ./gmm_classifier_sim.pkl
+
+runner_mode: local
+use_sim: true

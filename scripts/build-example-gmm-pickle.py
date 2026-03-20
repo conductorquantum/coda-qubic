@@ -12,15 +12,14 @@ from __future__ import annotations
 
 import pickle
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import numpy as np
 from distproc.hwconfig import load_channel_configs
 from qubic.state_disc import GMMManager
-from self_service.frameworks.base import DeviceConfig
 from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
 
-from coda_qubic.framework import QubiCFramework
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "examples"
@@ -44,9 +43,8 @@ def main() -> None:
     with OUT.open("wb") as f:
         pickle.dump(bootstrap, f)
 
-    config = DeviceConfig.from_yaml(str(EXAMPLES / "device_sim.yaml"))
-    framework = QubiCFramework()
-    executor = framework.create_executor(config, MagicMock())
+    config = QubiCConfig.from_yaml(str(EXAMPLES / "device_sim.yaml"))
+    executor = build_executor(config)
     jm = executor._job_manager
     translator = executor._translator
 
