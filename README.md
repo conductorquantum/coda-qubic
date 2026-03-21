@@ -271,6 +271,36 @@ uv run mypy src/coda_qubic # type check
 
 Integration tests are automatically skipped if QubiC dependencies are unavailable.
 
+### Testing against staging
+
+The staging environment at `https://staging.coda.conductorquantum.com` is
+protected by Vercel Deployment Protection. Requests without valid credentials
+receive a `401 Unauthorized` before they reach the app.
+
+To bypass this, include the project's **automation bypass secret** via the
+`CODA_SELF_SERVICE_CONNECT_HEADERS` environment variable:
+
+```bash
+CODA_WEBAPP_URL=https://staging.coda.conductorquantum.com \
+CODA_DEVICE_CONFIG=./site/device.yaml \
+CODA_SELF_SERVICE_AUTO_VPN=false \
+CODA_VPN_REQUIRED=false \
+CODA_SELF_SERVICE_CONNECT_HEADERS='{"x-vercel-protection-bypass": "<secret>"}' \
+uv run coda start --token <your-staging-token>
+```
+
+| Variable | Purpose |
+|---|---|
+| `CODA_WEBAPP_URL` | Points the node at the staging deployment |
+| `CODA_SELF_SERVICE_CONNECT_HEADERS` | JSON dict of extra headers sent with all outbound requests to the webapp (connect, heartbeat, VPN probes); must include the Vercel bypass header |
+| `CODA_SELF_SERVICE_AUTO_VPN` / `CODA_VPN_REQUIRED` | Disable VPN for local testing where you don't need the tunnel |
+
+**Where to find the bypass secret:** In the Vercel dashboard for the staging
+project, go to **Settings → Deployment Protection → Protection Bypass for
+Automation**. The secret is also available as the
+`VERCEL_AUTOMATION_BYPASS_SECRET` environment variable inside Vercel
+deployments.
+
 ## Configuration Reference
 
 ### Required Options
