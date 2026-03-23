@@ -1,3 +1,0 @@
-[submodule "coda-self-service"]
-	path = coda-self-service
-	url = https://github.com/conductorquantum/coda-self-service.git

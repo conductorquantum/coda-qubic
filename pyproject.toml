@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-coda-self-service = { path = "coda-self-service", editable = true }
+coda-self-service = { git = "https://github.com/conductorquantum/coda-self-service.git" }
 
 [dependency-groups]
 dev = [

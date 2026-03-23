@@ -173,9 +173,10 @@ uv sync --dev
 ```
 
 The install script shallow-clones
-[`LBL-QubiC/software`](https://gitlab.com/LBL-QubiC/software) and
+[`LBL-QubiC/software`](https://gitlab.com/LBL-QubiC/software),
 [`LBL-QubiC/distributed_processor`](https://gitlab.com/LBL-QubiC/distributed_processor),
-then installs them editable (pulling `qubitconfig` and other deps from PyPI).
+and [`coda-self-service`](https://github.com/conductorquantum/coda-self-service),
+then installs them all editable (pulling `qubitconfig` and other deps from PyPI).
 
 The checked-in example simulator classifier file is intended for local smoke
 testing only. For real lab integration, use the classifier file or live-fit
@@ -188,8 +189,7 @@ Run integration tests:
 uv run pytest tests/test_simulator_circuits.py tests/test_compile_integration.py
 ```
 
-Requires Python 3.12+ and `coda-self-service` (installed automatically as an
-editable sibling dependency).
+Requires Python 3.12+.
 
 ## Features
 
