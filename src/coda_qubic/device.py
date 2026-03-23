@@ -114,6 +114,32 @@ class QubiCDeviceSpec:
     ) -> DirectedCNOTCalibration | None:
         return self.directed_cnot_edges.get((control, target))
 
+    def find_path(self, source: int, target: int) -> list[int] | None:
+        """BFS shortest path in the undirected connectivity graph.
+
+        Returns logical qubit indices from *source* to *target*, or ``None``
+        if no path exists.
+        """
+        if source == target:
+            return [source]
+
+        adjacency: dict[int, set[int]] = defaultdict(set)
+        for control, tgt in self.directed_cnot_edges:
+            adjacency[control].add(tgt)
+            adjacency[tgt].add(control)
+
+        visited = {source}
+        queue = deque([(source, [source])])
+        while queue:
+            current, path = queue.popleft()
+            for neighbor in sorted(adjacency[current]):
+                if neighbor == target:
+                    return [*path, neighbor]
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append((neighbor, [*path, neighbor]))
+        return None
+
     def export_calibration_snapshot(self) -> dict[str, object]:
         return {
             "num_qubits": self.num_qubits,

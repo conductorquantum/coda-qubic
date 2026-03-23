@@ -87,6 +87,20 @@ class TestQubiCDeviceSpec:
         with pytest.raises(ValueError, match="No usable two-qubit calibrations"):
             QubiCDeviceSpec.from_qubitcfg(path)
 
+    def test_find_path_adjacent(self, qubic_example_qubitcfg_path: Path):
+        spec = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
+        assert spec.find_path(0, 1) == [0, 1]
+        assert spec.find_path(1, 0) == [1, 0]
+
+    def test_find_path_through_intermediate(self, qubic_example_qubitcfg_path: Path):
+        spec = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
+        assert spec.find_path(0, 2) == [0, 1, 2]
+        assert spec.find_path(2, 0) == [2, 1, 0]
+
+    def test_find_path_same_qubit(self, qubic_example_qubitcfg_path: Path):
+        spec = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
+        assert spec.find_path(1, 1) == [1]
+
     def test_excludes_edge_when_single_qubit_calibration_missing(self, tmp_path):
         path = _write_qubitcfg(
             tmp_path,

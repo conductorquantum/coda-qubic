@@ -114,17 +114,27 @@ class QubiCCircuitTranslator:
 
     def _translate_cz(self, q0: int, q1: int) -> list[dict[str, Any]]:
         edge = self._device.calibrated_cnot_for_pair(q0, q1)
-        if edge is None:
-            raise ValueError(
-                f"QubiC device has no calibrated 2Q edge for logical pair {(q0, q1)}"
-            )
+        if edge is not None:
+            target = edge.target_hardware
+            return [
+                *_decompose_h([target]),
+                {"name": "CNOT", "qubit": [edge.control_hardware, edge.target_hardware]},
+                *_decompose_h([target]),
+            ]
 
-        target = edge.target_hardware
-        return [
-            *_decompose_h([target]),
-            {"name": "CNOT", "qubit": [edge.control_hardware, edge.target_hardware]},
-            *_decompose_h([target]),
-        ]
+        # CZ(a,c) = H(c)·CNOT(a,c)·H(c) — route the inner CNOT.
+        path = self._device.find_path(q0, q1)
+        if path is not None and len(path) >= 3:
+            tgt_hw = self._device.hardware_qubit(q1)
+            return [
+                *_decompose_h([tgt_hw]),
+                *self._route_cnot(path),
+                *_decompose_h([tgt_hw]),
+            ]
+
+        raise ValueError(
+            f"QubiC device has no calibrated 2Q edge for logical pair {(q0, q1)}"
+        )
 
     def _translate_directed_cnot(
         self, control: int, target: int
@@ -154,10 +164,32 @@ class QubiCCircuitTranslator:
                 *_decompose_h([tgt_hw]),
             ]
 
+        # Route through intermediate qubits when no direct/reverse edge exists.
+        path = self._device.find_path(control, target)
+        if path is not None and len(path) >= 3:
+            return self._route_cnot(path)
+
         raise ValueError(
             "QubiC device has no calibrated CNOT edge for logical pair "
             f"{(control, target)}"
         )
+
+    def _route_cnot(self, path: list[int]) -> list[dict[str, Any]]:
+        """Decompose CNOT(path[0], path[-1]) by routing through intermediate qubits.
+
+        Uses the identity CNOT(a,c) = CNOT(a,b)·CNOT(b,c)·CNOT(a,b)·CNOT(b,c)
+        for bridge qubit *b*, applied recursively for longer paths.
+        """
+        if len(path) == 2:
+            return self._translate_directed_cnot(path[0], path[1])
+
+        head = path[0]
+        bridge = path[1]
+        tail = path[1:]
+
+        cnot_head_bridge = self._translate_directed_cnot(head, bridge)
+        cnot_tail = self._route_cnot(tail)
+        return [*cnot_head_bridge, *cnot_tail, *cnot_head_bridge, *cnot_tail]
 
 
 def _phase_instr(hw_qubits: list[str], phase: float) -> dict[str, Any]:

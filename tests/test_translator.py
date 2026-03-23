@@ -64,7 +64,8 @@ class TestQubiCTranslator:
             {"name": "read", "qubit": ["Q1"]},
         ]
 
-    def test_rejects_unsupported_two_qubit_pair(self, device: QubiCDeviceSpec):
+    def test_routes_cz_through_intermediate_qubit(self, device: QubiCDeviceSpec):
+        """CZ(0,2) on a 0—1—2 chain routes through qubit 1."""
         ir = NativeGateIR(
             num_qubits=3,
             target="superconducting_cz",
@@ -73,8 +74,11 @@ class TestQubiCTranslator:
             metadata=_metadata(),
         )
 
-        with pytest.raises(ValueError, match="no calibrated 2Q edge"):
-            QubiCCircuitTranslator(device).translate(ir)
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        cnot_ops = [op for op in translated.program if op["name"] == "CNOT"]
+        assert len(cnot_ops) == 4
+        assert translated.measurement_hardware_order == ["Q1", "Q3"]
 
     def test_rejects_mismatched_qubit_count(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
@@ -243,9 +247,8 @@ class TestQubiCTranslator:
         expected_gate_program = [*h_q1, *h_q2, cnot_hw, *h_q1, *h_q2]
         assert translated.program[: len(expected_gate_program)] == expected_gate_program
 
-    def test_rejects_cnot_with_no_edge_in_either_direction(
-        self, device: QubiCDeviceSpec
-    ):
+    def test_routes_cnot_through_intermediate_qubit(self, device: QubiCDeviceSpec):
+        """CNOT(0,2) on a 0—1—2 chain routes via CNOT(0,1)·CNOT(1,2)·CNOT(0,1)·CNOT(1,2)."""
         ir = NativeGateIR(
             num_qubits=3,
             target="superconducting_cnot",
@@ -254,8 +257,30 @@ class TestQubiCTranslator:
             metadata=_metadata(),
         )
 
-        with pytest.raises(ValueError, match="no calibrated CNOT edge"):
-            QubiCCircuitTranslator(device).translate(ir)
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        cnot_ops = [op for op in translated.program if op["name"] == "CNOT"]
+        assert len(cnot_ops) == 4
+
+    def test_routes_cnot_reverse_direction_through_intermediate(
+        self, device: QubiCDeviceSpec
+    ):
+        """CNOT(2,0) on a 0—1—2 chain with only 1→0 and 2→1 directed edges."""
+        ir = NativeGateIR(
+            num_qubits=3,
+            target="superconducting_cnot",
+            gates=[GateOp(gate="cnot", qubits=[2, 0], params=[])],
+            measurements=[0, 2],
+            metadata=_metadata(),
+        )
+
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        cnot_ops = [op for op in translated.program if op["name"] == "CNOT"]
+        assert len(cnot_ops) == 4
+        assert all(
+            op["qubit"] in [["Q2", "Q1"], ["Q3", "Q2"]] for op in cnot_ops
+        )
 
     def test_cloud_compiled_cnot_ir_with_rx_ry_rz(self, device: QubiCDeviceSpec):
         """Cloud compiler produces {rx, ry, rz, cnot} for superconducting_cnot target."""

@@ -111,10 +111,19 @@ print(result.counts)
 ### 7. Run via coda-self-service (full production path)
 
 ```bash
-sudo uv run coda start --token <your-token>
+sudo .venv/bin/coda-self-service start --token <your-token>
 ```
 
-`sudo` is required because OpenVPN needs root to create the tunnel interface.
+`sudo` is required on macOS because OpenVPN needs root to create the
+tunnel interface. The `.venv/bin/` prefix is necessary because `sudo`
+resets PATH — using the full path ensures the correct Python environment
+(with `distproc` and other QubiC dependencies) is used.
+
+Without `sudo` (e.g. on a system where VPN is managed externally):
+
+```bash
+uv run coda-self-service start --token <your-token>
+```
 
 The runtime automatically:
 - Connects to `https://coda.conductorquantum.com` (the default `CODA_WEBAPP_URL`).
@@ -126,7 +135,7 @@ To reconnect (e.g. after a restart, network drop, or reboot), just run
 without `--token`:
 
 ```bash
-sudo uv run coda start
+sudo .venv/bin/coda-self-service start
 ```
 
 No new token is needed -- the node authenticates with its stored JWT
@@ -135,7 +144,7 @@ credentials and resumes consuming jobs.
 To wipe stored credentials and start fresh (requires a new token):
 
 ```bash
-sudo uv run coda reset
+sudo .venv/bin/coda-self-service reset
 ```
 
 To override any of the auto-detected settings:
@@ -144,7 +153,7 @@ To override any of the auto-detected settings:
 sudo CODA_WEBAPP_URL=https://custom.example.com \
      CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
      CODA_DEVICE_CONFIG=./other/device.yaml \
-     uv run coda start --token <your-token>
+     .venv/bin/coda-self-service start --token <your-token>
 ```
 
 ### Things to ask the lab
@@ -234,15 +243,15 @@ If `coda-qubic` is the only backend installed and `./site/device.yaml`
 exists, all defaults are applied automatically:
 
 ```bash
-uv run coda start --token <your-token>
+sudo .venv/bin/coda-self-service start --token <your-token>
 ```
 
 To be explicit:
 
 ```bash
-CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
-CODA_DEVICE_CONFIG=./site/device.yaml \
-uv run coda start --token <your-token>
+sudo CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
+     CODA_DEVICE_CONFIG=./site/device.yaml \
+     .venv/bin/coda-self-service start --token <your-token>
 ```
 
 ## Architecture
@@ -286,7 +295,7 @@ CODA_DEVICE_CONFIG=./site/device.yaml \
 CODA_SELF_SERVICE_AUTO_VPN=false \
 CODA_VPN_REQUIRED=false \
 CODA_SELF_SERVICE_CONNECT_HEADERS='{"x-vercel-protection-bypass": "<secret>"}' \
-uv run coda start --token <your-staging-token>
+uv run coda-self-service start --token <your-staging-token>
 ```
 
 | Variable | Purpose |
