@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import math
 from dataclasses import dataclass
 from typing import Any, ClassVar
@@ -9,6 +10,8 @@ from typing import Any, ClassVar
 from self_service.server.ir import GateOp, NativeGateIR
 
 from coda_qubic.device import QubiCDeviceSpec
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -135,9 +138,22 @@ class QubiCCircuitTranslator:
                 {"name": "CNOT", "qubit": [edge.control_hardware, edge.target_hardware]}
             ]
 
-        # CNOT(a→b) = (H⊗H)·CNOT(b→a)·(H⊗H) — flip using the reverse edge.
+        # Fallback: reverse direction via (H⊗H)·CNOT(b→a)·(H⊗H).
+        # The cloud compiler should already route and orient CX gates
+        # for the device topology; hitting this path means the compiled
+        # IR contains a CX direction the compiler did not resolve.
         reverse_edge = self._device.directed_cnot(target, control)
         if reverse_edge is not None:
+            logger.warning(
+                "CNOT(%d, %d) has no native edge; falling back to "
+                "H-sandwich reversal via CNOT(%d, %d). The cloud compiler "
+                "should handle this — check that device connectivity is "
+                "being sent in heartbeats.",
+                control,
+                target,
+                target,
+                control,
+            )
             ctrl_hw = self._device.hardware_qubit(control)
             tgt_hw = self._device.hardware_qubit(target)
             return [

@@ -216,8 +216,10 @@ class TestQubiCTranslator:
         ]
         assert translated.measurement_hardware_order == ["Q3", "Q1"]
 
-    def test_reversed_cnot_uses_h_flip(self, device: QubiCDeviceSpec):
-        """CNOT(0,1) when only CNOT(1,0) exists: should H-flip via (H⊗H)·CNOT(1,0)·(H⊗H)."""
+    def test_reversed_cnot_uses_h_flip_with_warning(
+        self, device: QubiCDeviceSpec, caplog: pytest.LogCaptureFixture
+    ):
+        """CNOT(0,1) when only CNOT(1,0) exists: should H-flip and log a warning."""
         import math
 
         ir = NativeGateIR(
@@ -228,7 +230,11 @@ class TestQubiCTranslator:
             metadata=_metadata(),
         )
 
-        translated = QubiCCircuitTranslator(device).translate(ir)
+        with caplog.at_level("WARNING", logger="coda_qubic.translator"):
+            translated = QubiCCircuitTranslator(device).translate(ir)
+
+        assert any("falling back to" in msg for msg in caplog.messages)
+        assert any("CNOT(0, 1)" in msg for msg in caplog.messages)
 
         h_q1 = [
             {"name": "Y-90", "qubit": ["Q1"]},

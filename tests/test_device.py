@@ -18,6 +18,13 @@ class TestQubiCDeviceSpec:
         assert spec.logical_to_hardware == ("Q1", "Q2", "Q3")
         assert spec.logical_edges == [(0, 1), (1, 2)]
 
+    def test_directed_edges_returns_sorted_cnot_orientations(
+        self, qubic_example_qubitcfg_path: Path
+    ):
+        spec = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
+
+        assert spec.directed_edges == [(1, 0), (2, 1)]
+
     def test_preserves_directed_cnot_orientation(
         self, qubic_example_qubitcfg_path: Path
     ):
