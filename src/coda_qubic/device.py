@@ -90,6 +90,15 @@ class QubiCDeviceSpec:
         }
 
     @property
+    def directed_edges(self) -> list[tuple[int, int]]:
+        """Directed ``(control, target)`` edge list matching calibrated CNOT orientations.
+
+        Used by the cloud heartbeat so the compiler registers CX edges with
+        the exact directionality provided by the hardware calibration.
+        """
+        return sorted(self.directed_cnot_edges.keys())
+
+    @property
     def logical_edges(self) -> list[tuple[int, int]]:
         pairs = {
             (min(control, target), max(control, target))
