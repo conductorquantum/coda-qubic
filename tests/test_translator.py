@@ -233,8 +233,8 @@ class TestQubiCTranslator:
         with caplog.at_level("WARNING", logger="coda_qubic.translator"):
             translated = QubiCCircuitTranslator(device).translate(ir)
 
-        assert any("falling back to" in r.message for r in caplog.records)
-        assert any("CNOT(0, 1)" in r.message for r in caplog.records)
+        assert any("falling back to" in msg for msg in caplog.messages)
+        assert any("CNOT(0, 1)" in msg for msg in caplog.messages)
 
         h_q1 = [
             {"name": "Y-90", "qubit": ["Q1"]},
