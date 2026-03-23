@@ -158,9 +158,6 @@ sudo CODA_WEBAPP_URL=https://custom.example.com \
 | QubiC software version/branch | API compatibility |
 | Single-board or multi-board setup | Determines which RPC server is running |
 
-See [`docs/berkeley-visit-checklist.md`](docs/berkeley-visit-checklist.md) for
-the full list of open questions and failure modes.
-
 ---
 
 ## Installation
