@@ -23,25 +23,42 @@ from pathlib import Path
 NUM_QUBITS = 20
 
 EDGES: list[tuple[int, int]] = [
-    (0, 1), (1, 2), (3, 4),
-    (5, 6), (7, 8),
-    (10, 11), (11, 12),
-    (15, 16), (18, 19),
-    (0, 5), (1, 6), (2, 7), (3, 8), (4, 9),
-    (5, 10), (6, 11), (7, 12), (8, 13), (9, 14),
-    (10, 15), (11, 16), (12, 17), (13, 18), (14, 19),
+    (0, 1),
+    (1, 2),
+    (3, 4),
+    (5, 6),
+    (7, 8),
+    (10, 11),
+    (11, 12),
+    (15, 16),
+    (18, 19),
+    (0, 5),
+    (1, 6),
+    (2, 7),
+    (3, 8),
+    (4, 9),
+    (5, 10),
+    (6, 11),
+    (7, 12),
+    (8, 13),
+    (9, 14),
+    (10, 15),
+    (11, 16),
+    (12, 17),
+    (13, 18),
+    (14, 19),
 ]
 
 random.seed(42)
 
 
 def _qubit_freq(qid: int) -> float:
-    """Spread drive frequencies across 4.4–5.9 GHz."""
+    """Spread drive frequencies across 4.4-5.9 GHz."""
     return 4.4e9 + (qid / (NUM_QUBITS - 1)) * 1.5e9 + random.uniform(-20e6, 20e6)
 
 
 def _readout_freq(qid: int) -> float:
-    """Spread readout frequencies across 6.5–7.1 GHz."""
+    """Spread readout frequencies across 6.5-7.1 GHz."""
     return 6.5e9 + (qid / (NUM_QUBITS - 1)) * 0.6e9 + random.uniform(-10e6, 10e6)
 
 
@@ -109,7 +126,9 @@ def build_qubitcfg() -> dict:
                 "twidth": twidth,
                 "t0": 0.0,
                 "amp": amp,
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}],
+                "env": [
+                    {"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}
+                ],
             }
         ]
 
@@ -121,7 +140,9 @@ def build_qubitcfg() -> dict:
                 "twidth": twidth,
                 "t0": 0.0,
                 "amp": round(random.uniform(0.10, 0.75), 6),
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}],
+                "env": [
+                    {"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}
+                ],
             }
         ]
 
@@ -133,7 +154,9 @@ def build_qubitcfg() -> dict:
                 "twidth": 1e-6,
                 "t0": 0.0,
                 "amp": amp,
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}],
+                "env": [
+                    {"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}
+                ],
             }
         ]
 
@@ -145,7 +168,9 @@ def build_qubitcfg() -> dict:
                 "twidth": 1e-6,
                 "t0": 0.0,
                 "amp": round(random.uniform(0.10, 0.75), 6),
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}],
+                "env": [
+                    {"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}
+                ],
             }
         ]
 
@@ -162,7 +187,12 @@ def build_qubitcfg() -> dict:
                 "twidth": read_twidth,
                 "t0": 0.0,
                 "amp": read_amp,
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": ramp, "twidth": read_twidth}}],
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {"ramp_fraction": ramp, "twidth": read_twidth},
+                    }
+                ],
             },
             {
                 "freq": f"{label}.readfreq",
@@ -171,7 +201,16 @@ def build_qubitcfg() -> dict:
                 "twidth": read_twidth,
                 "t0": 6e-7,
                 "amp": 1.0,
-                "env": [{"env_func": "square", "paradict": {"phase": 0.0, "amplitude": 1.0, "twidth": read_twidth}}],
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": read_twidth,
+                        },
+                    }
+                ],
             },
         ]
 
@@ -205,7 +244,12 @@ def build_qubitcfg() -> dict:
                 "twidth": cr_tw,
                 "t0": 0.0,
                 "amp": cr_a,
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25, "ramp_length": 3.2e-8}}],
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {"ramp_fraction": 0.25, "ramp_length": 3.2e-8},
+                    }
+                ],
             }
         ]
 
@@ -215,8 +259,16 @@ def build_qubitcfg() -> dict:
         gates[cnot_name] = [
             {"gate": "virtualz", "freq": f"{tgt_label}.freq", "phase": vz_target_phase},
             {"gate": cr_name},
-            {"gate": "virtualz", "freq": f"{tgt_label}.freq", "phase": -vz_target_phase},
-            {"gate": "virtualz", "freq": f"{ctrl_label}.freq", "phase": vz_control_phase},
+            {
+                "gate": "virtualz",
+                "freq": f"{tgt_label}.freq",
+                "phase": -vz_target_phase,
+            },
+            {
+                "gate": "virtualz",
+                "freq": f"{ctrl_label}.freq",
+                "phase": vz_control_phase,
+            },
             {
                 "freq": f"{tgt_label}.freq",
                 "phase": 0,
@@ -224,7 +276,9 @@ def build_qubitcfg() -> dict:
                 "twidth": tgt_tw,
                 "t0": cr_tw,
                 "amp": tgt_a,
-                "env": [{"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}],
+                "env": [
+                    {"env_func": "cos_edge_square", "paradict": {"ramp_fraction": 0.25}}
+                ],
             },
         ]
 
@@ -313,7 +367,9 @@ def main() -> None:
         path.write_text(json.dumps(payload, indent=4) + "\n")
         print(f"Wrote {path}")
 
-    print(f"\nGenerated {NUM_QUBITS}-qubit sparse-grid example with {len(EDGES)} edges:")
+    print(
+        f"\nGenerated {NUM_QUBITS}-qubit sparse-grid example with {len(EDGES)} edges:"
+    )
     for a, b in EDGES:
         ctrl, tgt = max(a, b), min(a, b)
         print(f"  Q{ctrl} -> Q{tgt}  (CNOT)")

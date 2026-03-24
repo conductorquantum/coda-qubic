@@ -10,13 +10,11 @@ Usage::
 from __future__ import annotations
 
 import json
-import os
 import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
-
 from self_service.errors import ExecutorError
 
 from coda_qubic.config import QubiCConfig
@@ -144,7 +142,7 @@ def _load_json_gmm_manager(
             chanmap_or_chan_cfgs=channel_configs,
         )
     finally:
-        os.unlink(temp_path)
+        Path(temp_path).unlink()
 
 
 def _translate_placeholder_gmm(qubit_data: dict[str, Any]) -> dict[str, Any]:
