@@ -4,7 +4,7 @@
 
 framework: qubic
 target: superconducting_cnot
-num_qubits: 3
+num_qubits: 20
 
 # Calibration and configuration files
 calibration_path: ./qubitcfg.json

@@ -1,83 +1,104 @@
 {
     "Qubits": {
-        "Q7": {
-            "freq": 5621010772.789028,
-            "readfreq": 6837480075.507231,
-            "freq_predicted": 5707780000.0,
-            "readfreq3": 6837890849.262068,
-            "readfreq2": 6835180849.262068,
-            "readfreq00": 6837090849.262068,
-            "readfreq0": 6836520849.262068,
-            "freq_ef": 5356000000.0
-        },
-        "Q6": {
-            "freq": 5880552778.000434,
-            "readfreq": 6784240538.174344,
-            "freq_predicted": 5915564000.0,
-            "readfreq1": 6782873568.914835,
-            "freq_ef": 5615900000.0
-        },
-        "Q5": {
-            "freq": 5575283974.1750345,
-            "readfreq": 6709045462.840782,
-            "freq_predicted": 5696637000.0,
-            "readfreq0": 6708160370.806432,
-            "freq_ef": 5263900000.0
-        },
-        "Q4": {
-            "freq": 5348852719.493207,
-            "readfreq": 6711244901.279781,
-            "freq_predicted": 5507286000.0,
-            "readfreq0": 6709197299.30396,
-            "freq_ef": 5089500000.0
-        },
-        "Q3": {
-            "freq": 5114859573.056207,
-            "readfreq": 6700247117.708118,
-            "freq0": 5116843698.767973,
-            "freq_predicted": 5289320500.0,
-            "readfreq0": 6698689276.946692,
-            "readfreq1": 6698690000.0,
-            "readfreq2": 6698870000.0,
-            "readfreq3": 6698330826.352208,
-            "freq_ef": 4849300000.0
-        },
-        "Q2": {
-            "freq": 4944383311.009714,
-            "readfreq": 6658138379.131528,
-            "freq_predicted": 5030611000.0,
-            "readfreq0": 6657029587.25541,
-            "freq_ef": 4672600000.0
+        "Q0": {
+            "freq": 4405577071.938315,
+            "readfreq": 6490500215.104453,
+            "freq_ef": 4136325019.6524773
         },
         "Q1": {
-            "freq": 4675138775.442301,
-            "readfreq": 6558671869.775688,
-            "freq_predicted": 4963089500.0,
-            "readfreq0": 6557557365.594907,
-            "freq_ef": 4400700000.0
+            "freq": 4482567068.919015,
+            "readfreq": 6522214600.958056,
+            "freq_ef": 4226008402.1287036
         },
-        "Q0": {
-            "freq": 4460029188.07884,
-            "readfreq": 6554327471.963202,
-            "freq_predicted": 4504421000.0,
-            "readfreq0": 6553826000.000857,
-            "freq_ef": 4181258902.85729
+        "Q2": {
+            "freq": 4559692396.066234,
+            "readfreq": 6557566707.177656,
+            "freq_ef": 4268443798.19492
         },
-        "M1": {
-            "freq": null,
-            "readfreq": null
+        "Q3": {
+            "freq": 4625454655.747461,
+            "readfreq": 6600006724.685393,
+            "freq_ef": 4368299936.391072
         },
-        "M0": {
-            "freq": null,
-            "readfreq": null
+        "Q4": {
+            "freq": 4724978745.151963,
+            "readfreq": 6627040351.302778,
+            "freq_ef": 4406860641.673408
         },
-        "M3": {
-            "freq": null,
-            "readfreq": null
+        "Q5": {
+            "freq": 4789202243.151942,
+            "readfreq": 6651740508.647238,
+            "freq_ef": 4534333382.734281
         },
-        "M2": {
-            "freq": null,
-            "readfreq": null
+        "Q6": {
+            "freq": 4857724267.702704,
+            "readfreq": 6685033156.272728,
+            "freq_ef": 4563226356.604197
+        },
+        "Q7": {
+            "freq": 4959973485.568835,
+            "readfreq": 6712480681.770518,
+            "freq_ef": 4665525005.395041
+        },
+        "Q8": {
+            "freq": 5037178937.762585,
+            "readfreq": 6753770573.822862,
+            "freq_ef": 4739255940.193294
+        },
+        "Q9": {
+            "freq": 5098965629.532927,
+            "readfreq": 6793068720.60249,
+            "freq_ef": 4787619895.67984
+        },
+        "Q10": {
+            "freq": 5175188547.828209,
+            "readfreq": 6808582080.074721,
+            "freq_ef": 4873039319.081797
+        },
+        "Q11": {
+            "freq": 5257193882.99787,
+            "readfreq": 6857319173.182533,
+            "freq_ef": 4971527042.440517
+        },
+        "Q12": {
+            "freq": 5354587669.592484,
+            "readfreq": 6880875549.035692,
+            "freq_ef": 5077653957.7752695
+        },
+        "Q13": {
+            "freq": 5406775030.3513975,
+            "readfreq": 6914940752.176678,
+            "freq_ef": 5109055304.519537
+        },
+        "Q14": {
+            "freq": 5491589468.068524,
+            "readfreq": 6932170169.47993,
+            "freq_ef": 5191043023.776831
+        },
+        "Q15": {
+            "freq": 5599031269.10926,
+            "readfreq": 6969653106.3552885,
+            "freq_ef": 5304304804.468639
+        },
+        "Q16": {
+            "freq": 5680055257.961574,
+            "readfreq": 7013633027.782651,
+            "freq_ef": 5388129137.049357
+        },
+        "Q17": {
+            "freq": 5734405828.174002,
+            "readfreq": 7028000608.593041,
+            "freq_ef": 5422945156.229719
+        },
+        "Q18": {
+            "freq": 5831686008.751226,
+            "readfreq": 7060988881.921574,
+            "freq_ef": 5548416242.284315
+        },
+        "Q19": {
+            "freq": 5917156539.720087,
+            "readfreq": 7105105303.932716,
+            "freq_ef": 5618865805.473114
         },
         "vna": {
             "freq": null,
@@ -89,92 +110,6 @@
         }
     },
     "Gates": {
-        "M0mark": [
-            {
-                "freq": 0.0,
-                "phase": 0.0,
-                "dest": "M0.mark",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "mark",
-                        "paradict": {}
-                    }
-                ]
-            }
-        ],
-        "alignmentread": [
-            {
-                "freq": "alignment.readfreq",
-                "phase": 0.0,
-                "dest": "alignment.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.13666741317835013,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "alignment.readfreq",
-                "phase": 0.0,
-                "dest": "alignment.read",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0
-                        }
-                    }
-                ]
-            }
-        ],
-        "vnaread": [
-            {
-                "freq": "vna.readfreq",
-                "phase": 0.0,
-                "dest": "vna.rdrv",
-                "twidth": 4e-06,
-                "t0": 0.0,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "vna.readfreq",
-                "phase": 0.0,
-                "dest": "vna.read",
-                "twidth": 4e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0
-                        }
-                    }
-                ]
-            }
-        ],
         "Q0X90": [
             {
                 "freq": "Q0.freq",
@@ -182,7 +117,7 @@
                 "dest": "Q0.qdrv",
                 "twidth": 2.4e-08,
                 "t0": 0.0,
-                "amp": 0.11222212331696187,
+                "amp": 0.162792,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -198,27 +133,9 @@
                 "freq": "Q0.freq_ef",
                 "phase": 0.0,
                 "dest": "Q0.qdrv",
-                "twidth": 3.2e-08,
+                "twidth": 2.4e-08,
                 "t0": 0.0,
-                "amp": 0.38543716216611945,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q0rabi_ef": [
-            {
-                "freq": "Q0.freq_ef",
-                "phase": 0.0,
-                "dest": "Q0.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.38543716216611945,
+                "amp": 0.166622,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -236,7 +153,25 @@
                 "dest": "Q0.qdrv",
                 "twidth": 1e-06,
                 "t0": 0.0,
-                "amp": 0.21341373206314415,
+                "amp": 0.162792,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q0rabi_ef": [
+            {
+                "freq": "Q0.freq_ef",
+                "phase": 0.0,
+                "dest": "Q0.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.581434,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -254,7 +189,7 @@
                 "dest": "Q0.rdrv",
                 "twidth": 2e-06,
                 "t0": 0.0,
-                "amp": 0.01967670502549965,
+                "amp": 0.019999,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -267,7 +202,7 @@
             },
             {
                 "freq": "Q0.readfreq",
-                "phase": 1.4806632895920675,
+                "phase": 0.0,
                 "dest": "Q0.rdlo",
                 "twidth": 2e-06,
                 "t0": 6e-07,
@@ -284,845 +219,10 @@
                 ]
             }
         ],
-        "Q1X90": [
-            {
-                "freq": "Q1.freq",
-                "phase": 0.0,
-                "dest": "Q1.qdrv",
-                "twidth": 2.4e-08,
-                "t0": 0.0,
-                "amp": 0.48150320341813146,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q1X90_ef": [
-            {
-                "freq": "Q1.freq_ef",
-                "phase": 0.0,
-                "dest": "Q1.qdrv",
-                "twidth": 6.4e-08,
-                "t0": 0.0,
-                "amp": 0.5730919402696132,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q1rabi_ef": [
-            {
-                "freq": "Q1.freq_ef",
-                "phase": 0.0,
-                "dest": "Q1.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.5730919402696132,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q1rabi": [
-            {
-                "freq": "Q1.freq",
-                "phase": 0.0,
-                "dest": "Q1.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.6602392383098131,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q1read": [
-            {
-                "freq": "Q1.readfreq",
-                "phase": 0.0,
-                "dest": "Q1.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.018964980535141,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q1.readfreq",
-                "phase": 0,
-                "dest": "Q1.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2X90": [
-            {
-                "freq": "Q2.freq",
-                "phase": 0.0,
-                "dest": "Q2.qdrv",
-                "twidth": 2.4e-08,
-                "t0": 0.0,
-                "amp": 0.334704954261188,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2X90_ef": [
-            {
-                "freq": "Q2.freq_ef",
-                "phase": 0.0,
-                "dest": "Q2.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.20782212487925047,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2rabi_ef": [
-            {
-                "freq": "Q2.freq_ef",
-                "phase": 0.0,
-                "dest": "Q2.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.20782212487925047,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2rabi": [
-            {
-                "freq": "Q2.freq",
-                "phase": 0.0,
-                "dest": "Q2.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.3878848667224444,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2read": [
-            {
-                "freq": "Q2.readfreq",
-                "phase": 0.0,
-                "dest": "Q2.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.019780537935570334,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q2.readfreq",
-                "phase": 0,
-                "dest": "Q2.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q3X90": [
-            {
-                "freq": "Q3.freq",
-                "phase": 0.0,
-                "dest": "Q3.qdrv",
-                "twidth": 2.4e-08,
-                "t0": 0.0,
-                "amp": 0.1886489701284377,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q3X90_ef": [
-            {
-                "freq": "Q3.freq_ef",
-                "phase": 0.0,
-                "dest": "Q3.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.21888910561080646,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q3rabi_ef": [
-            {
-                "freq": "Q3.freq_ef",
-                "phase": 0.0,
-                "dest": "Q3.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.21888910561080646,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q3rabi": [
-            {
-                "freq": "Q3.freq",
-                "phase": 0.0,
-                "dest": "Q3.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.32479386965778895,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q3read": [
-            {
-                "freq": "Q3.readfreq",
-                "phase": 0.0,
-                "dest": "Q3.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.02146182513986619,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q3.readfreq",
-                "phase": 0,
-                "dest": "Q3.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5X90": [
-            {
-                "freq": "Q5.freq",
-                "phase": 0.0,
-                "dest": "Q5.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.12886517551854187,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5X90_ef": [
-            {
-                "freq": "Q5.freq_ef",
-                "phase": 0.0,
-                "dest": "Q5.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.2,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5rabi_ef": [
-            {
-                "freq": "Q5.freq_ef",
-                "phase": 0.0,
-                "dest": "Q5.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": NaN,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5rabi": [
-            {
-                "freq": "Q5.freq",
-                "phase": 0.0,
-                "dest": "Q5.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.12886517551854187,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5read": [
-            {
-                "freq": "Q5.readfreq",
-                "phase": 0.0,
-                "dest": "Q5.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.019547680511685244,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q5.readfreq",
-                "phase": 6.275011358862511,
-                "dest": "Q5.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0,
-                            "twidth": 2e-06
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q4X90_ef": [
-            {
-                "freq": "Q4.freq_ef",
-                "phase": 0.0,
-                "dest": "Q4.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.11107231727640815,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q4X90": [
-            {
-                "freq": "Q4.freq",
-                "phase": 0.0,
-                "dest": "Q4.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.3482919033156013,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q4rabi_ef": [
-            {
-                "freq": "Q4.freq_ef",
-                "phase": 0.0,
-                "dest": "Q4.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.11107231727640815,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q4rabi": [
-            {
-                "freq": "Q4.freq",
-                "phase": 0.0,
-                "dest": "Q4.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.2872115471046084,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q4read": [
-            {
-                "freq": "Q4.readfreq",
-                "phase": 0.0,
-                "dest": "Q4.rdrv",
-                "twidth": 4e-06,
-                "t0": 0.0,
-                "amp": 0.014217051461383377,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "twidth": 4e-06
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q4.readfreq",
-                "phase": 3.624878768638384,
-                "dest": "Q4.rdlo",
-                "twidth": 4e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0,
-                            "twidth": 4e-06
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q6X90": [
-            {
-                "freq": "Q6.freq",
-                "phase": 0.0,
-                "dest": "Q6.qdrv",
-                "twidth": 6.4e-08,
-                "t0": 0.0,
-                "amp": 0.5248129604576508,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q6X90_ef": [
-            {
-                "freq": "Q6.freq_ef",
-                "phase": 0.0,
-                "dest": "Q6.qdrv",
-                "twidth": 6.4e-08,
-                "t0": 0.0,
-                "amp": 0.7175379649564655,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q6rabi_ef": [
-            {
-                "freq": "Q6.freq_ef",
-                "phase": 0.0,
-                "dest": "Q6.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.95,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q6rabi": [
-            {
-                "freq": "Q6.freq",
-                "phase": 0.0,
-                "dest": "Q6.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.5248129604576508,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q6read": [
-            {
-                "freq": "Q6.readfreq",
-                "phase": 0.0,
-                "dest": "Q6.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.015163852248486357,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q6.readfreq",
-                "phase": 0.9312892237695153,
-                "dest": "Q6.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 1.0,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q7X90": [
-            {
-                "freq": "Q7.freq",
-                "phase": 0.0,
-                "dest": "Q7.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.3967210213328333,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q7X90_ef": [
-            {
-                "freq": "Q7.freq_ef",
-                "phase": 0.0,
-                "dest": "Q7.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 0.0,
-                "amp": 0.14959513656786946,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q7rabi_ef": [
-            {
-                "freq": "Q7.freq_ef",
-                "phase": 0.0,
-                "dest": "Q7.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.14959513656786946,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q7rabi": [
-            {
-                "freq": "Q7.freq",
-                "phase": 0.0,
-                "dest": "Q7.qdrv",
-                "twidth": 1e-06,
-                "t0": 0.0,
-                "amp": 0.3967210213328333,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q7read": [
-            {
-                "freq": "Q7.readfreq",
-                "phase": 0.0,
-                "dest": "Q7.rdrv",
-                "twidth": 2e-06,
-                "t0": 0.0,
-                "amp": 0.022861000913246016,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            },
-            {
-                "freq": "Q7.readfreq",
-                "phase": 4.256638268772688,
-                "dest": "Q7.rdlo",
-                "twidth": 2e-06,
-                "t0": 6e-07,
-                "amp": 0.0152,
-                "env": [
-                    {
-                        "env_func": "square",
-                        "paradict": {
-                            "phase": 0.0,
-                            "amplitude": 1.0
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5Q4CR": [
-            {
-                "freq": "Q4.freq",
-                "phase": 0.0,
-                "dest": "Q5.qdrv",
-                "twidth": 0.0,
-                "t0": 0.0,
-                "amp": 0.5,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "ramp_length": 3.2e-08
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q5Q4CNOT": [
-            {
-                "gate": "virtualz",
-                "freq": "Q4.freq",
-                "phase": 0.0
-            },
-            {
-                "gate": "Q5Q4CR"
-            },
-            {
-                "gate": "virtualz",
-                "freq": "Q4.freq",
-                "phase": 0.0
-            },
-            {
-                "gate": "virtualz",
-                "freq": "Q5.freq",
-                "phase": 0.0
-            },
-            {
-                "freq": "Q4.freq",
-                "phase": 0,
-                "dest": "Q4.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 2.88e-07,
-                "amp": 0.0,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
-            }
-        ],
         "Q0Z90": [
             {
                 "gate": "virtualz",
                 "freq": "Q0.freq",
-                "phase": "numpy.pi/2.0"
-            }
-        ],
-        "Q1Z90": [
-            {
-                "gate": "virtualz",
-                "freq": "Q1.freq",
-                "phase": "numpy.pi/2.0"
-            }
-        ],
-        "Q2Z90": [
-            {
-                "gate": "virtualz",
-                "freq": "Q2.freq",
-                "phase": "numpy.pi/2.0"
-            }
-        ],
-        "Q3Z90": [
-            {
-                "gate": "virtualz",
-                "freq": "Q3.freq",
                 "phase": "numpy.pi/2.0"
             }
         ],
@@ -1141,6 +241,122 @@
                 "phase": "numpy.pi/2.0"
             }
         ],
+        "Q1X90": [
+            {
+                "freq": "Q1.freq",
+                "phase": 0.0,
+                "dest": "Q1.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.32741,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1X90_ef": [
+            {
+                "freq": "Q1.freq_ef",
+                "phase": 0.0,
+                "dest": "Q1.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.117248,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1rabi": [
+            {
+                "freq": "Q1.freq",
+                "phase": 0.0,
+                "dest": "Q1.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.32741,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1rabi_ef": [
+            {
+                "freq": "Q1.freq_ef",
+                "phase": 0.0,
+                "dest": "Q1.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.229244,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1read": [
+            {
+                "freq": "Q1.readfreq",
+                "phase": 0.0,
+                "dest": "Q1.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.021149,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q1.readfreq",
+                "phase": 0.0,
+                "dest": "Q1.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
         "Q1Y-90": [
             {
                 "gate": "virtualz",
@@ -1153,6 +369,122 @@
             {
                 "gate": "virtualz",
                 "freq": "Q1.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q2X90": [
+            {
+                "freq": "Q2.freq",
+                "phase": 0.0,
+                "dest": "Q2.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.441463,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2X90_ef": [
+            {
+                "freq": "Q2.freq_ef",
+                "phase": 0.0,
+                "dest": "Q2.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.203779,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2rabi": [
+            {
+                "freq": "Q2.freq",
+                "phase": 0.0,
+                "dest": "Q2.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.441463,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2rabi_ef": [
+            {
+                "freq": "Q2.freq_ef",
+                "phase": 0.0,
+                "dest": "Q2.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.374699,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2read": [
+            {
+                "freq": "Q2.readfreq",
+                "phase": 0.0,
+                "dest": "Q2.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.017057,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q2.readfreq",
+                "phase": 0.0,
+                "dest": "Q2.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q2.freq",
                 "phase": "numpy.pi/2.0"
             }
         ],
@@ -1171,6 +503,122 @@
                 "phase": "numpy.pi/2.0"
             }
         ],
+        "Q3X90": [
+            {
+                "freq": "Q3.freq",
+                "phase": 0.0,
+                "dest": "Q3.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.143522,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q3X90_ef": [
+            {
+                "freq": "Q3.freq_ef",
+                "phase": 0.0,
+                "dest": "Q3.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.650871,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q3rabi": [
+            {
+                "freq": "Q3.freq",
+                "phase": 0.0,
+                "dest": "Q3.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.143522,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q3rabi_ef": [
+            {
+                "freq": "Q3.freq_ef",
+                "phase": 0.0,
+                "dest": "Q3.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.492422,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q3read": [
+            {
+                "freq": "Q3.readfreq",
+                "phase": 0.0,
+                "dest": "Q3.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.022878,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q3.readfreq",
+                "phase": 0.0,
+                "dest": "Q3.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q3Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q3.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
         "Q3Y-90": [
             {
                 "gate": "virtualz",
@@ -1186,33 +634,119 @@
                 "phase": "numpy.pi/2.0"
             }
         ],
-        "Q7Y-90": [
+        "Q4X90": [
             {
-                "gate": "virtualz",
-                "freq": "Q7.freq",
-                "phase": "-numpy.pi/2.0"
-            },
-            {
-                "gate": "Q7X90"
-            },
-            {
-                "gate": "virtualz",
-                "freq": "Q7.freq",
-                "phase": "numpy.pi/2.0"
+                "freq": "Q4.freq",
+                "phase": 0.0,
+                "dest": "Q4.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.13546,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
             }
         ],
-        "Q5Y-90": [
+        "Q4X90_ef": [
             {
-                "gate": "virtualz",
-                "freq": "Q5.freq",
-                "phase": "-numpy.pi/2.0"
+                "freq": "Q4.freq_ef",
+                "phase": 0.0,
+                "dest": "Q4.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.290566,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q4rabi": [
+            {
+                "freq": "Q4.freq",
+                "phase": 0.0,
+                "dest": "Q4.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.13546,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q4rabi_ef": [
+            {
+                "freq": "Q4.freq_ef",
+                "phase": 0.0,
+                "dest": "Q4.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.508616,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q4read": [
+            {
+                "freq": "Q4.readfreq",
+                "phase": 0.0,
+                "dest": "Q4.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.02374,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
             },
             {
-                "gate": "Q5X90"
-            },
+                "freq": "Q4.readfreq",
+                "phase": 0.0,
+                "dest": "Q4.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q4Z90": [
             {
                 "gate": "virtualz",
-                "freq": "Q5.freq",
+                "freq": "Q4.freq",
                 "phase": "numpy.pi/2.0"
             }
         ],
@@ -1231,51 +765,14 @@
                 "phase": "numpy.pi/2.0"
             }
         ],
-        "Q2Q1CR": [
+        "Q5X90": [
             {
-                "freq": "Q1.freq",
+                "freq": "Q5.freq",
                 "phase": 0.0,
-                "dest": "Q2.qdrv",
-                "twidth": 3e-07,
+                "dest": "Q5.qdrv",
+                "twidth": 6.4e-08,
                 "t0": 0.0,
-                "amp": 0.2996848606680771,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25,
-                            "ramp_length": 3.2e-08
-                        }
-                    }
-                ]
-            }
-        ],
-        "Q2Q1CNOT": [
-            {
-                "gate": "virtualz",
-                "freq": "Q1.freq",
-                "phase": -4.645855388119304
-            },
-            {
-                "gate": "Q2Q1CR"
-            },
-            {
-                "gate": "virtualz",
-                "freq": "Q1.freq",
-                "phase": 4.645855388119304
-            },
-            {
-                "gate": "virtualz",
-                "freq": "Q2.freq",
-                "phase": 4.21833701036719
-            },
-            {
-                "freq": "Q1.freq",
-                "phase": 0,
-                "dest": "Q1.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 3e-07,
-                "amp": 0.14244080983375557,
+                "amp": 0.202554,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -1286,59 +783,233 @@
                 ]
             }
         ],
-        "Q6Q5CR": [
+        "Q5X90_ef": [
             {
-                "freq": "Q5.freq",
+                "freq": "Q5.freq_ef",
                 "phase": 0.0,
-                "dest": "Q6.qdrv",
-                "twidth": 4e-07,
+                "dest": "Q5.qdrv",
+                "twidth": 6.4e-08,
                 "t0": 0.0,
-                "amp": 0.8496618887627715,
+                "amp": 0.288102,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
                         "paradict": {
-                            "ramp_fraction": 0.25,
-                            "ramp_length": 3.2e-08
+                            "ramp_fraction": 0.25
                         }
                     }
                 ]
             }
         ],
-        "Q6Q5CNOT": [
+        "Q5rabi": [
+            {
+                "freq": "Q5.freq",
+                "phase": 0.0,
+                "dest": "Q5.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.202554,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q5rabi_ef": [
+            {
+                "freq": "Q5.freq_ef",
+                "phase": 0.0,
+                "dest": "Q5.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.151865,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q5read": [
+            {
+                "freq": "Q5.readfreq",
+                "phase": 0.0,
+                "dest": "Q5.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.016561,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q5.readfreq",
+                "phase": 0.0,
+                "dest": "Q5.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q5Z90": [
             {
                 "gate": "virtualz",
                 "freq": "Q5.freq",
-                "phase": 0.8825714228129482
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q5Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": "-numpy.pi/2.0"
             },
             {
-                "gate": "Q6Q5CR"
+                "gate": "Q5X90"
             },
             {
                 "gate": "virtualz",
                 "freq": "Q5.freq",
-                "phase": -0.8825714228129482
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q6X90": [
+            {
+                "freq": "Q6.freq",
+                "phase": 0.0,
+                "dest": "Q6.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.173194,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6X90_ef": [
+            {
+                "freq": "Q6.freq_ef",
+                "phase": 0.0,
+                "dest": "Q6.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.330926,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6rabi": [
+            {
+                "freq": "Q6.freq",
+                "phase": 0.0,
+                "dest": "Q6.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.173194,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6rabi_ef": [
+            {
+                "freq": "Q6.freq_ef",
+                "phase": 0.0,
+                "dest": "Q6.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.535614,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6read": [
+            {
+                "freq": "Q6.readfreq",
+                "phase": 0.0,
+                "dest": "Q6.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.02172,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
             },
+            {
+                "freq": "Q6.readfreq",
+                "phase": 0.0,
+                "dest": "Q6.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6Z90": [
             {
                 "gate": "virtualz",
                 "freq": "Q6.freq",
-                "phase": -1.81297365549029
-            },
-            {
-                "freq": "Q5.freq",
-                "phase": 0,
-                "dest": "Q5.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 4e-07,
-                "amp": 0.13175975881139682,
-                "env": [
-                    {
-                        "env_func": "cos_edge_square",
-                        "paradict": {
-                            "ramp_fraction": 0.25
-                        }
-                    }
-                ]
+                "phase": "numpy.pi/2.0"
             }
         ],
         "Q6Y-90": [
@@ -1356,14 +1027,1827 @@
                 "phase": "numpy.pi/2.0"
             }
         ],
+        "Q7X90": [
+            {
+                "freq": "Q7.freq",
+                "phase": 0.0,
+                "dest": "Q7.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.428107,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7X90_ef": [
+            {
+                "freq": "Q7.freq_ef",
+                "phase": 0.0,
+                "dest": "Q7.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.206212,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7rabi": [
+            {
+                "freq": "Q7.freq",
+                "phase": 0.0,
+                "dest": "Q7.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.428107,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7rabi_ef": [
+            {
+                "freq": "Q7.freq_ef",
+                "phase": 0.0,
+                "dest": "Q7.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.346646,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7read": [
+            {
+                "freq": "Q7.readfreq",
+                "phase": 0.0,
+                "dest": "Q7.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.024885,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q7.readfreq",
+                "phase": 0.0,
+                "dest": "Q7.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q7Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q7X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q8X90": [
+            {
+                "freq": "Q8.freq",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.203072,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8X90_ef": [
+            {
+                "freq": "Q8.freq_ef",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.120865,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8rabi": [
+            {
+                "freq": "Q8.freq",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.203072,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8rabi_ef": [
+            {
+                "freq": "Q8.freq_ef",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.305044,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8read": [
+            {
+                "freq": "Q8.readfreq",
+                "phase": 0.0,
+                "dest": "Q8.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.016945,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q8.readfreq",
+                "phase": 0.0,
+                "dest": "Q8.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q8Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q8X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q9X90": [
+            {
+                "freq": "Q9.freq",
+                "phase": 0.0,
+                "dest": "Q9.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.195682,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9X90_ef": [
+            {
+                "freq": "Q9.freq_ef",
+                "phase": 0.0,
+                "dest": "Q9.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.4245,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9rabi": [
+            {
+                "freq": "Q9.freq",
+                "phase": 0.0,
+                "dest": "Q9.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.195682,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9rabi_ef": [
+            {
+                "freq": "Q9.freq_ef",
+                "phase": 0.0,
+                "dest": "Q9.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.675044,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9read": [
+            {
+                "freq": "Q9.readfreq",
+                "phase": 0.0,
+                "dest": "Q9.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.021071,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q9.readfreq",
+                "phase": 0.0,
+                "dest": "Q9.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q9Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q9X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q10X90": [
+            {
+                "freq": "Q10.freq",
+                "phase": 0.0,
+                "dest": "Q10.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.218234,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10X90_ef": [
+            {
+                "freq": "Q10.freq_ef",
+                "phase": 0.0,
+                "dest": "Q10.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.479981,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10rabi": [
+            {
+                "freq": "Q10.freq",
+                "phase": 0.0,
+                "dest": "Q10.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.218234,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10rabi_ef": [
+            {
+                "freq": "Q10.freq_ef",
+                "phase": 0.0,
+                "dest": "Q10.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.683585,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10read": [
+            {
+                "freq": "Q10.readfreq",
+                "phase": 0.0,
+                "dest": "Q10.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.018393,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q10.readfreq",
+                "phase": 0.0,
+                "dest": "Q10.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q10Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q10X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q11X90": [
+            {
+                "freq": "Q11.freq",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.440102,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11X90_ef": [
+            {
+                "freq": "Q11.freq_ef",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.659717,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11rabi": [
+            {
+                "freq": "Q11.freq",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.440102,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11rabi_ef": [
+            {
+                "freq": "Q11.freq_ef",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.199347,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11read": [
+            {
+                "freq": "Q11.readfreq",
+                "phase": 0.0,
+                "dest": "Q11.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.01576,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q11.readfreq",
+                "phase": 0.0,
+                "dest": "Q11.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q11Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q11X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q12X90": [
+            {
+                "freq": "Q12.freq",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.548255,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12X90_ef": [
+            {
+                "freq": "Q12.freq_ef",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.443924,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12rabi": [
+            {
+                "freq": "Q12.freq",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.548255,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12rabi_ef": [
+            {
+                "freq": "Q12.freq_ef",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.731201,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12read": [
+            {
+                "freq": "Q12.readfreq",
+                "phase": 0.0,
+                "dest": "Q12.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.023469,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q12.readfreq",
+                "phase": 0.0,
+                "dest": "Q12.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q12Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q12X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q13X90": [
+            {
+                "freq": "Q13.freq",
+                "phase": 0.0,
+                "dest": "Q13.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.437895,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13X90_ef": [
+            {
+                "freq": "Q13.freq_ef",
+                "phase": 0.0,
+                "dest": "Q13.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.599589,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13rabi": [
+            {
+                "freq": "Q13.freq",
+                "phase": 0.0,
+                "dest": "Q13.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.437895,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13rabi_ef": [
+            {
+                "freq": "Q13.freq_ef",
+                "phase": 0.0,
+                "dest": "Q13.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.321114,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13read": [
+            {
+                "freq": "Q13.readfreq",
+                "phase": 0.0,
+                "dest": "Q13.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.017229,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q13.readfreq",
+                "phase": 0.0,
+                "dest": "Q13.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q13Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q13X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q14X90": [
+            {
+                "freq": "Q14.freq",
+                "phase": 0.0,
+                "dest": "Q14.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.218525,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14X90_ef": [
+            {
+                "freq": "Q14.freq_ef",
+                "phase": 0.0,
+                "dest": "Q14.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.425381,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14rabi": [
+            {
+                "freq": "Q14.freq",
+                "phase": 0.0,
+                "dest": "Q14.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.218525,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14rabi_ef": [
+            {
+                "freq": "Q14.freq_ef",
+                "phase": 0.0,
+                "dest": "Q14.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.216124,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14read": [
+            {
+                "freq": "Q14.readfreq",
+                "phase": 0.0,
+                "dest": "Q14.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.024039,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q14.readfreq",
+                "phase": 0.0,
+                "dest": "Q14.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q14Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q14X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q15X90": [
+            {
+                "freq": "Q15.freq",
+                "phase": 0.0,
+                "dest": "Q15.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.18951,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15X90_ef": [
+            {
+                "freq": "Q15.freq_ef",
+                "phase": 0.0,
+                "dest": "Q15.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.343044,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15rabi": [
+            {
+                "freq": "Q15.freq",
+                "phase": 0.0,
+                "dest": "Q15.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.18951,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15rabi_ef": [
+            {
+                "freq": "Q15.freq_ef",
+                "phase": 0.0,
+                "dest": "Q15.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.205007,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15read": [
+            {
+                "freq": "Q15.readfreq",
+                "phase": 0.0,
+                "dest": "Q15.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.024488,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q15.readfreq",
+                "phase": 0.0,
+                "dest": "Q15.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q15Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q15X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q16X90": [
+            {
+                "freq": "Q16.freq",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.108765,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16X90_ef": [
+            {
+                "freq": "Q16.freq_ef",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 0.0,
+                "amp": 0.703914,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16rabi": [
+            {
+                "freq": "Q16.freq",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.108765,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16rabi_ef": [
+            {
+                "freq": "Q16.freq_ef",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.671169,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16read": [
+            {
+                "freq": "Q16.readfreq",
+                "phase": 0.0,
+                "dest": "Q16.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.023148,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q16.readfreq",
+                "phase": 0.0,
+                "dest": "Q16.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q16.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q16Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q16.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q16X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q16.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q17X90": [
+            {
+                "freq": "Q17.freq",
+                "phase": 0.0,
+                "dest": "Q17.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.138544,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17X90_ef": [
+            {
+                "freq": "Q17.freq_ef",
+                "phase": 0.0,
+                "dest": "Q17.qdrv",
+                "twidth": 2.4e-08,
+                "t0": 0.0,
+                "amp": 0.415894,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17rabi": [
+            {
+                "freq": "Q17.freq",
+                "phase": 0.0,
+                "dest": "Q17.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.138544,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17rabi_ef": [
+            {
+                "freq": "Q17.freq_ef",
+                "phase": 0.0,
+                "dest": "Q17.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.144988,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17read": [
+            {
+                "freq": "Q17.readfreq",
+                "phase": 0.0,
+                "dest": "Q17.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.022367,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q17.readfreq",
+                "phase": 0.0,
+                "dest": "Q17.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q17.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q17Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q17.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q17X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q17.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q18X90": [
+            {
+                "freq": "Q18.freq",
+                "phase": 0.0,
+                "dest": "Q18.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.174307,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18X90_ef": [
+            {
+                "freq": "Q18.freq_ef",
+                "phase": 0.0,
+                "dest": "Q18.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.442988,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18rabi": [
+            {
+                "freq": "Q18.freq",
+                "phase": 0.0,
+                "dest": "Q18.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.174307,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18rabi_ef": [
+            {
+                "freq": "Q18.freq_ef",
+                "phase": 0.0,
+                "dest": "Q18.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.494286,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18read": [
+            {
+                "freq": "Q18.readfreq",
+                "phase": 0.0,
+                "dest": "Q18.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.024608,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q18.readfreq",
+                "phase": 0.0,
+                "dest": "Q18.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q18Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q18X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q19X90": [
+            {
+                "freq": "Q19.freq",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.240272,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19X90_ef": [
+            {
+                "freq": "Q19.freq_ef",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 0.0,
+                "amp": 0.746847,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19rabi": [
+            {
+                "freq": "Q19.freq",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.240272,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19rabi_ef": [
+            {
+                "freq": "Q19.freq_ef",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 1e-06,
+                "t0": 0.0,
+                "amp": 0.522421,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19read": [
+            {
+                "freq": "Q19.readfreq",
+                "phase": 0.0,
+                "dest": "Q19.rdrv",
+                "twidth": 2e-06,
+                "t0": 0.0,
+                "amp": 0.018819,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            },
+            {
+                "freq": "Q19.readfreq",
+                "phase": 0.0,
+                "dest": "Q19.rdlo",
+                "twidth": 2e-06,
+                "t0": 6e-07,
+                "amp": 1.0,
+                "env": [
+                    {
+                        "env_func": "square",
+                        "paradict": {
+                            "phase": 0.0,
+                            "amplitude": 1.0,
+                            "twidth": 2e-06
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19Z90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q19.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q19Y-90": [
+            {
+                "gate": "virtualz",
+                "freq": "Q19.freq",
+                "phase": "-numpy.pi/2.0"
+            },
+            {
+                "gate": "Q19X90"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q19.freq",
+                "phase": "numpy.pi/2.0"
+            }
+        ],
+        "Q1Q0CR": [
+            {
+                "freq": "Q0.freq",
+                "phase": 0.0,
+                "dest": "Q1.qdrv",
+                "twidth": 4e-07,
+                "t0": 0.0,
+                "amp": 0.240753,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q1Q0CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q0.freq",
+                "phase": -3.009431
+            },
+            {
+                "gate": "Q1Q0CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q0.freq",
+                "phase": 3.009431
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": 0.338799
+            },
+            {
+                "freq": "Q0.freq",
+                "phase": 0,
+                "dest": "Q0.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 4e-07,
+                "amp": 0.234818,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2Q1CR": [
+            {
+                "freq": "Q1.freq",
+                "phase": 0.0,
+                "dest": "Q2.qdrv",
+                "twidth": 3e-07,
+                "t0": 0.0,
+                "amp": 0.155393,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q2Q1CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": -1.703109
+            },
+            {
+                "gate": "Q2Q1CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": 1.703109
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q2.freq",
+                "phase": 2.547329
+            },
+            {
+                "freq": "Q1.freq",
+                "phase": 0,
+                "dest": "Q1.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3e-07,
+                "amp": 0.524705,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
         "Q4Q3CR": [
             {
                 "freq": "Q3.freq",
                 "phase": 0.0,
                 "dest": "Q4.qdrv",
-                "twidth": 0.0,
+                "twidth": 3.5e-07,
                 "t0": 0.0,
-                "amp": 0.5,
+                "amp": 0.203143,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -1379,7 +2863,7 @@
             {
                 "gate": "virtualz",
                 "freq": "Q3.freq",
-                "phase": 0.0
+                "phase": -1.795503
             },
             {
                 "gate": "Q4Q3CR"
@@ -1387,20 +2871,20 @@
             {
                 "gate": "virtualz",
                 "freq": "Q3.freq",
-                "phase": 0.0
+                "phase": 1.795503
             },
             {
                 "gate": "virtualz",
                 "freq": "Q4.freq",
-                "phase": 0.0
+                "phase": -2.310253
             },
             {
                 "freq": "Q3.freq",
                 "phase": 0,
                 "dest": "Q3.qdrv",
-                "twidth": 3.2e-08,
-                "t0": 2.88e-07,
-                "amp": 0.0,
+                "twidth": 6.4e-08,
+                "t0": 3.5e-07,
+                "amp": 0.242803,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -1411,14 +2895,14 @@
                 ]
             }
         ],
-        "Q3Q2CR": [
+        "Q6Q5CR": [
             {
-                "freq": "Q2.freq",
+                "freq": "Q5.freq",
                 "phase": 0.0,
-                "dest": "Q3.qdrv",
+                "dest": "Q6.qdrv",
                 "twidth": 4e-07,
                 "t0": 0.0,
-                "amp": 0.1878849730612718,
+                "amp": 0.332248,
                 "env": [
                     {
                         "env_func": "cos_edge_square",
@@ -1430,32 +2914,1132 @@
                 ]
             }
         ],
-        "Q3Q2CNOT": [
+        "Q6Q5CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": -1.945212
+            },
+            {
+                "gate": "Q6Q5CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": 1.945212
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q6.freq",
+                "phase": -2.532558
+            },
+            {
+                "freq": "Q5.freq",
+                "phase": 0,
+                "dest": "Q5.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 4e-07,
+                "amp": 0.383784,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8Q7CR": [
+            {
+                "freq": "Q7.freq",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 4e-07,
+                "t0": 0.0,
+                "amp": 0.415723,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8Q7CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": 1.089282
+            },
+            {
+                "gate": "Q8Q7CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": -1.089282
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": 3.0421
+            },
+            {
+                "freq": "Q7.freq",
+                "phase": 0,
+                "dest": "Q7.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 4e-07,
+                "amp": 0.346661,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11Q10CR": [
+            {
+                "freq": "Q10.freq",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 2.4e-07,
+                "t0": 0.0,
+                "amp": 0.19546,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11Q10CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": -1.579239
+            },
+            {
+                "gate": "Q11Q10CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": 1.579239
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": -1.946475
+            },
+            {
+                "freq": "Q10.freq",
+                "phase": 0,
+                "dest": "Q10.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 2.4e-07,
+                "amp": 0.536928,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12Q11CR": [
+            {
+                "freq": "Q11.freq",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 4e-07,
+                "t0": 0.0,
+                "amp": 0.255137,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12Q11CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": -1.572012
+            },
+            {
+                "gate": "Q12Q11CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": 1.572012
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": 2.659456
+            },
+            {
+                "freq": "Q11.freq",
+                "phase": 0,
+                "dest": "Q11.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 4e-07,
+                "amp": 0.210093,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16Q15CR": [
+            {
+                "freq": "Q15.freq",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 4e-07,
+                "t0": 0.0,
+                "amp": 0.756017,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16Q15CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": -2.823737
+            },
+            {
+                "gate": "Q16Q15CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": 2.823737
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q16.freq",
+                "phase": 3.137084
+            },
+            {
+                "freq": "Q15.freq",
+                "phase": 0,
+                "dest": "Q15.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 4e-07,
+                "amp": 0.61358,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19Q18CR": [
+            {
+                "freq": "Q18.freq",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 2.4e-07,
+                "t0": 0.0,
+                "amp": 0.876747,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19Q18CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": -2.096629
+            },
+            {
+                "gate": "Q19Q18CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": 2.096629
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q19.freq",
+                "phase": -0.090219
+            },
+            {
+                "freq": "Q18.freq",
+                "phase": 0,
+                "dest": "Q18.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 2.4e-07,
+                "amp": 0.65582,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q5Q0CR": [
+            {
+                "freq": "Q0.freq",
+                "phase": 0.0,
+                "dest": "Q5.qdrv",
+                "twidth": 3e-07,
+                "t0": 0.0,
+                "amp": 0.798488,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q5Q0CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q0.freq",
+                "phase": -0.760434
+            },
+            {
+                "gate": "Q5Q0CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q0.freq",
+                "phase": 0.760434
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": 3.049285
+            },
+            {
+                "freq": "Q0.freq",
+                "phase": 0,
+                "dest": "Q0.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3e-07,
+                "amp": 0.641466,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6Q1CR": [
+            {
+                "freq": "Q1.freq",
+                "phase": 0.0,
+                "dest": "Q6.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.844889,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q6Q1CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": -0.483758
+            },
+            {
+                "gate": "Q6Q1CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q1.freq",
+                "phase": 0.483758
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q6.freq",
+                "phase": 2.873411
+            },
+            {
+                "freq": "Q1.freq",
+                "phase": 0,
+                "dest": "Q1.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 3.5e-07,
+                "amp": 0.571078,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7Q2CR": [
+            {
+                "freq": "Q2.freq",
+                "phase": 0.0,
+                "dest": "Q7.qdrv",
+                "twidth": 4e-07,
+                "t0": 0.0,
+                "amp": 0.266098,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q7Q2CNOT": [
             {
                 "gate": "virtualz",
                 "freq": "Q2.freq",
-                "phase": -4.668087652996153
+                "phase": 0.497504
             },
             {
-                "gate": "Q3Q2CR"
+                "gate": "Q7Q2CR"
             },
             {
                 "gate": "virtualz",
                 "freq": "Q2.freq",
-                "phase": 4.668087652996153
+                "phase": -0.497504
             },
             {
                 "gate": "virtualz",
-                "freq": "Q3.freq",
-                "phase": 3.523489220073639
+                "freq": "Q7.freq",
+                "phase": 0.26512
             },
             {
                 "freq": "Q2.freq",
                 "phase": 0,
                 "dest": "Q2.qdrv",
-                "twidth": 6.4e-08,
+                "twidth": 3.2e-08,
                 "t0": 4e-07,
-                "amp": 0.6933248268297131,
+                "amp": 0.278025,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8Q3CR": [
+            {
+                "freq": "Q3.freq",
+                "phase": 0.0,
+                "dest": "Q8.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.192874,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q8Q3CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q3.freq",
+                "phase": -2.784208
+            },
+            {
+                "gate": "Q8Q3CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q3.freq",
+                "phase": 2.784208
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": 0.049188
+            },
+            {
+                "freq": "Q3.freq",
+                "phase": 0,
+                "dest": "Q3.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3.5e-07,
+                "amp": 0.450507,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9Q4CR": [
+            {
+                "freq": "Q4.freq",
+                "phase": 0.0,
+                "dest": "Q9.qdrv",
+                "twidth": 3e-07,
+                "t0": 0.0,
+                "amp": 0.201391,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q9Q4CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q4.freq",
+                "phase": -0.604596
+            },
+            {
+                "gate": "Q9Q4CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q4.freq",
+                "phase": 0.604596
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": 2.77463
+            },
+            {
+                "freq": "Q4.freq",
+                "phase": 0,
+                "dest": "Q4.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3e-07,
+                "amp": 0.140777,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10Q5CR": [
+            {
+                "freq": "Q5.freq",
+                "phase": 0.0,
+                "dest": "Q10.qdrv",
+                "twidth": 3e-07,
+                "t0": 0.0,
+                "amp": 0.584189,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q10Q5CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": -0.507525
+            },
+            {
+                "gate": "Q10Q5CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q5.freq",
+                "phase": 0.507525
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": 0.525728
+            },
+            {
+                "freq": "Q5.freq",
+                "phase": 0,
+                "dest": "Q5.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3e-07,
+                "amp": 0.123845,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11Q6CR": [
+            {
+                "freq": "Q6.freq",
+                "phase": 0.0,
+                "dest": "Q11.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.85103,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q11Q6CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q6.freq",
+                "phase": -1.641885
+            },
+            {
+                "gate": "Q11Q6CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q6.freq",
+                "phase": 1.641885
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": -0.654797
+            },
+            {
+                "freq": "Q6.freq",
+                "phase": 0,
+                "dest": "Q6.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 3.5e-07,
+                "amp": 0.222556,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12Q7CR": [
+            {
+                "freq": "Q7.freq",
+                "phase": 0.0,
+                "dest": "Q12.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.492918,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q12Q7CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": -3.083062
+            },
+            {
+                "gate": "Q12Q7CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q7.freq",
+                "phase": 3.083062
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": 0.761266
+            },
+            {
+                "freq": "Q7.freq",
+                "phase": 0,
+                "dest": "Q7.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3.5e-07,
+                "amp": 0.657411,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13Q8CR": [
+            {
+                "freq": "Q8.freq",
+                "phase": 0.0,
+                "dest": "Q13.qdrv",
+                "twidth": 2.4e-07,
+                "t0": 0.0,
+                "amp": 0.204946,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q13Q8CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": -2.309343
+            },
+            {
+                "gate": "Q13Q8CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q8.freq",
+                "phase": 2.309343
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": -0.948705
+            },
+            {
+                "freq": "Q8.freq",
+                "phase": 0,
+                "dest": "Q8.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 2.4e-07,
+                "amp": 0.227893,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14Q9CR": [
+            {
+                "freq": "Q9.freq",
+                "phase": 0.0,
+                "dest": "Q14.qdrv",
+                "twidth": 2.4e-07,
+                "t0": 0.0,
+                "amp": 0.809453,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q14Q9CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": -0.388398
+            },
+            {
+                "gate": "Q14Q9CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q9.freq",
+                "phase": 0.388398
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": 0.271546
+            },
+            {
+                "freq": "Q9.freq",
+                "phase": 0,
+                "dest": "Q9.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 2.4e-07,
+                "amp": 0.321716,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15Q10CR": [
+            {
+                "freq": "Q10.freq",
+                "phase": 0.0,
+                "dest": "Q15.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.608758,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q15Q10CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": 1.054716
+            },
+            {
+                "gate": "Q15Q10CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q10.freq",
+                "phase": -1.054716
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q15.freq",
+                "phase": 0.343076
+            },
+            {
+                "freq": "Q10.freq",
+                "phase": 0,
+                "dest": "Q10.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3.5e-07,
+                "amp": 0.69234,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16Q11CR": [
+            {
+                "freq": "Q11.freq",
+                "phase": 0.0,
+                "dest": "Q16.qdrv",
+                "twidth": 2.4e-07,
+                "t0": 0.0,
+                "amp": 0.854198,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q16Q11CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": 2.448637
+            },
+            {
+                "gate": "Q16Q11CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q11.freq",
+                "phase": -2.448637
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q16.freq",
+                "phase": 1.523149
+            },
+            {
+                "freq": "Q11.freq",
+                "phase": 0,
+                "dest": "Q11.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 2.4e-07,
+                "amp": 0.180575,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17Q12CR": [
+            {
+                "freq": "Q12.freq",
+                "phase": 0.0,
+                "dest": "Q17.qdrv",
+                "twidth": 3e-07,
+                "t0": 0.0,
+                "amp": 0.354261,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q17Q12CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": -1.862353
+            },
+            {
+                "gate": "Q17Q12CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q12.freq",
+                "phase": 1.862353
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q17.freq",
+                "phase": 0.843442
+            },
+            {
+                "freq": "Q12.freq",
+                "phase": 0,
+                "dest": "Q12.qdrv",
+                "twidth": 6.4e-08,
+                "t0": 3e-07,
+                "amp": 0.462898,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18Q13CR": [
+            {
+                "freq": "Q13.freq",
+                "phase": 0.0,
+                "dest": "Q18.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.529057,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q18Q13CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": -2.561664
+            },
+            {
+                "gate": "Q18Q13CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q13.freq",
+                "phase": 2.561664
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q18.freq",
+                "phase": -0.480188
+            },
+            {
+                "freq": "Q13.freq",
+                "phase": 0,
+                "dest": "Q13.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3.5e-07,
+                "amp": 0.250673,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19Q14CR": [
+            {
+                "freq": "Q14.freq",
+                "phase": 0.0,
+                "dest": "Q19.qdrv",
+                "twidth": 3.5e-07,
+                "t0": 0.0,
+                "amp": 0.183065,
+                "env": [
+                    {
+                        "env_func": "cos_edge_square",
+                        "paradict": {
+                            "ramp_fraction": 0.25,
+                            "ramp_length": 3.2e-08
+                        }
+                    }
+                ]
+            }
+        ],
+        "Q19Q14CNOT": [
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": 0.861509
+            },
+            {
+                "gate": "Q19Q14CR"
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q14.freq",
+                "phase": -0.861509
+            },
+            {
+                "gate": "virtualz",
+                "freq": "Q19.freq",
+                "phase": -1.495679
+            },
+            {
+                "freq": "Q14.freq",
+                "phase": 0,
+                "dest": "Q14.qdrv",
+                "twidth": 3.2e-08,
+                "t0": 3.5e-07,
+                "amp": 0.300134,
                 "env": [
                     {
                         "env_func": "cos_edge_square",

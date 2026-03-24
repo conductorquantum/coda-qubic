@@ -123,7 +123,10 @@ class TestFrameworkErrorHandling:
     """Test error paths in executor_factory / config."""
 
     def test_create_executor_with_qubic_root_option(
-        self, qubic_example_qubitcfg_path: Path, qubic_example_channel_config_path: Path
+        self,
+        qubic_example_qubitcfg_path: Path,
+        qubic_example_channel_config_path: Path,
+        qubic_example_gmm_json_path: Path,
     ):
         """Test executor creation with qubic_root option (for coverage)."""
         from coda_qubic.support import QubiCDependencies
@@ -138,6 +141,10 @@ class TestFrameworkErrorHandling:
 
         class FakeFPGAConfig:
             pass
+
+        class FakeGMMManager:
+            def __init__(self, *args, **kwargs):
+                pass
 
         class FakeJobManager:
             def __init__(self, *args, **kwargs):
@@ -162,6 +169,7 @@ class TestFrameworkErrorHandling:
             CircuitRunner=FakeCircuitRunner,
             CircuitRunnerClient=FakeCircuitRunnerClient,
             FPGAConfig=FakeFPGAConfig,
+            GMMManager=FakeGMMManager,
             JobManager=FakeJobManager,
             PLInterface=FakePLInterface,
             QChip=FakeQChip,
@@ -174,7 +182,7 @@ class TestFrameworkErrorHandling:
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
-            classifier_path="/tmp/gmm.json",
+            classifier_path=str(qubic_example_gmm_json_path),
             runner_mode="local",
             use_sim=True,
             qubic_root="/some/path/to/qubic",

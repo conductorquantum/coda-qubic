@@ -20,6 +20,7 @@ class QubiCDependencies:
     CircuitRunner: type[Any]
     CircuitRunnerClient: type[Any]
     FPGAConfig: type[Any]
+    GMMManager: type[Any]
     JobManager: type[Any]
     PLInterface: type[Any]
     QChip: type[Any]
@@ -56,6 +57,7 @@ def load_qubic_dependencies(
         from qubic.rpc_client import CircuitRunnerClient
         from qubic.run import CircuitRunner
         from qubic.sim.sim_interface import SimInterface
+        from qubic.state_disc import GMMManager
         from qubitconfig.qchip import QChip
     except ImportError as exc:
         raise RuntimeError(
@@ -81,6 +83,7 @@ def load_qubic_dependencies(
         CircuitRunner=CircuitRunner,
         CircuitRunnerClient=CircuitRunnerClient,
         FPGAConfig=FPGAConfig,
+        GMMManager=GMMManager,
         JobManager=JobManager,
         PLInterface=_PLInterface,
         QChip=QChip,

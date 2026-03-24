@@ -9,7 +9,13 @@ Usage::
 
 from __future__ import annotations
 
+import json
+import os
+import tempfile
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
+
+import numpy as np
 
 from self_service.errors import ExecutorError
 
@@ -78,12 +84,13 @@ def build_executor(
         str(config.resolved_channel_config_path)
     )
     fpga_config = deps.FPGAConfig()
+    gmm_manager = _build_gmm_manager(config, channel_configs, deps)
     job_manager = deps.JobManager(
         fpga_config,
         channel_configs,
         circuit_runner,
         qchip=qchip,
-        gmm_manager=str(config.resolved_classifier_path),
+        gmm_manager=gmm_manager,
     )
 
     return QubiCJobRunner(
@@ -99,3 +106,68 @@ def _build_circuit_runner(config: QubiCConfig, deps: QubiCDependencies) -> Any:
     if config.use_sim:
         return deps.CircuitRunner(deps.SimInterface())
     return deps.CircuitRunner(deps.PLInterface(commit_hash=config.xsa_commit))
+
+
+def _build_gmm_manager(
+    config: QubiCConfig, channel_configs: Any, deps: QubiCDependencies
+) -> Any:
+    classifier_path = config.resolved_classifier_path
+    if Path(classifier_path).suffix.lower() == ".json":
+        return _load_json_gmm_manager(classifier_path, channel_configs, deps)
+    return str(classifier_path)
+
+
+def _load_json_gmm_manager(
+    classifier_path: Path, channel_configs: Any, deps: QubiCDependencies
+) -> Any:
+    raw = json.loads(classifier_path.read_text())
+    if "qubits" not in raw:
+        return deps.GMMManager(
+            load_json=str(classifier_path),
+            chanmap_or_chan_cfgs=channel_configs,
+        )
+
+    translated = {
+        qubit: _translate_placeholder_gmm(qubit_data)
+        for qubit, qubit_data in raw["qubits"].items()
+    }
+
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".json", delete=False, encoding="utf-8"
+    ) as handle:
+        json.dump(translated, handle)
+        temp_path = handle.name
+
+    try:
+        return deps.GMMManager(
+            load_json=temp_path,
+            chanmap_or_chan_cfgs=channel_configs,
+        )
+    finally:
+        os.unlink(temp_path)
+
+
+def _translate_placeholder_gmm(qubit_data: dict[str, Any]) -> dict[str, Any]:
+    means = np.asarray(qubit_data["means"], dtype=float)
+    covariances = np.asarray(qubit_data["covariances"], dtype=float)
+    weights = np.asarray(qubit_data["weights"], dtype=float)
+    precisions = np.linalg.inv(covariances)
+    precisions_cholesky = np.linalg.cholesky(precisions)
+    n_states = len(weights)
+
+    return {
+        "labels": list(range(n_states)),
+        "gmm": {
+            "weights_": weights.tolist(),
+            "means_": means.tolist(),
+            "covariances_": covariances.tolist(),
+            "precisions_": precisions.tolist(),
+            "precisions_cholesky_": precisions_cholesky.tolist(),
+            "covariance_type": "full",
+            "n_components": n_states,
+            "converged_": True,
+            "n_features_in_": int(means.shape[1]),
+            "lower_bound_": 0.0,
+            "n_iter_": 1,
+        },
+    }

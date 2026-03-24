@@ -186,6 +186,20 @@ def _sample_qubic_channel_config() -> dict[str, object]:
     }
 
 
+def _sample_gmm_json() -> dict[str, object]:
+    return {
+        "_comment": "Minimal GMM classifier placeholder for testing",
+        "qubits": {
+            qubit: {
+                "means": [[0.0, 0.0], [1.0, 0.0]],
+                "covariances": [[[0.1, 0.0], [0.0, 0.1]], [[0.1, 0.0], [0.0, 0.1]]],
+                "weights": [0.5, 0.5],
+            }
+            for qubit in ("Q1", "Q2", "Q3")
+        },
+    }
+
+
 @pytest.fixture(scope="session")
 def qubic_example_qubitcfg_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
     path = tmp_path_factory.mktemp("qubic-fixtures") / "qubitcfg.json"
@@ -199,4 +213,11 @@ def qubic_example_channel_config_path(
 ) -> Path:
     path = tmp_path_factory.mktemp("qubic-fixtures") / "channel_config.json"
     path.write_text(json.dumps(_sample_qubic_channel_config()))
+    return path
+
+
+@pytest.fixture(scope="session")
+def qubic_example_gmm_json_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    path = tmp_path_factory.mktemp("qubic-fixtures") / "gmm.json"
+    path.write_text(json.dumps(_sample_gmm_json()))
     return path

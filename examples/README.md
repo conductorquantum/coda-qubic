@@ -6,21 +6,21 @@ This directory contains example configuration files for the coda-qubic framework
 
 ### Calibration Files
 
-- **qubitcfg.json**: QubiC calibration file derived from LBNL hardware
+- **qubitcfg.json**: QubiC calibration file with a 20-qubit sparse-grid topology
   - Contains qubit frequencies, gate calibrations, and two-qubit connectivity
-  - Includes 8 qubits (Q0-Q7) with CNOT gates for adjacent pairs
-  - Framework automatically derives largest connected component (4 qubits: Q0-Q3)
-  - Readout LO phases (`rdlo`) for Q1-Q3 are set to 0 so the generic GMM
-    classifier below produces correct discrimination. On real hardware these
-    phases are non-zero and the classifier must be calibrated to match.
+  - Includes 20 qubits (Q0-Q19) arranged in a 4x5 grid with a few missing couplers
+  - All 20 qubits form a single connected component (no subset selection needed)
+  - Readout LO phases (`rdlo`) are set to 0 so the generic GMM classifier
+    below produces correct discrimination. On real hardware these phases are
+    non-zero and the classifier must be calibrated to match.
 
 - **channel_config.json**: FPGA channel configuration
-  - Maps logical channels to physical FPGA cores
+  - Maps logical channels to physical FPGA cores for all 20 qubits
   - Defines memory locations for envelopes, frequencies, and accumulators
   - Required for QubiC hardware compilation
 
 - **gmm_classifier.json**: Gaussian Mixture Model classifier (placeholder)
-  - Used for single-shot readout discrimination
+  - Used for single-shot readout discrimination for all 20 qubits
   - Assumes readout IQ clouds align with the I-axis (rdlo phase = 0).
     On real hardware, replace with per-qubit calibrated parameters.
 
@@ -35,7 +35,7 @@ Connects to a remote QubiC RPC server:
 ```yaml
 framework: qubic
 target: superconducting_cnot
-num_qubits: 3
+num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier.json
@@ -53,7 +53,7 @@ Uses QubiC's built-in simulator:
 ```yaml
 framework: qubic
 target: superconducting_cnot
-num_qubits: 3
+num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier.json
@@ -73,7 +73,7 @@ Executes directly on QubiC FPGA hardware:
 ```yaml
 framework: qubic
 target: superconducting_cnot
-num_qubits: 3
+num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier.json
@@ -98,15 +98,15 @@ config = QubiCConfig.from_yaml("examples/device_sim.yaml")
 # Create executor
 executor = build_executor(config)
 
-# Define a simple circuit
+# Define a simple circuit on the sparse grid
 ir = NativeGateIR(
-    num_qubits=3,
+    num_qubits=20,
     target="superconducting_cnot",
     gates=[
         GateOp(gate="x90", qubits=[0], params=[]),
         GateOp(gate="cnot", qubits=[1, 0], params=[]),
     ],
-    measurements=[0, 1, 2],
+    measurements=[0, 1],
     metadata=IRMetadata(
         source_hash="example",
         compiled_at="2026-03-16T00:00:00Z",
@@ -131,21 +131,39 @@ uv run coda start --token <your-token>
 
 ## Device Topology
 
-The example `qubitcfg.json` defines an 8-qubit system (Q0-Q7), but the framework automatically selects the largest connected component with calibrated CNOT gates.
-
-From the real hardware calibration, the largest connected component is:
+The example `qubitcfg.json` defines a 20-qubit system (Q0-Q19) arranged in a
+simple 4x5 grid with a few missing horizontal edges. All 20 qubits form a single connected component with
+24 directed CNOT edges:
 
 ```
-Q1 -- Q2 -- Q3
+Q0 --- Q1 --- Q2     Q3 --- Q4
+|      |      |      |      |
+Q5 --- Q6     Q7 --- Q8     Q9
+|      |      |      |      |
+Q10 -- Q11 -- Q12    Q13    Q14
+|      |      |      |      |
+Q15 -- Q16    Q17    Q18 -- Q19
 ```
 
-This maps to logical qubits 0, 1, 2 respectively.
+Most qubits have 2-3 neighbours, with the interior grid qubits reaching degree 4 where horizontal and vertical couplers both exist.
+Logical qubit indices map directly to hardware labels: logical 0 = Q0, logical 1 = Q1, etc.
 
-**Available directed CNOTs**:
-- Control Q2 → Target Q1 (logical: 1 → 0)
-- Control Q3 → Target Q2 (logical: 2 → 1)
+**Available directed CNOTs** (24 edges, higher-index qubit is control):
 
-The framework will use these gates for both `superconducting_cz` (via CZ = H-CNOT-H) and `superconducting_cnot` (native) IR targets.
+| Control → Target | Control → Target | Control → Target |
+|---|---|---|
+| Q1 → Q0 | Q10 → Q5 | Q17 → Q12 |
+| Q2 → Q1 | Q11 → Q6 | Q18 → Q13 |
+| Q4 → Q3 | Q12 → Q7 | Q19 → Q14 |
+| Q5 → Q0 | Q13 → Q8 | Q16 → Q15 |
+| Q6 → Q1 | Q14 → Q9 | Q19 → Q18 |
+| Q6 → Q5 | Q15 → Q10 | |
+| Q7 → Q2 | Q16 → Q11 | |
+| Q8 → Q3 | Q11 → Q10 | |
+| Q8 → Q7 | Q12 → Q11 | |
+| Q9 → Q4 | | |
+
+The framework uses these gates for both `superconducting_cz` (via CZ = H-CNOT-H) and `superconducting_cnot` (native) IR targets.
 
 ## Pulse Simulator Limitations
 
@@ -277,4 +295,4 @@ The `qubitcfg.json` follows QubiC's standard format:
 }
 ```
 
-See `qubitcfg.json` for a complete example with 8 qubits.
+See `qubitcfg.json` for a complete example with 20 qubits on a hex grid.

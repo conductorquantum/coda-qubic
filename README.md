@@ -49,7 +49,7 @@ relative to this YAML file, so `./qubitcfg.json` means "next to the YAML".
 
 ```yaml
 target: superconducting_cnot
-num_qubits: 3                          # ask the lab
+num_qubits: 20                         # ask the lab
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
 classifier_path: ./classifier.pkl      # omit if fitting live
@@ -63,7 +63,7 @@ rpc_port: 9095                         # QubiC default; ask to confirm
 
 ```yaml
 target: superconducting_cnot
-num_qubits: 3
+num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
 classifier_path: ./gmm_classifier_sim.pkl
@@ -96,10 +96,10 @@ config = QubiCConfig.from_yaml('site/device.yaml')
 executor = build_executor(config)
 
 ir = NativeGateIR(
-    num_qubits=3,
+    num_qubits=20,
     target='superconducting_cnot',
     gates=[GateOp(gate='x90', qubits=[0], params=[])],
-    measurements=[0, 1, 2],
+    measurements=[0, 1],
     metadata=IRMetadata(source_hash='test', compiled_at='2026-03-23T00:00:00Z'),
 )
 
@@ -190,7 +190,7 @@ Requires Python 3.12+.
 
 ## Features
 
-- **Device Derivation**: Derives device specs from `qubitcfg.json` via BFS over the calibrated connectivity graph
+- **Device Derivation**: Derives device specs from `qubitcfg.json` via BFS over the calibrated connectivity graph (20-qubit sparse-grid example included)
 - **IR Translation**: Translates `NativeGateIR` circuits into QubiC gate-level programs
 - **Multiple Backends**: RPC, local hardware (PLInterface), and simulation
 - **Executor Factory**: Exposes `coda_qubic.executor_factory:create_executor` for use with `CODA_EXECUTOR_FACTORY`

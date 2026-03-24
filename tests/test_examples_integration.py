@@ -18,17 +18,19 @@ class TestRealConfigurationFiles:
     """Test with actual example configuration files from the repo."""
 
     def test_real_qubitcfg_loads_and_derives_device(self):
-        """Verify real qubitcfg.json loads and derives correct device."""
+        """Verify real qubitcfg.json loads and derives the 20-qubit sparse-grid device."""
         qubitcfg_path = EXAMPLES_DIR / "qubitcfg.json"
         assert qubitcfg_path.exists(), "Example qubitcfg.json not found"
 
         device = QubiCDeviceSpec.from_qubitcfg(qubitcfg_path)
 
-        # The real config should derive Q1, Q2, Q3 as largest connected component
-        assert device.num_qubits == 3
-        assert device.logical_to_hardware == ("Q1", "Q2", "Q3")
-        assert device.logical_edges == [(0, 1), (1, 2)]
-        assert sorted(device.directed_cnot_edges.keys()) == [(1, 0), (2, 1)]
+        assert device.num_qubits == 20
+        assert device.logical_to_hardware == tuple(f"Q{i}" for i in range(20))
+        assert len(device.logical_edges) == 24
+        assert (0, 1) in device.logical_edges
+        assert (5, 6) in device.logical_edges
+        assert (18, 19) in device.logical_edges
+        assert len(device.directed_cnot_edges) == 24
 
     def test_real_device_configs_validate(self):
         """Verify all example device YAML files load as valid QubiCConfig."""
@@ -50,18 +52,17 @@ class TestRealConfigurationFiles:
         qubitcfg_path = EXAMPLES_DIR / "qubitcfg.json"
         device = QubiCDeviceSpec.from_qubitcfg(qubitcfg_path)
 
-        # Create a circuit using all 3 qubits
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=20,
             target="superconducting_cnot",
             gates=[
                 GateOp(gate="x90", qubits=[0], params=[]),
-                GateOp(gate="y_minus_90", qubits=[1], params=[]),
-                GateOp(gate="virtual_z", qubits=[2], params=[1.5708]),
+                GateOp(gate="y_minus_90", qubits=[5], params=[]),
+                GateOp(gate="virtual_z", qubits=[10], params=[1.5708]),
                 GateOp(gate="cnot", qubits=[1, 0], params=[]),
-                GateOp(gate="cnot", qubits=[2, 1], params=[]),
+                GateOp(gate="cnot", qubits=[6, 5], params=[]),
             ],
-            measurements=[0, 1, 2],
+            measurements=[0, 5, 10],
             metadata=IRMetadata(
                 source_hash="test",
                 compiled_at="2026-03-16T00:00:00Z",
@@ -71,20 +72,18 @@ class TestRealConfigurationFiles:
         translator = QubiCCircuitTranslator(device)
         translated = translator.translate(ir)
 
-        # Verify translation
         assert len(translated.program) == 8  # 5 gates + 3 measurements
-        assert translated.measurement_hardware_order == ["Q1", "Q2", "Q3"]
+        assert translated.measurement_hardware_order == ["Q0", "Q5", "Q10"]
 
-        # Check specific instructions
-        assert translated.program[0] == {"name": "X90", "qubit": ["Q1"]}
-        assert translated.program[1] == {"name": "Y-90", "qubit": ["Q2"]}
+        assert translated.program[0] == {"name": "X90", "qubit": ["Q0"]}
+        assert translated.program[1] == {"name": "Y-90", "qubit": ["Q5"]}
         assert translated.program[2] == {
             "name": "virtual_z",
             "phase": 1.5708,
-            "qubit": ["Q3"],
+            "qubit": ["Q10"],
         }
-        assert translated.program[3] == {"name": "CNOT", "qubit": ["Q2", "Q1"]}
-        assert translated.program[4] == {"name": "CNOT", "qubit": ["Q3", "Q2"]}
+        assert translated.program[3] == {"name": "CNOT", "qubit": ["Q1", "Q0"]}
+        assert translated.program[4] == {"name": "CNOT", "qubit": ["Q6", "Q5"]}
 
     def test_cz_circuit_with_real_calibration(self):
         """Test CZ circuit translation with real device."""
@@ -92,7 +91,7 @@ class TestRealConfigurationFiles:
         device = QubiCDeviceSpec.from_qubitcfg(qubitcfg_path)
 
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=20,
             target="superconducting_cz",
             gates=[
                 GateOp(gate="rx", qubits=[0], params=[1.5708]),
@@ -108,9 +107,7 @@ class TestRealConfigurationFiles:
         translator = QubiCCircuitTranslator(device)
         translated = translator.translate(ir)
 
-        # CZ should be lowered to H-CNOT-H
-        assert {"name": "CNOT", "qubit": ["Q2", "Q1"]} in translated.program
-        # Should have Y-90 gates for Hadamards
+        assert {"name": "CNOT", "qubit": ["Q1", "Q0"]} in translated.program
         y90_instructions = [
             instr for instr in translated.program if instr.get("name") == "Y-90"
         ]
@@ -121,20 +118,23 @@ class TestRealConfigurationFiles:
         qubitcfg_path = EXAMPLES_DIR / "qubitcfg.json"
         device = QubiCDeviceSpec.from_qubitcfg(qubitcfg_path)
 
-        # Check Q0 (logical qubit 0, hardware Q1)
         q0 = device.qubits[0]
-        assert q0.hardware_qubit == "Q1"
-        assert 4e9 < q0.drive_frequency_hz < 6e9  # Reasonable qubit frequency
-        assert 6e9 < q0.readout_frequency_hz < 8e9  # Reasonable readout frequency
-        assert 0 < q0.x90_duration_ns < 100  # Reasonable pulse duration
-        assert 0 < q0.readout_duration_ns < 5000  # Reasonable readout duration
+        assert q0.hardware_qubit == "Q0"
+        assert 4e9 < q0.drive_frequency_hz < 6e9
+        assert 6e9 < q0.readout_frequency_hz < 8e9
+        assert 0 < q0.x90_duration_ns < 100
+        assert 0 < q0.readout_duration_ns < 5000
 
-        # Check directed CNOT calibration
         cnot = device.directed_cnot_edges[(1, 0)]
-        assert cnot.control_hardware == "Q2"
-        assert cnot.target_hardware == "Q1"
-        assert 0 < cnot.cr_duration_ns < 1000  # Reasonable CR pulse duration
-        assert 0 < cnot.target_pulse_duration_ns < 200  # Reasonable target pulse
+        assert cnot.control_hardware == "Q1"
+        assert cnot.target_hardware == "Q0"
+        assert 0 < cnot.cr_duration_ns < 1000
+        assert 0 < cnot.target_pulse_duration_ns < 200
+
+        for qid in range(20):
+            q = device.qubits[qid]
+            assert 4e9 < q.drive_frequency_hz < 6e9
+            assert 6e9 < q.readout_frequency_hz < 8e9
 
     def test_framework_methods_with_real_config(self):
         """Verify framework implementation with real config."""

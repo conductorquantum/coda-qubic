@@ -27,6 +27,19 @@ class FakeFPGAConfig:
     pass
 
 
+class FakeGMMManager:
+    def __init__(
+        self,
+        *,
+        load_file: str | None = None,
+        load_json: str | None = None,
+        chanmap_or_chan_cfgs: Any = None,
+    ) -> None:
+        self.load_file = load_file
+        self.load_json = load_json
+        self.chanmap_or_chan_cfgs = chanmap_or_chan_cfgs
+
+
 class FakeQChip:
     def __init__(self, path: str) -> None:
         self.path = path
@@ -65,6 +78,7 @@ FAKE_DEPS = QubiCDependencies(
     CircuitRunner=FakeCircuitRunner,
     CircuitRunnerClient=FakeCircuitRunnerClient,
     FPGAConfig=FakeFPGAConfig,
+    GMMManager=FakeGMMManager,
     JobManager=FakeJobManager,
     PLInterface=FakePLInterface,
     QChip=FakeQChip,
@@ -192,13 +206,14 @@ class TestBuildExecutor:
         self,
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
+        qubic_example_gmm_json_path: Path,
     ):
         config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
-            classifier_path="/tmp/gmm.json",
+            classifier_path=str(qubic_example_gmm_json_path),
             rpc_host="qubic.local",
             rpc_port=9100,
             runner_mode="rpc",
@@ -212,20 +227,23 @@ class TestBuildExecutor:
         assert executor._job_manager.channel_configs == {
             "loaded_from": str(qubic_example_channel_config_path)
         }
-        assert executor._job_manager.gmm_manager == "/tmp/gmm.json"
+        assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
+        assert executor._job_manager.gmm_manager.load_json is not None
+        assert executor._job_manager.gmm_manager.load_json.endswith(".json")
         assert executor._job_manager.qchip.path == str(qubic_example_qubitcfg_path)
 
     def test_creates_local_sim_executor(
         self,
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
+        qubic_example_gmm_json_path: Path,
     ):
         config = QubiCConfig(
             target="superconducting_cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
-            classifier_path="/tmp/gmm.json",
+            classifier_path=str(qubic_example_gmm_json_path),
             runner_mode="local",
             use_sim=True,
         )
@@ -236,8 +254,35 @@ class TestBuildExecutor:
         assert isinstance(
             executor._job_manager.circuit_runner.interface, FakeSimInterface
         )
+        assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
+        assert executor._job_manager.gmm_manager.load_json is not None
+        assert executor._job_manager.gmm_manager.load_json.endswith(".json")
 
     def test_creates_local_pl_executor(
+        self,
+        qubic_example_qubitcfg_path: Path,
+        qubic_example_channel_config_path: Path,
+        qubic_example_gmm_json_path: Path,
+    ):
+        config = QubiCConfig(
+            target="superconducting_cnot",
+            num_qubits=3,
+            calibration_path=str(qubic_example_qubitcfg_path),
+            channel_config_path=str(qubic_example_channel_config_path),
+            classifier_path=str(qubic_example_gmm_json_path),
+            runner_mode="local",
+            xsa_commit="abc123",
+        )
+
+        executor = build_executor(config, dependencies=FAKE_DEPS)
+
+        assert isinstance(executor, QubiCJobRunner)
+        assert executor._job_manager.circuit_runner.interface.commit_hash == "abc123"
+        assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
+        assert executor._job_manager.gmm_manager.load_json is not None
+        assert executor._job_manager.gmm_manager.load_json.endswith(".json")
+
+    def test_uses_pickle_classifier_path_directly(
         self,
         qubic_example_qubitcfg_path: Path,
         qubic_example_channel_config_path: Path,
@@ -247,15 +292,14 @@ class TestBuildExecutor:
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
-            classifier_path="/tmp/gmm.json",
+            classifier_path="/tmp/gmm.pkl",
             runner_mode="local",
-            xsa_commit="abc123",
+            use_sim=True,
         )
 
         executor = build_executor(config, dependencies=FAKE_DEPS)
 
-        assert isinstance(executor, QubiCJobRunner)
-        assert executor._job_manager.circuit_runner.interface.commit_hash == "abc123"
+        assert executor._job_manager.gmm_manager == "/tmp/gmm.pkl"
 
     def test_rejects_num_qubit_mismatch(
         self,
