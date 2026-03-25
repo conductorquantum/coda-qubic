@@ -141,6 +141,18 @@ class TestQubiCJobRunner:
             "qubit": ["Q2", "Q1"],
         }
 
+    def test_run_rejects_target_mismatch(self, qubic_example_qubitcfg_path: Path):
+        device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
+        job_manager = FakeJobManager()
+        runner = QubiCJobRunner(
+            job_manager=job_manager,
+            device=device,
+            native_gate_set="cnot",
+        )
+
+        with pytest.raises(Exception, match="QubiC target mismatch"):
+            asyncio.run(runner.run(_ir(), 9))
+
     def test_normalize_counts_handles_three_qubit_permutation(self):
         translated = type(
             "Translated",

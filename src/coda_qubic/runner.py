@@ -47,6 +47,11 @@ class QubiCJobRunner:
 
     def _execute(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
         started = time.monotonic()
+        if ir.target != self._native_gate_set:
+            raise ExecutorError(
+                "QubiC target mismatch: "
+                f"executor configured for '{self._native_gate_set}' IR but received '{ir.target}'"
+            )
         try:
             translated = self._translator.translate(ir)
         except Exception as exc:
