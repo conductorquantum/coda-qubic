@@ -34,8 +34,7 @@ class QubiCCircuitTranslator:
     def translate(self, ir: NativeGateIR) -> TranslatedQubiCCircuit:
         if ir.target not in self._SUPPORTED_TARGETS:
             raise ValueError(
-                "QubiC translator only supports cz and "
-                f"cnot IR, got {ir.target}"
+                f"QubiC translator only supports cz and cnot IR, got {ir.target}"
             )
         if ir.num_qubits > self._device.num_qubits:
             raise ValueError(
@@ -67,7 +66,9 @@ class QubiCCircuitTranslator:
 
         for qubit in sorted(referenced_qubits):
             if qubit < 0:
-                raise ValueError(f"IR references invalid negative logical qubit {qubit}")
+                raise ValueError(
+                    f"IR references invalid negative logical qubit {qubit}"
+                )
             if qubit >= ir.num_qubits:
                 raise ValueError(
                     f"IR references logical qubit {qubit} outside declared width {ir.num_qubits}"

@@ -308,7 +308,7 @@ class TestQubiCTranslator:
     def test_rejects_unsupported_target(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="trapped_ion",
+            target="iswap",
             gates=[],
             measurements=[0],
             metadata=_metadata(),

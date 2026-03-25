@@ -129,7 +129,7 @@ class TestQubiCConfig:
     def test_unsupported_target_raises(self, qubic_example_qubitcfg_path: Path):
         with pytest.raises(ValueError):
             QubiCConfig(
-                target="trapped_ion",
+                target="iswap",
                 num_qubits=3,
                 calibration_path=str(qubic_example_qubitcfg_path),
                 channel_config_path="/tmp/channel_config.json",

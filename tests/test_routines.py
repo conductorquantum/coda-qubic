@@ -86,9 +86,7 @@ def hardware_runner() -> Any:
 class TestUniversalGateSet:
     """Assert that our IR gate set is a subset of the calibrated QubiC gates."""
 
-    def test_cnot_gates_have_calibrations(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_cnot_gates_have_calibrations(self, device: QubiCDeviceSpec) -> None:
         ir_gates = LEGAL_GATES["cnot"]
 
         if "x90" in ir_gates:
@@ -116,9 +114,7 @@ class TestUniversalGateSet:
                 f"Zero readout amplitude on {q.hardware_qubit}"
             )
 
-    def test_cz_decompositions_have_calibrations(
-        self, device: QubiCDeviceSpec
-    ) -> None:
+    def test_cz_decompositions_have_calibrations(self, device: QubiCDeviceSpec) -> None:
         ir_gates = LEGAL_GATES["cz"]
 
         if any(g in ir_gates for g in ("rx", "ry", "cz")):
@@ -331,9 +327,7 @@ class TestBellStateSuperposition:
     ) -> None:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
-        ir = bell_state_circuit(
-            ctrl, tgt, device.num_qubits, target="cnot"
-        )
+        ir = bell_state_circuit(ctrl, tgt, device.num_qubits, target="cnot")
 
         result = await hardware_runner.run(ir, shots=1000)
         total = result.shots_completed

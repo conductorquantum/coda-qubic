@@ -32,7 +32,7 @@ class TestRunnerErrorHandling:
         # Create IR with unsupported target
         ir = NativeGateIR(
             num_qubits=3,
-            target="trapped_ion",  # Unsupported target
+            target="iswap",  # Unsupported for QubiC translator
             gates=[],
             measurements=[0],
             metadata=IRMetadata(source_hash="test", compiled_at="2026-03-16T00:00:00Z"),
