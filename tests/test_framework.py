@@ -97,14 +97,14 @@ class TestQubiCFramework:
 
     def test_supported_targets(self):
         targets = QubiCFramework().supported_targets
-        assert "superconducting_cz" in targets
-        assert "superconducting_cnot" in targets
+        assert "cz" in targets
+        assert "cnot" in targets
 
 
 class TestQubiCConfig:
     def test_valid_rpc_config(self, qubic_example_qubitcfg_path: Path):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path="/tmp/channel_config.json",
@@ -112,13 +112,13 @@ class TestQubiCConfig:
             rpc_host="qubic.local",
             runner_mode="rpc",
         )
-        assert config.target == "superconducting_cnot"
+        assert config.target == "cnot"
         assert config.rpc_host == "qubic.local"
 
     def test_missing_rpc_host_raises(self, qubic_example_qubitcfg_path: Path):
         with pytest.raises(ValueError, match="rpc_host is required"):
             QubiCConfig(
-                target="superconducting_cnot",
+                target="cnot",
                 num_qubits=3,
                 calibration_path=str(qubic_example_qubitcfg_path),
                 channel_config_path="/tmp/channel_config.json",
@@ -140,7 +140,7 @@ class TestQubiCConfig:
     def test_unknown_runner_mode_raises(self, qubic_example_qubitcfg_path: Path):
         with pytest.raises(ValueError):
             QubiCConfig(
-                target="superconducting_cnot",
+                target="cnot",
                 num_qubits=3,
                 calibration_path=str(qubic_example_qubitcfg_path),
                 channel_config_path="/tmp/channel_config.json",
@@ -153,7 +153,7 @@ class TestQubiCConfig:
     ):
         with pytest.raises(ValueError, match="xsa_commit is required"):
             QubiCConfig(
-                target="superconducting_cnot",
+                target="cnot",
                 num_qubits=3,
                 calibration_path=str(qubic_example_qubitcfg_path),
                 channel_config_path="/tmp/channel_config.json",
@@ -163,7 +163,7 @@ class TestQubiCConfig:
 
     def test_local_mode_with_sim_skips_xsa(self, qubic_example_qubitcfg_path: Path):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path="/tmp/channel_config.json",
@@ -177,7 +177,7 @@ class TestQubiCConfig:
         yaml_file = tmp_path / "device.yaml"
         yaml_file.write_text(
             "framework: qubic\n"
-            "target: superconducting_cnot\n"
+            "target: cnot\n"
             "num_qubits: 3\n"
             "calibration_path: ./qubitcfg.json\n"
             "channel_config_path: ./channel_config.json\n"
@@ -186,14 +186,14 @@ class TestQubiCConfig:
             "use_sim: true\n"
         )
         config = QubiCConfig.from_yaml(yaml_file)
-        assert config.target == "superconducting_cnot"
+        assert config.target == "cnot"
         assert config.resolved_calibration_path == tmp_path / "qubitcfg.json"
 
     def test_from_yaml_strips_framework_field(self, tmp_path: Path):
         yaml_file = tmp_path / "device.yaml"
         yaml_file.write_text(
             "framework: qubic\n"
-            "target: superconducting_cnot\n"
+            "target: cnot\n"
             "num_qubits: 3\n"
             "calibration_path: cal.json\n"
             "channel_config_path: chan.json\n"
@@ -213,7 +213,7 @@ class TestBuildExecutor:
         qubic_example_gmm_json_path: Path,
     ):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
@@ -246,7 +246,7 @@ class TestBuildExecutor:
         qubic_example_gmm_json_path: Path,
     ):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
@@ -275,7 +275,7 @@ class TestBuildExecutor:
         qubic_example_gmm_json_path: Path,
     ):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
@@ -301,7 +301,7 @@ class TestBuildExecutor:
         qubic_example_channel_config_path: Path,
     ):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),
@@ -320,7 +320,7 @@ class TestBuildExecutor:
         qubic_example_channel_config_path: Path,
     ):
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=4,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),

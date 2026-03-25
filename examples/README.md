@@ -34,7 +34,7 @@ Connects to a remote QubiC RPC server:
 
 ```yaml
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
@@ -52,7 +52,7 @@ Uses QubiC's built-in simulator:
 
 ```yaml
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
@@ -72,7 +72,7 @@ Executes directly on QubiC FPGA hardware:
 
 ```yaml
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
@@ -101,7 +101,7 @@ executor = build_executor(config)
 # Define a simple circuit on the sparse grid
 ir = NativeGateIR(
     num_qubits=20,
-    target="superconducting_cnot",
+    target="cnot",
     gates=[
         GateOp(gate="x90", qubits=[0], params=[]),
         GateOp(gate="cnot", qubits=[1, 0], params=[]),
@@ -163,7 +163,7 @@ Logical qubit indices map directly to hardware labels: logical 0 = Q0, logical 1
 | Q8 → Q7 | Q12 → Q11 | |
 | Q9 → Q4 | | |
 
-The framework uses these gates for both `superconducting_cz` (via CZ = H-CNOT-H) and `superconducting_cnot` (native) IR targets.
+The framework uses these gates for both `cz` (via CZ = H-CNOT-H) and `cnot` (native) IR targets.
 
 ## Pulse Simulator Limitations
 

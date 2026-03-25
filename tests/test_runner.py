@@ -71,7 +71,7 @@ class FakeJobManager:
 def _ir() -> NativeGateIR:
     return NativeGateIR(
         num_qubits=3,
-        target="superconducting_cz",
+        target="cz",
         gates=[GateOp(gate="cz", qubits=[0, 1], params=[])],
         measurements=[2, 0],
         metadata=IRMetadata(
@@ -84,7 +84,7 @@ def _ir() -> NativeGateIR:
 def _native_ir() -> NativeGateIR:
     return NativeGateIR(
         num_qubits=3,
-        target="superconducting_cnot",
+        target="cnot",
         gates=[GateOp(gate="cnot", qubits=[1, 0], params=[])],
         measurements=[2, 0],
         metadata=IRMetadata(
@@ -103,7 +103,7 @@ class TestQubiCJobRunner:
         runner = QubiCJobRunner(
             job_manager=job_manager,
             device=device,
-            native_gate_set="superconducting_cz",
+            native_gate_set="cz",
         )
 
         result = asyncio.run(runner.run(_ir(), 13))
@@ -129,7 +129,7 @@ class TestQubiCJobRunner:
         runner = QubiCJobRunner(
             job_manager=job_manager,
             device=device,
-            native_gate_set="superconducting_cnot",
+            native_gate_set="cnot",
         )
 
         result = asyncio.run(runner.run(_native_ir(), 9))

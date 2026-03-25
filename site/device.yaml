@@ -1,5 +1,5 @@
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json

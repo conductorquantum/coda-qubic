@@ -32,14 +32,14 @@ def _qubic_modules():
     ("target", "gates", "measurements"),
     [
         (
-            "superconducting_cz",
+            "cz",
             [GateOp(gate="rx", qubits=[0], params=[3.141592653589793 / 2])],
             [0],
         ),
-        ("superconducting_cz", [GateOp(gate="cz", qubits=[0, 1], params=[])], [0, 1]),
-        ("superconducting_cz", [GateOp(gate="cz", qubits=[1, 2], params=[])], [2, 1]),
+        ("cz", [GateOp(gate="cz", qubits=[0, 1], params=[])], [0, 1]),
+        ("cz", [GateOp(gate="cz", qubits=[1, 2], params=[])], [2, 1]),
         (
-            "superconducting_cnot",
+            "cnot",
             [
                 GateOp(gate="x90", qubits=[0], params=[]),
                 GateOp(gate="virtual_z", qubits=[1], params=[0.125]),

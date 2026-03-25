@@ -35,7 +35,7 @@ class QubiCJobRunner:
         self,
         job_manager: Any,
         device: QubiCDeviceSpec,
-        native_gate_set: str = "superconducting_cnot",
+        native_gate_set: str = "cnot",
     ) -> None:
         self._job_manager = job_manager
         self._device = device

@@ -22,7 +22,7 @@ class TestQubiCTranslator:
     def test_translates_native_ir_to_qubic_program(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[
                 GateOp(gate="rx", qubits=[0], params=[3.141592653589793 / 2]),
                 GateOp(gate="ry", qubits=[1], params=[0.3]),
@@ -67,7 +67,7 @@ class TestQubiCTranslator:
     def test_rejects_unsupported_two_qubit_pair(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[GateOp(gate="cz", qubits=[0, 2], params=[])],
             measurements=[0, 2],
             metadata=_metadata(),
@@ -79,7 +79,7 @@ class TestQubiCTranslator:
     def test_allows_ir_that_uses_subset_of_device_qubits(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=2,
-            target="superconducting_cz",
+            target="cz",
             gates=[],
             measurements=[0],
             metadata=_metadata(),
@@ -93,7 +93,7 @@ class TestQubiCTranslator:
     def test_rejects_ir_wider_than_device(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=4,
-            target="superconducting_cz",
+            target="cz",
             gates=[],
             measurements=[0],
             metadata=_metadata(),
@@ -105,7 +105,7 @@ class TestQubiCTranslator:
     def test_arbitrary_rx_uses_full_zxzxz_decomposition(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[GateOp(gate="rx", qubits=[0], params=[0.3])],
             measurements=[0],
             metadata=_metadata(),
@@ -124,7 +124,7 @@ class TestQubiCTranslator:
     def test_negative_half_pi_ry_uses_native_y_minus_90(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[GateOp(gate="ry", qubits=[1], params=[-3.141592653589793 / 2])],
             measurements=[1],
             metadata=_metadata(),
@@ -140,7 +140,7 @@ class TestQubiCTranslator:
     def test_zero_rz_and_zero_id_are_emitted_explicitly(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[
                 GateOp(gate="rz", qubits=[2], params=[0.0]),
                 GateOp(gate="id", qubits=[2], params=[0.0]),
@@ -163,14 +163,14 @@ class TestQubiCTranslator:
         translator = QubiCCircuitTranslator(device)
         ir_forward = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[GateOp(gate="cz", qubits=[0, 1], params=[])],
             measurements=[0, 1],
             metadata=_metadata(),
         )
         ir_reverse = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[GateOp(gate="cz", qubits=[1, 0], params=[])],
             measurements=[1, 0],
             metadata=_metadata(),
@@ -188,7 +188,7 @@ class TestQubiCTranslator:
     ):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cz",
+            target="cz",
             gates=[],
             measurements=[1, 0],
             metadata=_metadata(),
@@ -205,7 +205,7 @@ class TestQubiCTranslator:
     def test_translates_qubic_native_target(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[
                 GateOp(gate="x90", qubits=[0], params=[]),
                 GateOp(gate="y_minus_90", qubits=[1], params=[]),
@@ -238,7 +238,7 @@ class TestQubiCTranslator:
 
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[GateOp(gate="cnot", qubits=[0, 1], params=[])],
             measurements=[0, 1],
             metadata=_metadata(),
@@ -268,7 +268,7 @@ class TestQubiCTranslator:
     ):
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[GateOp(gate="cnot", qubits=[0, 2], params=[])],
             measurements=[0, 2],
             metadata=_metadata(),
@@ -278,12 +278,12 @@ class TestQubiCTranslator:
             QubiCCircuitTranslator(device).translate(ir)
 
     def test_cloud_compiled_cnot_ir_with_rx_ry_rz(self, device: QubiCDeviceSpec):
-        """Cloud compiler produces {rx, ry, rz, cnot} for superconducting_cnot target."""
+        """Cloud compiler produces {rx, ry, rz, cnot} for cnot target."""
         import math
 
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[
                 GateOp(gate="rx", qubits=[0], params=[math.pi / 2]),
                 GateOp(gate="ry", qubits=[1], params=[-math.pi / 2]),
@@ -316,6 +316,6 @@ class TestQubiCTranslator:
 
         with pytest.raises(
             ValueError,
-            match="only supports superconducting_cz and superconducting_cnot",
+            match="only supports cz and cnot",
         ):
             QubiCCircuitTranslator(device).translate(ir)

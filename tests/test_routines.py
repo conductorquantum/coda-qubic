@@ -86,10 +86,10 @@ def hardware_runner() -> Any:
 class TestUniversalGateSet:
     """Assert that our IR gate set is a subset of the calibrated QubiC gates."""
 
-    def test_superconducting_cnot_gates_have_calibrations(
+    def test_cnot_gates_have_calibrations(
         self, device: QubiCDeviceSpec
     ) -> None:
-        ir_gates = LEGAL_GATES["superconducting_cnot"]
+        ir_gates = LEGAL_GATES["cnot"]
 
         if "x90" in ir_gates:
             for q in device.qubits.values():
@@ -116,10 +116,10 @@ class TestUniversalGateSet:
                 f"Zero readout amplitude on {q.hardware_qubit}"
             )
 
-    def test_superconducting_cz_decompositions_have_calibrations(
+    def test_cz_decompositions_have_calibrations(
         self, device: QubiCDeviceSpec
     ) -> None:
-        ir_gates = LEGAL_GATES["superconducting_cz"]
+        ir_gates = LEGAL_GATES["cz"]
 
         if any(g in ir_gates for g in ("rx", "ry", "cz")):
             for q in device.qubits.values():
@@ -135,13 +135,13 @@ class TestUniversalGateSet:
     def test_every_ir_gate_is_translatable(self, device: QubiCDeviceSpec) -> None:
         translator = QubiCCircuitTranslator(device)
 
-        for target in ("superconducting_cz", "superconducting_cnot"):
+        for target in ("cz", "cnot"):
             for gate_name in LEGAL_GATES[target]:
                 spec = GATE_SPECS[gate_name]
                 qubits: list[int]
 
                 if spec["qubits"] == 2:
-                    if target == "superconducting_cnot":
+                    if target == "cnot":
                         directed = list(device.directed_cnot_edges.keys())
                         if not directed:
                             pytest.skip("No directed CNOT edges")
@@ -183,7 +183,7 @@ class TestGateOrdering:
         ctrl, tgt = directed[0]
 
         ir = NativeGateIR(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=device.num_qubits,
             gates=[
                 GateOp(gate="x90", qubits=[ctrl], params=[]),
@@ -223,7 +223,7 @@ class TestGateOrdering:
     def test_gate_qubit_targets_are_correct(self, device: QubiCDeviceSpec) -> None:
         translator = QubiCCircuitTranslator(device)
         ir = NativeGateIR(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=device.num_qubits,
             gates=[
                 GateOp(gate="x90", qubits=[0], params=[]),
@@ -250,7 +250,7 @@ class TestGateOrdering:
         q0, q1 = device.logical_edges[0]
 
         ir = NativeGateIR(
-            target="superconducting_cz",
+            target="cz",
             num_qubits=device.num_qubits,
             gates=[GateOp(gate="cz", qubits=[q0, q1], params=[])],
             measurements=[q0, q1],
@@ -288,7 +288,7 @@ class TestSingleGateOperation:
         self, hardware_runner: Any, device: QubiCDeviceSpec
     ) -> None:
         ir = NativeGateIR(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=device.num_qubits,
             gates=[
                 GateOp(gate="x90", qubits=[0], params=[]),
@@ -306,7 +306,7 @@ class TestSingleGateOperation:
         self, hardware_runner: Any, device: QubiCDeviceSpec
     ) -> None:
         ir = NativeGateIR(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=device.num_qubits,
             gates=[GateOp(gate="id", qubits=[0], params=[100.0])],
             measurements=[0],
@@ -332,7 +332,7 @@ class TestBellStateSuperposition:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
         ir = bell_state_circuit(
-            ctrl, tgt, device.num_qubits, target="superconducting_cnot"
+            ctrl, tgt, device.num_qubits, target="cnot"
         )
 
         result = await hardware_runner.run(ir, shots=1000)
@@ -407,7 +407,7 @@ class TestCliffordGroup:
         rng = stdlib_random.Random(42)
         seq = generate_rb_sequence_1q(5, rng=rng)
         ir = rb_ir_circuit_1q(seq, qubit=0, num_qubits=3)
-        assert ir.target == "superconducting_cnot"
+        assert ir.target == "cnot"
         assert len(ir.gates) > 0
         assert ir.measurements == [0]
 
@@ -502,13 +502,13 @@ class TestTwoQubitBenchmark:
         assert len(circuits) == 4
         for ir, expected in circuits:
             assert len(expected) == 2
-            assert ir.target == "superconducting_cnot"
+            assert ir.target == "cnot"
 
     def test_bell_state_circuit_is_valid(self, device: QubiCDeviceSpec) -> None:
         directed = list(device.directed_cnot_edges.keys())
         ctrl, tgt = directed[0]
         ir = bell_state_circuit(ctrl, tgt, device.num_qubits)
-        assert ir.target == "superconducting_cnot"
+        assert ir.target == "cnot"
         assert len(ir.gates) == 3
         assert ir.measurements == [ctrl, tgt]
 

@@ -1,7 +1,7 @@
 """Simulator integration tests for common quantum circuits.
 
 These tests compile representative circuits (GHZ-style entanglement, H⊗³,
-approximate QFT, Grover) in the ``superconducting_cnot`` native gate set and
+approximate QFT, Grover) in the ``cnot`` native gate set and
 execute them through QubiC's pulse-level simulator via ``QubiCJobRunner``.
 
 The current LBNL pulse simulator + example calibration can yield readout
@@ -124,7 +124,7 @@ class TestGHZState:
         gates = [*_h(2), *_cnot(2, 1), *_cnot(1, 0)]
         ir = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=gates,
             measurements=[0, 1, 2],
             metadata=_metadata(),
@@ -147,7 +147,7 @@ class TestUniformSuperposition:
         gates = [*_h(0), *_h(1), *_h(2)]
         ir = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=gates,
             measurements=[0, 1, 2],
             metadata=_metadata(),
@@ -176,7 +176,7 @@ class TestApproximateQFT:
 
         ir = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=[*state_prep, *qft_body],
             measurements=[0, 1, 2],
             metadata=_metadata(),
@@ -218,7 +218,7 @@ class TestGroverTwoQubit:
 
         ir = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=circuit,
             measurements=[0, 1, 2],
             metadata=_metadata(),
@@ -236,7 +236,7 @@ class TestSimulatorCircuitDifferentiation:
         translator = sim_executor._translator
         ir_ghz = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=[*_h(2), *_cnot(2, 1), *_cnot(1, 0)],
             measurements=[0, 1, 2],
             metadata=_metadata(),
@@ -255,7 +255,7 @@ class TestSimulatorCircuitDifferentiation:
         ]
         ir_grover = NativeGateIR(
             num_qubits=_device_num_qubits(sim_executor),
-            target="superconducting_cnot",
+            target="cnot",
             gates=[*_h(0), *_h(1), *oracle, *diffusion],
             measurements=[0, 1, 2],
             metadata=_metadata(),

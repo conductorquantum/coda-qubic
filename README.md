@@ -48,7 +48,7 @@ relative to this YAML file, so `./qubitcfg.json` means "next to the YAML".
 **RPC mode** (connecting to the lab's QubiC server — most common):
 
 ```yaml
-target: superconducting_cnot
+target: cnot
 num_qubits: 20                         # ask the lab
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
@@ -62,7 +62,7 @@ rpc_port: 9095                         # QubiC default; ask to confirm
 **Simulator mode** (no hardware needed — good for testing the pipeline):
 
 ```yaml
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
@@ -97,7 +97,7 @@ executor = build_executor(config)
 
 ir = NativeGateIR(
     num_qubits=20,
-    target='superconducting_cnot',
+    target='cnot',
     gates=[GateOp(gate='x90', qubits=[0], params=[])],
     measurements=[0, 1],
     metadata=IRMetadata(source_hash='test', compiled_at='2026-03-23T00:00:00Z'),
@@ -197,8 +197,8 @@ Requires Python 3.12+.
 
 ## Supported IR Targets
 
-- `superconducting_cz` — Generic CZ-based IR, lowered via ZXZXZ decomposition and H-CNOT-H CZ synthesis
-- `superconducting_cnot` — Native QubiC gates (x90, y_minus_90, virtual_z, cnot) passed through directly
+- `cz` — Generic CZ-based IR, lowered via ZXZXZ decomposition and H-CNOT-H CZ synthesis
+- `cnot` — Native QubiC gates (x90, y_minus_90, virtual_z, cnot) passed through directly
 
 ## Usage
 
@@ -302,7 +302,7 @@ deployments.
 
 ### Required Options
 
-- `target`: IR target (`superconducting_cnot` or `superconducting_cz`)
+- `target`: IR target (`cnot` or `cz`)
 - `num_qubits`: Number of qubits (must match derived device)
 - `calibration_path`: Path to QubiC `qubitcfg.json`
 - `channel_config_path`: Path to QubiC channel configuration JSON

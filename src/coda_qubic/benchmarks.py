@@ -199,7 +199,7 @@ def rb_ir_circuit_1q(
     clifford_indices: list[int],
     qubit: int,
     num_qubits: int,
-    target: str = "superconducting_cnot",
+    target: str = "cnot",
 ) -> NativeGateIR:
     """Build a ``NativeGateIR`` circuit from a sequence of 1Q Clifford indices."""
     gates: list[GateOp] = []
@@ -288,7 +288,7 @@ def cnot_truth_table_circuits(
     ctrl: int,
     tgt: int,
     num_qubits: int,
-    target: str = "superconducting_cnot",
+    target: str = "cnot",
 ) -> list[tuple[NativeGateIR, str]]:
     """Build 4 CNOT truth-table circuits.
 
@@ -343,7 +343,7 @@ def bell_state_circuit(
     ctrl: int,
     tgt: int,
     num_qubits: int,
-    target: str = "superconducting_cnot",
+    target: str = "cnot",
 ) -> NativeGateIR:
     """Build a Bell-state preparation circuit (|Φ+⟩ = (|00⟩+|11⟩)/√2).
 
