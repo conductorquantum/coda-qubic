@@ -3,7 +3,7 @@
 # This configuration uses QubiC's built-in simulator for testing without hardware.
 
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 
 # Calibration and configuration files

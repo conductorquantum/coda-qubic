@@ -4,7 +4,7 @@
 # Use this mode when QubiC is running as a remote service.
 
 framework: qubic
-target: superconducting_cnot
+target: cnot
 num_qubits: 20
 
 # Calibration and configuration files

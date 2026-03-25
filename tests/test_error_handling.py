@@ -32,7 +32,7 @@ class TestRunnerErrorHandling:
         # Create IR with unsupported target
         ir = NativeGateIR(
             num_qubits=3,
-            target="trapped_ion",  # Unsupported target
+            target="iswap",  # Unsupported for QubiC translator
             gates=[],
             measurements=[0],
             metadata=IRMetadata(source_hash="test", compiled_at="2026-03-16T00:00:00Z"),
@@ -52,7 +52,7 @@ class TestRunnerErrorHandling:
 
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[GateOp(gate="x90", qubits=[0], params=[])],
             measurements=[0],
             metadata=IRMetadata(source_hash="test", compiled_at="2026-03-16T00:00:00Z"),
@@ -75,7 +75,7 @@ class TestRunnerErrorHandling:
 
         ir = NativeGateIR(
             num_qubits=3,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[GateOp(gate="x90", qubits=[0], params=[])],
             measurements=[0],
             metadata=IRMetadata(source_hash="test", compiled_at="2026-03-16T00:00:00Z"),
@@ -178,7 +178,7 @@ class TestFrameworkErrorHandling:
         )
 
         config = QubiCConfig(
-            target="superconducting_cnot",
+            target="cnot",
             num_qubits=3,
             calibration_path=str(qubic_example_qubitcfg_path),
             channel_config_path=str(qubic_example_channel_config_path),

@@ -137,7 +137,7 @@ deployment.
 - **OpenVPN** must be on `$PATH` if VPN is required.
 - The **prod-registered QPU metadata** (`num_qubits`, `native_gate_set`)
   must be compatible with the simulator device config. The example
-  config derives a 3-qubit device (Q1–Q3) with `superconducting_cnot`.
+  config derives a 3-qubit device (Q1–Q3) with `cnot`.
 
 ## Verifying VPN Only
 

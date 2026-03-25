@@ -5,9 +5,9 @@ instructions and executes them via the QubiC stack (RPC or local).
 
 QubiC supports two IR targets:
 
-- ``superconducting_cz`` -- generic CZ-based IR, lowered via ZXZXZ
+- ``cz`` -- generic CZ-based IR, lowered via ZXZXZ
   decomposition and H-CNOT-H CZ synthesis.
-- ``superconducting_cnot`` -- native QubiC gates (x90, y_minus_90,
+- ``cnot`` -- native QubiC gates (x90, y_minus_90,
   virtual_z, cnot) passed through directly.
 """
 
@@ -20,7 +20,7 @@ from coda_qubic.support import QubiCDependencies
 
 __all__ = ["QubiCFramework"]
 
-_SUPPORTED_TARGETS = frozenset({"superconducting_cz", "superconducting_cnot"})
+_SUPPORTED_TARGETS = frozenset({"cz", "cnot"})
 
 
 class QubiCFramework:

@@ -134,7 +134,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "coda-self-service", git = "https://github.com/conductorquantum/coda-self-service.git" },
+    { name = "coda-self-service", git = "https://github.com/conductorquantum/coda-self-service.git?branch=consolidating-native-gate-target-names" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 
@@ -153,7 +153,7 @@ dev = [
 [[package]]
 name = "coda-self-service"
 version = "0.1.0"
-source = { git = "https://github.com/conductorquantum/coda-self-service.git#f68d655c838c00b66aae52af1e9fa8e0214dd5ed" }
+source = { git = "https://github.com/conductorquantum/coda-self-service.git?branch=consolidating-native-gate-target-names#2bd785f5806d70b2182bdb7c5f3449a25c3c5ffb" }
 dependencies = [
     { name = "cryptography" },
     { name = "fastapi" },

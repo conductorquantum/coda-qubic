@@ -45,7 +45,7 @@ class TestRealConfigurationFiles:
             assert config_path.exists(), f"Example {config_name} not found"
 
             config = QubiCConfig.from_yaml(str(config_path))
-            assert config.target in ("superconducting_cz", "superconducting_cnot")
+            assert config.target in ("cz", "cnot")
 
     def test_translation_with_real_calibration(self):
         """Test circuit translation using real calibration parameters."""
@@ -54,7 +54,7 @@ class TestRealConfigurationFiles:
 
         ir = NativeGateIR(
             num_qubits=20,
-            target="superconducting_cnot",
+            target="cnot",
             gates=[
                 GateOp(gate="x90", qubits=[0], params=[]),
                 GateOp(gate="y_minus_90", qubits=[5], params=[]),
@@ -92,7 +92,7 @@ class TestRealConfigurationFiles:
 
         ir = NativeGateIR(
             num_qubits=20,
-            target="superconducting_cz",
+            target="cz",
             gates=[
                 GateOp(gate="rx", qubits=[0], params=[1.5708]),
                 GateOp(gate="cz", qubits=[0, 1], params=[]),
@@ -141,5 +141,5 @@ class TestRealConfigurationFiles:
         framework = QubiCFramework()
 
         assert framework.name == "qubic"
-        assert "superconducting_cz" in framework.supported_targets
-        assert "superconducting_cnot" in framework.supported_targets
+        assert "cz" in framework.supported_targets
+        assert "cnot" in framework.supported_targets

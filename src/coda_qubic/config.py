@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field, PrivateAttr, model_validator
 
 __all__ = ["QubiCConfig", "RunnerMode"]
 
-_SUPPORTED_TARGETS = frozenset({"superconducting_cz", "superconducting_cnot"})
+_SUPPORTED_TARGETS = frozenset({"cz", "cnot"})
 
 
 class RunnerMode(StrEnum):
@@ -32,7 +32,7 @@ class QubiCConfig(BaseModel):
 
     Example YAML::
 
-        target: superconducting_cnot
+        target: cnot
         num_qubits: 3
         calibration_path: ./qubitcfg.json
         channel_config_path: ./channel_config.json
@@ -42,7 +42,7 @@ class QubiCConfig(BaseModel):
         rpc_port: 9095
     """
 
-    target: Literal["superconducting_cz", "superconducting_cnot"]
+    target: Literal["cz", "cnot"]
     num_qubits: int = Field(ge=1, le=50)
     calibration_path: str
     channel_config_path: str

@@ -24,8 +24,8 @@ class QubiCCircuitTranslator:
     """Lower NativeGateIR into a QubiC gate-level program."""
 
     _SUPPORTED_TARGETS: ClassVar[set[str]] = {
-        "superconducting_cz",
-        "superconducting_cnot",
+        "cz",
+        "cnot",
     }
 
     def __init__(self, device: QubiCDeviceSpec) -> None:
@@ -34,8 +34,7 @@ class QubiCCircuitTranslator:
     def translate(self, ir: NativeGateIR) -> TranslatedQubiCCircuit:
         if ir.target not in self._SUPPORTED_TARGETS:
             raise ValueError(
-                "QubiC translator only supports superconducting_cz and "
-                f"superconducting_cnot IR, got {ir.target}"
+                f"QubiC translator only supports cz and cnot IR, got {ir.target}"
             )
         if ir.num_qubits > self._device.num_qubits:
             raise ValueError(
@@ -67,7 +66,9 @@ class QubiCCircuitTranslator:
 
         for qubit in sorted(referenced_qubits):
             if qubit < 0:
-                raise ValueError(f"IR references invalid negative logical qubit {qubit}")
+                raise ValueError(
+                    f"IR references invalid negative logical qubit {qubit}"
+                )
             if qubit >= ir.num_qubits:
                 raise ValueError(
                     f"IR references logical qubit {qubit} outside declared width {ir.num_qubits}"
@@ -84,7 +85,7 @@ class QubiCCircuitTranslator:
             self._device.hardware_qubit(qubit) for qubit in gate_op.qubits
         ]
 
-        if target == "superconducting_cnot":
+        if target == "cnot":
             if gate_name == "x90":
                 return [{"name": "X90", "qubit": hardware_qubits}]
             if gate_name == "y_minus_90":
