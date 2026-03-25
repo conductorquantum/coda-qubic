@@ -37,10 +37,13 @@ class QubiCCircuitTranslator:
                 "QubiC translator only supports superconducting_cz and "
                 f"superconducting_cnot IR, got {ir.target}"
             )
-        if ir.num_qubits != self._device.num_qubits:
+        if ir.num_qubits > self._device.num_qubits:
             raise ValueError(
-                f"IR has {ir.num_qubits} qubits but QubiC device exposes {self._device.num_qubits}"
+                "IR requests "
+                f"{ir.num_qubits} qubits but QubiC device exposes only "
+                f"{self._device.num_qubits}"
             )
+        self._validate_ir_indices(ir)
 
         program: list[dict[str, Any]] = []
         for gate_op in ir.gates:
@@ -56,6 +59,24 @@ class QubiCCircuitTranslator:
             program=program,
             measurement_hardware_order=measurement_hardware_order,
         )
+
+    def _validate_ir_indices(self, ir: NativeGateIR) -> None:
+        referenced_qubits = set(ir.measurements)
+        for gate_op in ir.gates:
+            referenced_qubits.update(gate_op.qubits)
+
+        for qubit in sorted(referenced_qubits):
+            if qubit < 0:
+                raise ValueError(f"IR references invalid negative logical qubit {qubit}")
+            if qubit >= ir.num_qubits:
+                raise ValueError(
+                    f"IR references logical qubit {qubit} outside declared width {ir.num_qubits}"
+                )
+            if qubit >= self._device.num_qubits:
+                raise ValueError(
+                    f"IR references logical qubit {qubit} but QubiC device exposes only "
+                    f"{self._device.num_qubits} qubits"
+                )
 
     def _translate_gate(self, gate_op: GateOp, *, target: str) -> list[dict[str, Any]]:
         gate_name = gate_op.gate.value

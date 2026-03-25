@@ -76,7 +76,7 @@ class TestQubiCTranslator:
         with pytest.raises(ValueError, match="no calibrated 2Q edge"):
             QubiCCircuitTranslator(device).translate(ir)
 
-    def test_rejects_mismatched_qubit_count(self, device: QubiCDeviceSpec):
+    def test_allows_ir_that_uses_subset_of_device_qubits(self, device: QubiCDeviceSpec):
         ir = NativeGateIR(
             num_qubits=2,
             target="superconducting_cz",
@@ -85,7 +85,21 @@ class TestQubiCTranslator:
             metadata=_metadata(),
         )
 
-        with pytest.raises(ValueError, match="IR has 2 qubits"):
+        translated = QubiCCircuitTranslator(device).translate(ir)
+
+        assert translated.measurement_hardware_order == ["Q1"]
+        assert translated.program == [{"name": "read", "qubit": ["Q1"]}]
+
+    def test_rejects_ir_wider_than_device(self, device: QubiCDeviceSpec):
+        ir = NativeGateIR(
+            num_qubits=4,
+            target="superconducting_cz",
+            gates=[],
+            measurements=[0],
+            metadata=_metadata(),
+        )
+
+        with pytest.raises(ValueError, match="IR requests 4 qubits"):
             QubiCCircuitTranslator(device).translate(ir)
 
     def test_arbitrary_rx_uses_full_zxzxz_decomposition(self, device: QubiCDeviceSpec):
