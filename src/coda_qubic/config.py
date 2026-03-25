@@ -36,7 +36,7 @@ class QubiCConfig(BaseModel):
         num_qubits: 3
         calibration_path: ./qubitcfg.json
         channel_config_path: ./channel_config.json
-        classifier_path: ./gmm_classifier_sim.pkl
+        classifier_path: ./gmm_classifier.json
         runner_mode: rpc
         rpc_host: 192.168.1.120
         rpc_port: 9095

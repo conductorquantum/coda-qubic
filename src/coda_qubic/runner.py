@@ -95,9 +95,33 @@ def _normalize_counts(
     for source_bits, raw_value in circuit_counts.count_dict.items():
         reordered_bits = ["0"] * len(source_bits)
         for source_index, bit in enumerate(source_bits):
-            reordered_bits[source_to_desired[source_index]] = str(bit)
+            reordered_bits[source_to_desired[source_index]] = _coerce_bit_value(bit)
         counts["".join(reordered_bits)] = _coerce_count_value(raw_value)
     return counts
+
+
+def _coerce_bit_value(raw_bit: Any) -> str:
+    if hasattr(raw_bit, "item"):
+        raw_bit = raw_bit.item()
+
+    if isinstance(raw_bit, bool):
+        return "1" if raw_bit else "0"
+
+    try:
+        numeric_bit = float(raw_bit)
+    except (TypeError, ValueError) as exc:
+        raise ExecutorError(
+            f"QubiC result_collection failed: Unsupported readout bit value {raw_bit!r}"
+        ) from exc
+
+    if numeric_bit == 0.0:
+        return "0"
+    if numeric_bit == 1.0:
+        return "1"
+
+    raise ExecutorError(
+        f"QubiC result_collection failed: Unsupported readout bit value {raw_bit!r}"
+    )
 
 
 def _coerce_count_value(raw_value: Any) -> int:

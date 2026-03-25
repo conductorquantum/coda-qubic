@@ -56,6 +56,10 @@ def _run(executor: Any, ir: NativeGateIR, shots: int = 1000) -> ExecutionResult:
     return asyncio.run(executor.run(ir, shots))
 
 
+def _device_num_qubits(executor: Any) -> int:
+    return executor.device.num_qubits
+
+
 def _assert_integration_result(result: ExecutionResult, shots: int) -> None:
     assert result.shots_completed == shots
     assert sum(result.counts.values()) == shots
@@ -64,8 +68,9 @@ def _assert_integration_result(result: ExecutionResult, shots: int) -> None:
 
 
 # -- gate decomposition helpers ----------------------------------------
-# The device has 3 logical qubits (0, 1, 2) mapped to hardware Q1, Q2, Q3.
-# Available directed CNOTs: (1, 0) and (2, 1).
+# The simulator fixture loads the 20-qubit example device, but these circuits
+# intentionally exercise only logical qubits 0, 1, and 2.
+# Available directed CNOTs on that local subgraph: (1, 0) and (2, 1).
 
 
 def _h(qubit: int) -> list[GateOp]:
@@ -118,7 +123,7 @@ class TestGHZState:
         shots = 1000
         gates = [*_h(2), *_cnot(2, 1), *_cnot(1, 0)]
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=gates,
             measurements=[0, 1, 2],
@@ -141,7 +146,7 @@ class TestUniformSuperposition:
         shots = 2000
         gates = [*_h(0), *_h(1), *_h(2)]
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=gates,
             measurements=[0, 1, 2],
@@ -170,7 +175,7 @@ class TestApproximateQFT:
         ]
 
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=[*state_prep, *qft_body],
             measurements=[0, 1, 2],
@@ -212,7 +217,7 @@ class TestGroverTwoQubit:
         ]
 
         ir = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=circuit,
             measurements=[0, 1, 2],
@@ -230,7 +235,7 @@ class TestSimulatorCircuitDifferentiation:
     ) -> None:
         translator = sim_executor._translator
         ir_ghz = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=[*_h(2), *_cnot(2, 1), *_cnot(1, 0)],
             measurements=[0, 1, 2],
@@ -249,7 +254,7 @@ class TestSimulatorCircuitDifferentiation:
             *_h(1),
         ]
         ir_grover = NativeGateIR(
-            num_qubits=3,
+            num_qubits=_device_num_qubits(sim_executor),
             target="superconducting_cnot",
             gates=[*_h(0), *_h(1), *oracle, *diffusion],
             measurements=[0, 1, 2],

@@ -38,6 +38,10 @@ class FakeGMMManager:
         self.load_file = load_file
         self.load_json = load_json
         self.chanmap_or_chan_cfgs = chanmap_or_chan_cfgs
+        self.resolved_chanmap = None
+
+    def _resolve_chanmap(self, chanmap_or_chan_cfgs: Any) -> None:
+        self.resolved_chanmap = chanmap_or_chan_cfgs
 
 
 class FakeQChip:
@@ -230,6 +234,9 @@ class TestBuildExecutor:
         assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
         assert executor._job_manager.gmm_manager.load_json is not None
         assert executor._job_manager.gmm_manager.load_json.endswith(".json")
+        assert executor._job_manager.gmm_manager.resolved_chanmap == {
+            "loaded_from": str(qubic_example_channel_config_path)
+        }
         assert executor._job_manager.qchip.path == str(qubic_example_qubitcfg_path)
 
     def test_creates_local_sim_executor(
@@ -257,6 +264,9 @@ class TestBuildExecutor:
         assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
         assert executor._job_manager.gmm_manager.load_json is not None
         assert executor._job_manager.gmm_manager.load_json.endswith(".json")
+        assert executor._job_manager.gmm_manager.resolved_chanmap == {
+            "loaded_from": str(qubic_example_channel_config_path)
+        }
 
     def test_creates_local_pl_executor(
         self,
@@ -281,6 +291,9 @@ class TestBuildExecutor:
         assert isinstance(executor._job_manager.gmm_manager, FakeGMMManager)
         assert executor._job_manager.gmm_manager.load_json is not None
         assert executor._job_manager.gmm_manager.load_json.endswith(".json")
+        assert executor._job_manager.gmm_manager.resolved_chanmap == {
+            "loaded_from": str(qubic_example_channel_config_path)
+        }
 
     def test_uses_pickle_classifier_path_directly(
         self,

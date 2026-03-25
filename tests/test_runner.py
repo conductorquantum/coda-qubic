@@ -38,6 +38,17 @@ class FakeCircuitCountsThreeQubit:
         )
 
 
+class FakeCircuitCountsFloatBits:
+    def __init__(self) -> None:
+        self.qubits = ["Q1", "Q3"]
+        self.count_dict = OrderedDict(
+            {
+                (0.0, 1.0): np.array([7]),
+                (np.float64(1.0), np.float64(0.0)): np.array([3]),
+            }
+        )
+
+
 class FakeCircuitCountsMultiRead:
     def __init__(self) -> None:
         self.qubits = ["Q1", "Q3"]
@@ -143,6 +154,20 @@ class TestQubiCJobRunner:
             "100": 4,
             "010": 5,
             "011": 6,
+        }
+
+    def test_normalize_counts_accepts_float_bit_labels(self):
+        translated = type(
+            "Translated",
+            (),
+            {"measurement_hardware_order": ["Q3", "Q1"]},
+        )()
+
+        counts = _normalize_counts(FakeCircuitCountsFloatBits(), translated)
+
+        assert counts == {
+            "10": 7,
+            "01": 3,
         }
 
     def test_normalize_counts_rejects_mismatched_qubit_sets(self):

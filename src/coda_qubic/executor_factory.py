@@ -120,10 +120,9 @@ def _load_json_gmm_manager(
 ) -> Any:
     raw = json.loads(classifier_path.read_text())
     if "qubits" not in raw:
-        return deps.GMMManager(
-            load_json=str(classifier_path),
-            chanmap_or_chan_cfgs=channel_configs,
-        )
+        manager = deps.GMMManager(load_json=str(classifier_path))
+        _resolve_gmm_channel_map(manager, channel_configs)
+        return manager
 
     translated = {
         qubit: _translate_placeholder_gmm(qubit_data)
@@ -137,12 +136,17 @@ def _load_json_gmm_manager(
         temp_path = handle.name
 
     try:
-        return deps.GMMManager(
-            load_json=temp_path,
-            chanmap_or_chan_cfgs=channel_configs,
-        )
+        manager = deps.GMMManager(load_json=temp_path)
+        _resolve_gmm_channel_map(manager, channel_configs)
+        return manager
     finally:
         Path(temp_path).unlink()
+
+
+def _resolve_gmm_channel_map(gmm_manager: Any, channel_configs: Any) -> None:
+    resolver = getattr(gmm_manager, "_resolve_chanmap", None)
+    if callable(resolver):
+        resolver(channel_configs)
 
 
 def _translate_placeholder_gmm(qubit_data: dict[str, Any]) -> dict[str, Any]:
@@ -154,7 +158,7 @@ def _translate_placeholder_gmm(qubit_data: dict[str, Any]) -> dict[str, Any]:
     n_states = len(weights)
 
     return {
-        "labels": list(range(n_states)),
+        "labels": [float(index) for index in range(n_states)],
         "gmm": {
             "weights_": weights.tolist(),
             "means_": means.tolist(),

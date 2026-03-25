@@ -66,7 +66,7 @@ target: superconducting_cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
 channel_config_path: ./channel_config.json
-classifier_path: ./gmm_classifier_sim.pkl
+classifier_path: ./gmm_classifier.json
 
 runner_mode: local
 use_sim: true
