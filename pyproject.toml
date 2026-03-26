@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-coda-node = { git = "https://github.com/conductorquantum/coda-node.git"}
+coda-node = { path = ".qubic-stack/coda-node", editable = true }
 
 [dependency-groups]
 dev = [

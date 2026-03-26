@@ -114,7 +114,7 @@ wheels = [
 [[package]]
 name = "coda-node"
 version = "0.1.0"
-source = { git = "https://github.com/conductorquantum/coda-node.git#09d9152b467d34e1679b3a8acc777d7e89905432" }
+source = { editable = ".qubic-stack/coda-node" }
 dependencies = [
     { name = "cryptography" },
     { name = "fastapi" },
@@ -124,6 +124,28 @@ dependencies = [
     { name = "pyjwt" },
     { name = "redis" },
     { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cryptography", specifier = ">=41.0.0" },
+    { name = "fastapi", specifier = ">=0.115.0" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "pydantic", specifier = ">=2.11.0" },
+    { name = "pydantic-settings", specifier = ">=2.0.0" },
+    { name = "pyjwt", specifier = ">=2.0.0" },
+    { name = "redis", specifier = ">=5.0.0" },
+    { name = "uvicorn", specifier = ">=0.30.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.10.0" },
+    { name = "pre-commit", specifier = ">=4.5.1" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", specifier = ">=0.23.0" },
+    { name = "pytest-cov", specifier = ">=5.0.0" },
+    { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
@@ -149,7 +171,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "coda-node", git = "https://github.com/conductorquantum/coda-node.git" },
+    { name = "coda-node", editable = ".qubic-stack/coda-node" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 
