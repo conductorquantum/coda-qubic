@@ -1,4 +1,4 @@
-"""Derive a conservative self-service device spec from a QubiC qubitcfg file."""
+"""Derive a conservative node device spec from a QubiC qubitcfg file."""
 
 from __future__ import annotations
 

@@ -37,34 +37,34 @@ To skip the VPN tunnel for initial smoke testing, add
 `CODA_VPN_REQUIRED=false`. Once you've confirmed the tunnel works,
 remove that override (it defaults to `true`).
 
-## How coda-qubic Integrates with coda-self-service
+## How coda-qubic Integrates with coda-node
 
-The `coda` CLI comes from `coda-self-service`. The two repos are wired
+The `coda` CLI comes from `coda-node`. The two repos are wired
 together at two levels:
 
 ### Dependency
 
-`coda-qubic` declares `coda-self-service` as an editable path
+`coda-qubic` declares `coda-node` as an editable path
 dependency in `pyproject.toml`:
 
 ```toml
 [tool.uv.sources]
-coda-self-service = { path = "coda-self-service", editable = true }
+coda-node = { path = "coda-node", editable = true }
 ```
 
 So when you `uv sync` in `coda-qubic`, both packages are installed into
 the same environment. The `coda` command is a console script registered
-by `coda-self-service`:
+by `coda-node`:
 
 ```toml
-# coda-self-service/pyproject.toml
+# coda-node/pyproject.toml
 [project.scripts]
-coda = "self_service.server.cli:main"
+coda = "coda_node.server.cli:main"
 ```
 
 ### Executor factory
 
-`coda-self-service` is completely framework-agnostic. It knows nothing
+`coda-node` is completely framework-agnostic. It knows nothing
 about QubiC, QUA, or any specific control system. At startup, it scans
 installed packages for the convention
 `<pkg>.executor_factory:create_executor` and uses the factory if
@@ -86,8 +86,8 @@ and assembles the full QubiC pipeline.
 
 When you run `coda start --token <token>`:
 
-1. The CLI (`cli.py`) pushes `--token` into `CODA_SELF_SERVICE_TOKEN`
-   and starts uvicorn with `self_service.server.app:app`.
+1. The CLI (`cli.py`) pushes `--token` into `CODA_NODE_TOKEN`
+   and starts uvicorn with `coda_node.server.app:app`.
 2. The FastAPI lifespan calls `connect_settings(settings)`, which POSTs
    the token to production and receives a bundle with JWT credentials,
    Redis URL, VPN profile, etc.
@@ -144,7 +144,7 @@ deployment.
 To check VPN connectivity without starting the full job loop:
 
 ```bash
-CODA_SELF_SERVICE_TOKEN=<your-token> uv run coda doctor
+CODA_NODE_TOKEN=<your-token> uv run coda doctor
 ```
 
 This prints a diagnostic summary: endpoints, executor, VPN interface,

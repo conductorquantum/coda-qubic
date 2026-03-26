@@ -9,9 +9,9 @@ import asyncio
 import time
 from typing import Any
 
-from self_service.errors import ExecutorError
-from self_service.server.executor import ExecutionResult
-from self_service.server.ir import NativeGateIR
+from coda_node.errors import ExecutorError
+from coda_node.server.executor import ExecutionResult
+from coda_node.server.ir import NativeGateIR
 
 from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.translator import (
@@ -24,7 +24,7 @@ class QubiCJobRunner:
     """Executes NativeGateIR circuits on a QubiC stack.
 
     Implements the ``JobExecutor`` protocol from
-    ``self_service.server.executor``.  The protocol requires a single async
+    ``coda_node.server.executor``.  The protocol requires a single async
     ``run(ir, shots)`` method that returns ``ExecutionResult``.
 
     The ``JobExecutor`` protocol is decorated with ``@runtime_checkable``,

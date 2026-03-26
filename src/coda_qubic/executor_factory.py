@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
-from self_service.errors import ExecutorError
+from coda_node.errors import ExecutorError
 
 from coda_qubic.config import QubiCConfig
 from coda_qubic.device import QubiCDeviceSpec
@@ -23,7 +23,7 @@ from coda_qubic.runner import QubiCJobRunner
 from coda_qubic.support import QubiCDependencies, load_qubic_dependencies
 
 if TYPE_CHECKING:
-    from self_service.server.executor import JobExecutor
+    from coda_node.server.executor import JobExecutor
 
 __all__ = ["create_executor"]
 

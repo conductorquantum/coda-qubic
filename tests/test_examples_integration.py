@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.config import QubiCConfig
 from coda_qubic.device import QubiCDeviceSpec

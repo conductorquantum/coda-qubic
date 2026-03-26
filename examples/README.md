@@ -88,7 +88,7 @@ xsa_commit: abc123def456789
 ### Basic Example
 
 ```python
-from self_service.server.ir import NativeGateIR, GateOp, IRMetadata
+from coda_node.server.ir import NativeGateIR, GateOp, IRMetadata
 from coda_qubic.config import QubiCConfig
 from coda_qubic.executor_factory import build_executor
 
@@ -119,9 +119,9 @@ print(f"Counts: {result.counts}")
 print(f"Execution time: {result.execution_time_ms}ms")
 ```
 
-### With coda-self-service
+### With coda-node
 
-When running via coda-self-service, set the executor factory:
+When running via coda-node, set the executor factory:
 
 ```bash
 CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
@@ -238,7 +238,7 @@ sending it to the QubiC translator.
 ### For Simulation
 
 - Python 3.12+
-- coda-self-service
+- coda-node
 - QubiC vendor dependencies (qubic, distproc, qubitconfig)
   - Set `QUBIC_ROOT` environment variable or use `qubic_root` config option
 

@@ -9,8 +9,8 @@ from unittest.mock import MagicMock
 
 import numpy as np
 import pytest
-from self_service.errors import ExecutorError
-from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.errors import ExecutorError
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.config import QubiCConfig
 from coda_qubic.device import QubiCDeviceSpec
@@ -300,7 +300,7 @@ class TestProtocolCompliance:
         self, qubic_example_qubitcfg_path: Path
     ):
         """Verify QubiCJobRunner has required protocol methods."""
-        from self_service.server.executor import JobExecutor
+        from coda_node.server.executor import JobExecutor
 
         from coda_qubic.device import QubiCDeviceSpec
 

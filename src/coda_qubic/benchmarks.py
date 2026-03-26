@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from numpy.typing import NDArray
-from self_service.server.ir import GateOp, IRMetadata, NativeGate, NativeGateIR
+from coda_node.server.ir import GateOp, IRMetadata, NativeGate, NativeGateIR
 
 _SQRT2_INV = 1.0 / math.sqrt(2.0)
 _HP = math.pi / 2

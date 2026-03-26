@@ -22,8 +22,8 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from self_service.server.executor import ExecutionResult
-from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.server.executor import ExecutionResult
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.config import QubiCConfig
 from coda_qubic.executor_factory import build_executor

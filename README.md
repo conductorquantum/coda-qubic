@@ -1,6 +1,6 @@
 # coda-qubic
 
-QubiC execution framework for coda-self-service.
+QubiC execution framework for coda-node.
 
 Pipeline: **NativeGateIR → QubiC gate programs → hardware / simulator**.
 
@@ -88,7 +88,7 @@ print('OK —', config.target, config.num_qubits, 'qubits')
 ```bash
 uv run python -c "
 import asyncio
-from self_service.server.ir import NativeGateIR, GateOp, IRMetadata
+from coda_node.server.ir import NativeGateIR, GateOp, IRMetadata
 from coda_qubic.config import QubiCConfig
 from coda_qubic.executor_factory import build_executor
 
@@ -108,7 +108,7 @@ print(result.counts)
 "
 ```
 
-### 7. Run via coda-self-service (full production path)
+### 7. Run via coda-node (full production path)
 
 ```bash
 sudo uv run coda start --token <your-token>
@@ -172,7 +172,7 @@ uv sync --dev
 The install script shallow-clones
 [`LBL-QubiC/software`](https://gitlab.com/LBL-QubiC/software),
 [`LBL-QubiC/distributed_processor`](https://gitlab.com/LBL-QubiC/distributed_processor),
-and [`coda-self-service`](https://github.com/conductorquantum/coda-self-service),
+and [`coda-node`](https://github.com/conductorquantum/coda-node),
 then installs them all editable (pulling `qubitconfig` and other deps from PyPI).
 
 The checked-in example simulator classifier file is intended for local smoke
@@ -225,7 +225,7 @@ result = await executor.run(ir, shots=1000)
 print(result.counts)
 ```
 
-### Via coda-self-service
+### Via coda-node
 
 If `coda-qubic` is the only backend installed and `./site/device.yaml`
 exists, all defaults are applied automatically:
@@ -275,22 +275,22 @@ protected by Vercel Deployment Protection. Requests without valid credentials
 receive a `401 Unauthorized` before they reach the app.
 
 To bypass this, include the project's **automation bypass secret** via the
-`CODA_SELF_SERVICE_CONNECT_HEADERS` environment variable:
+`CODA_NODE_CONNECT_HEADERS` environment variable:
 
 ```bash
 CODA_WEBAPP_URL=https://staging.coda.conductorquantum.com \
 CODA_DEVICE_CONFIG=./site/device.yaml \
-CODA_SELF_SERVICE_AUTO_VPN=false \
+CODA_NODE_AUTO_VPN=false \
 CODA_VPN_REQUIRED=false \
-CODA_SELF_SERVICE_CONNECT_HEADERS='{"x-vercel-protection-bypass": "<secret>"}' \
+CODA_NODE_CONNECT_HEADERS='{"x-vercel-protection-bypass": "<secret>"}' \
 uv run coda start --token <your-staging-token>
 ```
 
 | Variable | Purpose |
 |---|---|
 | `CODA_WEBAPP_URL` | Points the node at the staging deployment |
-| `CODA_SELF_SERVICE_CONNECT_HEADERS` | JSON dict of extra headers sent with all outbound requests to the webapp (connect, heartbeat, VPN probes); must include the Vercel bypass header |
-| `CODA_SELF_SERVICE_AUTO_VPN` / `CODA_VPN_REQUIRED` | Disable VPN for local testing where you don't need the tunnel |
+| `CODA_NODE_CONNECT_HEADERS` | JSON dict of extra headers sent with all outbound requests to the webapp (connect, heartbeat, VPN probes); must include the Vercel bypass header |
+| `CODA_NODE_AUTO_VPN` / `CODA_VPN_REQUIRED` | Disable VPN for local testing where you don't need the tunnel |
 
 **Where to find the bypass secret:** In the Vercel dashboard for the staging
 project, go to **Settings → Deployment Protection → Protection Bypass for

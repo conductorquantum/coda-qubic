@@ -7,7 +7,7 @@ import math
 from dataclasses import dataclass
 from typing import Any, ClassVar
 
-from self_service.server.ir import GateOp, NativeGateIR
+from coda_node.server.ir import GateOp, NativeGateIR
 
 from coda_qubic.device import QubiCDeviceSpec
 

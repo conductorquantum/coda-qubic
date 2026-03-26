@@ -17,7 +17,7 @@ from typing import Any
 
 import numpy as np
 import pytest
-from self_service.server.ir import (
+from coda_node.server.ir import (
     GATE_SPECS,
     LEGAL_GATES,
     GateOp,

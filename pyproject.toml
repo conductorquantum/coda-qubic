@@ -5,16 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "coda-qubic"
 version = "0.1.0"
-description = "QubiC execution framework for coda-self-service."
+description = "QubiC execution framework for coda-node."
 requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
-    "coda-self-service",
+    "coda-node",
     "pyyaml>=6.0",
 ]
 
 [tool.uv.sources]
-coda-self-service = { git = "https://github.com/conductorquantum/coda-self-service.git", branch = "consolidating-native-gate-target-names" }
+coda-node = { git = "https://github.com/conductorquantum/coda-node.git", branch = "consolidating-native-gate-target-names" }
 
 [dependency-groups]
 dev = [

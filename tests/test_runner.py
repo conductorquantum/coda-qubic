@@ -6,8 +6,8 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from self_service.server.executor import ExecutionResult
-from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.server.executor import ExecutionResult
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.runner import QubiCJobRunner, _normalize_counts

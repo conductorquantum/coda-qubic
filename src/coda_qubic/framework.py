@@ -32,7 +32,7 @@ class QubiCFramework:
     local runner).
 
     The ``QubiCJobRunner`` returned by ``create_executor()`` implements the
-    ``JobExecutor`` protocol from ``self_service.server.executor``, which is
+    ``JobExecutor`` protocol from ``coda_node.server.executor``, which is
     decorated with ``@runtime_checkable``, enabling runtime type checks.
     """
 

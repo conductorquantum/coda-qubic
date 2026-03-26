@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from self_service.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.support import load_qubic_dependencies

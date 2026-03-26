@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Clone LBNL QubiC ``software`` and ``distributed_processor`` repos, plus
-# ``coda-self-service``, and install them editable into the current
+# ``coda-node``, and install them editable into the current
 # uv/virtualenv so ``load_qubic_dependencies()`` succeeds (simulator,
 # compile, and RPC paths; local FPGA still needs pynq).
 #
@@ -18,7 +18,7 @@
 # Environment:
 #   QUBIC_SOFTWARE_GIT_URL       default https://gitlab.com/LBL-QubiC/software.git
 #   QUBIC_DISTPROC_GIT_URL       default https://gitlab.com/LBL-QubiC/distributed_processor.git
-#   CODA_SELF_SERVICE_GIT_URL    default https://github.com/conductorquantum/coda-self-service.git
+#   CODA_NODE_GIT_URL             default https://github.com/conductorquantum/coda-node.git
 #   QUBIC_GIT_BRANCH             default master
 #   QUBIC_GIT_DEPTH              default 1 (shallow clone)
 
@@ -37,7 +37,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h | --help)
       cat <<'HELP'
-Clone LBNL QubiC software + distributed_processor + coda-self-service and
+Clone LBNL QubiC software + distributed_processor + coda-node and
 pip-install editable (uv).
 
 Usage: ./scripts/install-qubic-stack.sh [DIR] [--update]
@@ -48,7 +48,7 @@ Options:
   -h, --help     This message
 
 Environment: QUBIC_ROOT, QUBIC_SOFTWARE_GIT_URL, QUBIC_DISTPROC_GIT_URL,
-  CODA_SELF_SERVICE_GIT_URL, QUBIC_GIT_BRANCH (default master),
+  CODA_NODE_GIT_URL, QUBIC_GIT_BRANCH (default master),
   QUBIC_GIT_DEPTH (default 1).
 HELP
       exit 0
@@ -74,7 +74,7 @@ QUBIC_STACK_ROOT="${QUBIC_ROOT:-${POSITIONAL[0]:-$DEFAULT_ROOT}}"
 
 SOFTWARE_URL="${QUBIC_SOFTWARE_GIT_URL:-https://gitlab.com/LBL-QubiC/software.git}"
 DISTPROC_URL="${QUBIC_DISTPROC_GIT_URL:-https://gitlab.com/LBL-QubiC/distributed_processor.git}"
-SELF_SERVICE_URL="${CODA_SELF_SERVICE_GIT_URL:-https://github.com/conductorquantum/coda-self-service.git}"
+CODA_NODE_URL="${CODA_NODE_GIT_URL:-https://github.com/conductorquantum/coda-node.git}"
 BRANCH="${QUBIC_GIT_BRANCH:-master}"
 DEPTH="${QUBIC_GIT_DEPTH:-1}"
 
@@ -96,11 +96,11 @@ echo "QubiC stack root: $QUBIC_STACK_ROOT"
 mkdir -p "$QUBIC_STACK_ROOT"
 git_clone_or_update "$SOFTWARE_URL" "$QUBIC_STACK_ROOT/software" "$BRANCH"
 git_clone_or_update "$DISTPROC_URL" "$QUBIC_STACK_ROOT/distributed_processor" "$BRANCH"
-git_clone_or_update "$SELF_SERVICE_URL" "$QUBIC_STACK_ROOT/coda-self-service" main
+git_clone_or_update "$CODA_NODE_URL" "$QUBIC_STACK_ROOT/coda-node" main
 
 for need in "$QUBIC_STACK_ROOT/software/pyproject.toml" \
   "$QUBIC_STACK_ROOT/distributed_processor/python/pyproject.toml" \
-  "$QUBIC_STACK_ROOT/coda-self-service/pyproject.toml"; do
+  "$QUBIC_STACK_ROOT/coda-node/pyproject.toml"; do
   if [[ ! -f "$need" ]]; then
     echo "Expected file missing after clone: $need" >&2
     exit 1
@@ -113,8 +113,8 @@ if ! command -v uv &>/dev/null; then
   exit 1
 fi
 
-echo "Installing editable coda-self-service + distproc + lbl-qubic (pulls qubitconfig, numpy, … from PyPI)…"
-uv pip install -e "$QUBIC_STACK_ROOT/coda-self-service" -e "$QUBIC_STACK_ROOT/distributed_processor/python" -e "$QUBIC_STACK_ROOT/software"
+echo "Installing editable coda-node + distproc + lbl-qubic (pulls qubitconfig, numpy, … from PyPI)…"
+uv pip install -e "$QUBIC_STACK_ROOT/coda-node" -e "$QUBIC_STACK_ROOT/distributed_processor/python" -e "$QUBIC_STACK_ROOT/software"
 
 cat <<EOF
 
