@@ -38,7 +38,7 @@ class TestRunnerErrorHandling:
             metadata=IRMetadata(source_hash="test", compiled_at="2026-03-16T00:00:00Z"),
         )
 
-        with pytest.raises(ExecutorError, match="QubiC translation failed"):
+        with pytest.raises(ExecutorError, match="QubiC target mismatch"):
             asyncio.run(runner.run(ir, shots=100))
 
     def test_execution_error_raises_executor_error(

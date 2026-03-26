@@ -112,11 +112,26 @@ wheels = [
 ]
 
 [[package]]
+name = "coda-node"
+version = "0.1.0"
+source = { git = "https://github.com/conductorquantum/coda-node.git#09d9152b467d34e1679b3a8acc777d7e89905432" }
+dependencies = [
+    { name = "cryptography" },
+    { name = "fastapi" },
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pyjwt" },
+    { name = "redis" },
+    { name = "uvicorn" },
+]
+
+[[package]]
 name = "coda-qubic"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "coda-self-service" },
+    { name = "coda-node" },
     { name = "pyyaml" },
 ]
 
@@ -134,7 +149,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "coda-self-service", git = "https://github.com/conductorquantum/coda-self-service.git?branch=consolidating-native-gate-target-names" },
+    { name = "coda-node", git = "https://github.com/conductorquantum/coda-node.git" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 
@@ -148,21 +163,6 @@ dev = [
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "scipy", specifier = ">=1.12.0" },
     { name = "types-pyyaml", specifier = ">=6.0" },
-]
-
-[[package]]
-name = "coda-self-service"
-version = "0.1.0"
-source = { git = "https://github.com/conductorquantum/coda-self-service.git?branch=consolidating-native-gate-target-names#2bd785f5806d70b2182bdb7c5f3449a25c3c5ffb" }
-dependencies = [
-    { name = "cryptography" },
-    { name = "fastapi" },
-    { name = "httpx" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "pyjwt" },
-    { name = "redis" },
-    { name = "uvicorn" },
 ]
 
 [[package]]
