@@ -1,4 +1,5 @@
 framework: qubic
+executor_factory: coda_qubic.executor_factory:create_executor
 target: cnot
 num_qubits: 20
 calibration_path: ./qubitcfg.json
