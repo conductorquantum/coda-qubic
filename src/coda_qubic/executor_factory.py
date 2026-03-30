@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 from coda_node.errors import ExecutorError
 
-from coda_qubic.config import QubiCConfig
+from coda_qubic.config import QubiCConfig, RunnerMode
 from coda_qubic.device import QubiCDeviceSpec
 from coda_qubic.runner import QubiCJobRunner
 from coda_qubic.support import QubiCDependencies, load_qubic_dependencies
@@ -58,12 +58,27 @@ def build_executor(
     config: QubiCConfig,
     *,
     dependencies: QubiCDependencies | None = None,
-) -> QubiCJobRunner:
+) -> QubiCJobRunner | JobExecutor:
     """Assemble a :class:`QubiCJobRunner` from a validated config.
 
     Separated from :func:`create_executor` so that tests and programmatic
     callers can bypass YAML loading.
+
+    When ``runner_mode`` is ``qiskit_sim``, returns a
+    :class:`~coda_qubic.qiskit_sim.QiskitNoisySimulator` that bypasses
+    the entire QubiC vendor stack.
     """
+    if config.runner_mode == RunnerMode.QISKIT_SIM:
+        from coda_qubic.qiskit_sim import QiskitNoisySimulator
+
+        return QiskitNoisySimulator(
+            num_qubits=config.num_qubits,
+            target=config.target,
+            single_qubit_error_rate=config.single_qubit_error_rate,
+            two_qubit_error_rate=config.two_qubit_error_rate,
+            measurement_error_rate=config.measurement_error_rate,
+        )
+
     cal_path = config.resolved_calibration_path
     deps = dependencies or load_qubic_dependencies(config.resolved_qubic_root)
 

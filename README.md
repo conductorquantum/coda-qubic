@@ -72,6 +72,26 @@ runner_mode: local
 use_sim: true
 ```
 
+**Qiskit noisy simulation mode** (no hardware, no QubiC stack, no calibration files):
+
+```yaml
+target: cnot
+num_qubits: 3
+runner_mode: qiskit_sim
+
+# Optional noise parameters (defaults shown)
+# single_qubit_error_rate: 0.001
+# two_qubit_error_rate: 0.01
+# measurement_error_rate: 0.01
+```
+
+This mode uses Qiskit AerSimulator with a depolarizing noise model.
+It requires the optional `qiskit` dependency group:
+
+```bash
+uv pip install 'coda-qubic[qiskit]'
+```
+
 ### 5. Validate the config
 
 ```bash
@@ -160,6 +180,75 @@ sudo CODA_WEBAPP_URL=https://custom.example.com \
 
 ---
 
+## Quick Start — Qiskit Noisy Simulation (No Hardware)
+
+If you just want to run end-to-end integration tests without any hardware or
+QubiC vendor stack, the `qiskit_sim` mode is the simplest path.
+
+### 1. Install
+
+```bash
+git clone https://github.com/conductorquantum/coda-qubic.git
+cd coda-qubic
+uv sync --dev
+uv pip install 'coda-qubic[qiskit]'
+```
+
+No `install-qubic-stack.sh` needed — this mode has no QubiC dependency.
+
+### 2. Create a device YAML
+
+Create `site/device.yaml`:
+
+```yaml
+framework: qubic
+target: cnot
+num_qubits: 3
+runner_mode: qiskit_sim
+```
+
+No calibration files, channel configs, or classifier files are needed.
+
+### 3. Run a test circuit
+
+```bash
+uv run python -c "
+import asyncio
+from coda_node.server.ir import NativeGateIR, GateOp, IRMetadata
+from coda_qubic.config import QubiCConfig
+from coda_qubic.executor_factory import build_executor
+
+config = QubiCConfig.from_yaml('site/device.yaml')
+executor = build_executor(config)
+
+ir = NativeGateIR(
+    num_qubits=3,
+    target='cnot',
+    gates=[
+        GateOp(gate='x90', qubits=[0], params=[]),
+        GateOp(gate='cnot', qubits=[0, 1], params=[]),
+    ],
+    measurements=[0, 1],
+    metadata=IRMetadata(source_hash='test', compiled_at='2026-03-30T00:00:00Z'),
+)
+
+result = asyncio.run(executor.run(ir, shots=1000))
+print(result.counts)
+"
+```
+
+### 4. Run via coda-node (end-to-end with coda)
+
+```bash
+CODA_DEVICE_CONFIG=./site/device.yaml \
+uv run coda start --token <your-token>
+```
+
+The node registers with the coda webapp, reports a synthetic 3-qubit
+linear-chain device, and executes jobs using Qiskit AerSimulator.
+
+---
+
 ## Installation
 
 ```bash
@@ -192,7 +281,7 @@ Requires Python 3.12+.
 
 - **Device Derivation**: Derives device specs from `qubitcfg.json` via BFS over the calibrated connectivity graph (20-qubit sparse-grid example included)
 - **IR Translation**: Translates `NativeGateIR` circuits into QubiC gate-level programs
-- **Multiple Backends**: RPC, local hardware (PLInterface), and simulation
+- **Multiple Backends**: RPC, local hardware (PLInterface), pulse simulation, and Qiskit noisy simulation
 - **Executor Factory**: Exposes `coda_qubic.executor_factory:create_executor` for use with `CODA_EXECUTOR_FACTORY`
 
 ## Supported IR Targets
@@ -208,6 +297,7 @@ See `examples/` for complete templates:
 - `device_rpc.yaml` — RPC mode (remote QubiC server)
 - `device_sim.yaml` — Simulator mode (no hardware)
 - `device_hardware.yaml` — Local hardware mode (direct FPGA)
+- `device_qiskit_sim.yaml` — Qiskit noisy simulation (no QubiC stack needed)
 
 All file paths in the YAML (`calibration_path`, `channel_config_path`,
 `classifier_path`, `qubic_root`) are resolved relative to the YAML file's
@@ -251,6 +341,7 @@ src/coda_qubic/
 ├── device.py                # QubiCDeviceSpec derivation from qubitcfg.json
 ├── executor_factory.py      # CODA_EXECUTOR_FACTORY entry point
 ├── framework.py             # QubiCFramework convenience class
+├── qiskit_sim.py            # QiskitNoisySimulator (Qiskit Aer backend)
 ├── runner.py                # QubiCJobRunner (JobExecutor implementation)
 ├── support.py               # QubiC vendor dependency loading
 └── translator.py            # NativeGateIR to QubiC gate translation
@@ -304,9 +395,9 @@ deployments.
 
 - `target`: IR target (`cnot` or `cz`)
 - `num_qubits`: Number of qubits (must match derived device)
-- `calibration_path`: Path to QubiC `qubitcfg.json`
-- `channel_config_path`: Path to QubiC channel configuration JSON
-- `classifier_path`: Path to GMM classifier for readout
+- `calibration_path`: Path to QubiC `qubitcfg.json` (not required for `qiskit_sim`)
+- `channel_config_path`: Path to QubiC channel configuration JSON (not required for `qiskit_sim`)
+- `classifier_path`: Path to GMM classifier for readout (not required for `qiskit_sim`)
 
 ### Runner Modes
 
@@ -314,7 +405,18 @@ deployments.
 |---|---|---|
 | RPC (default) | `runner_mode: rpc` | `rpc_host`, `rpc_port` (default 9095) |
 | Local hardware | `runner_mode: local` | `xsa_commit` |
-| Simulator | `runner_mode: local` + `use_sim: true` | — |
+| Pulse simulator | `runner_mode: local` + `use_sim: true` | Requires QubiC stack |
+| Qiskit noisy sim | `runner_mode: qiskit_sim` | `pip install 'coda-qubic[qiskit]'` |
+
+### Qiskit Simulation Noise Parameters
+
+These are only used when `runner_mode: qiskit_sim`:
+
+| Parameter | Default | Description |
+|---|---|---|
+| `single_qubit_error_rate` | 0.001 | Depolarizing error rate for 1Q gates |
+| `two_qubit_error_rate` | 0.01 | Depolarizing error rate for 2Q gates |
+| `measurement_error_rate` | 0.01 | Depolarizing error rate for measurement |
 
 ### Optional
 

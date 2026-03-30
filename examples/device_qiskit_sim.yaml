@@ -1,0 +1,17 @@
+# Example QubiC device configuration (Qiskit noisy simulation mode)
+#
+# This configuration uses Qiskit AerSimulator with a depolarizing noise
+# model for end-to-end integration testing.  No QubiC vendor stack,
+# calibration files, or hardware access is required.
+#
+# Install the optional dependency:  pip install 'coda-qubic[qiskit]'
+
+framework: qubic
+target: cnot
+num_qubits: 3
+runner_mode: qiskit_sim
+
+# Optional noise parameters (defaults shown)
+# single_qubit_error_rate: 0.001
+# two_qubit_error_rate: 0.01
+# measurement_error_rate: 0.01

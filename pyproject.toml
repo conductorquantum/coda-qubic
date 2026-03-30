@@ -13,6 +13,12 @@ dependencies = [
     "pyyaml>=6.0",
 ]
 
+[project.optional-dependencies]
+qiskit = [
+    "qiskit>=1.0",
+    "qiskit-aer>=0.13",
+]
+
 [tool.uv.sources]
 coda-node = { path = ".qubic-stack/coda-node", editable = true }
 
@@ -72,5 +78,7 @@ module = [
     "distproc.*",
     "qubic.*",
     "qubitconfig.*",
+    "qiskit.*",
+    "qiskit_aer.*",
 ]
 ignore_missing_imports = true

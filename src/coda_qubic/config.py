@@ -25,6 +25,7 @@ _SUPPORTED_TARGETS = frozenset({"cz", "cnot"})
 class RunnerMode(StrEnum):
     RPC = "rpc"
     LOCAL = "local"
+    QISKIT_SIM = "qiskit_sim"
 
 
 class QubiCConfig(BaseModel):
@@ -44,9 +45,9 @@ class QubiCConfig(BaseModel):
 
     target: Literal["cz", "cnot"]
     num_qubits: int = Field(ge=1, le=50)
-    calibration_path: str
-    channel_config_path: str
-    classifier_path: str
+    calibration_path: str = ""
+    channel_config_path: str = ""
+    classifier_path: str = ""
 
     runner_mode: RunnerMode = RunnerMode.RPC
     rpc_host: str = ""
@@ -55,10 +56,28 @@ class QubiCConfig(BaseModel):
     xsa_commit: str = ""
     qubic_root: str = ""
 
+    single_qubit_error_rate: float = Field(default=0.001, ge=0.0, le=1.0)
+    two_qubit_error_rate: float = Field(default=0.01, ge=0.0, le=1.0)
+    measurement_error_rate: float = Field(default=0.01, ge=0.0, le=1.0)
+
     _source_dir: Path | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     def check_runner_requirements(self) -> QubiCConfig:
+        if self.runner_mode == RunnerMode.QISKIT_SIM:
+            return self
+        if not self.calibration_path:
+            raise ValueError(
+                "calibration_path is required unless runner_mode is 'qiskit_sim'"
+            )
+        if not self.channel_config_path:
+            raise ValueError(
+                "channel_config_path is required unless runner_mode is 'qiskit_sim'"
+            )
+        if not self.classifier_path:
+            raise ValueError(
+                "classifier_path is required unless runner_mode is 'qiskit_sim'"
+            )
         if self.runner_mode == RunnerMode.RPC and not self.rpc_host:
             raise ValueError("rpc_host is required when runner_mode is 'rpc'")
         if (
