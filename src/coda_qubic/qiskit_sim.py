@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import math
+import threading
 import time
 from typing import Any
 
@@ -71,12 +72,18 @@ class QiskitNoisySimulator:
         self._measurement_error_rate = measurement_error_rate
         self._device = _synthesize_device_spec(num_qubits)
         self._noise_model = self._build_noise_model()
+        self._cancel_requested = threading.Event()
 
     async def run(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
+        self._cancel_requested.clear()
         return await asyncio.to_thread(self._execute, ir, shots)
+
+    def cancel_current_job(self) -> None:
+        self._cancel_requested.set()
 
     def _execute(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
         started = time.monotonic()
+        self._raise_if_cancelled()
         if ir.target != self._target:
             raise ExecutorError(
                 f"Qiskit sim target mismatch: configured for '{self._target}' "
@@ -92,6 +99,7 @@ class QiskitNoisySimulator:
             circuit = _build_circuit(ir)
         except Exception as exc:
             raise ExecutorError(f"Qiskit circuit construction failed: {exc}") from exc
+        self._raise_if_cancelled()
 
         try:
             backend = AerSimulator(noise_model=self._noise_model)
@@ -99,6 +107,7 @@ class QiskitNoisySimulator:
             raw_counts = result.get_counts(circuit)
         except Exception as exc:
             raise ExecutorError(f"Qiskit simulation failed: {exc}") from exc
+        self._raise_if_cancelled()
 
         counts = _reformat_counts(raw_counts, ir.measurements)
         elapsed_ms = round((time.monotonic() - started) * 1000, 2)
@@ -111,6 +120,10 @@ class QiskitNoisySimulator:
     @property
     def device(self) -> QubiCDeviceSpec:
         return self._device
+
+    def _raise_if_cancelled(self) -> None:
+        if self._cancel_requested.is_set():
+            raise ExecutorError("Qiskit simulation cancelled")
 
     def _build_noise_model(self) -> Any:
         noise_model = NoiseModel()

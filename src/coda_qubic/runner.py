@@ -6,6 +6,7 @@ Implements the JobExecutor protocol for QubiC-based quantum hardware.
 from __future__ import annotations
 
 import asyncio
+import threading
 import time
 from typing import Any
 
@@ -41,12 +42,18 @@ class QubiCJobRunner:
         self._device = device
         self._native_gate_set = native_gate_set
         self._translator = QubiCCircuitTranslator(device)
+        self._cancel_requested = threading.Event()
 
     async def run(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
+        self._cancel_requested.clear()
         return await asyncio.to_thread(self._execute, ir, shots)
+
+    def cancel_current_job(self) -> None:
+        self._cancel_requested.set()
 
     def _execute(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
         started = time.monotonic()
+        self._raise_if_cancelled()
         if ir.target != self._native_gate_set:
             raise ExecutorError(
                 "QubiC target mismatch: "
@@ -56,6 +63,7 @@ class QubiCJobRunner:
             translated = self._translator.translate(ir)
         except Exception as exc:
             raise ExecutorError(f"QubiC translation failed: {exc}") from exc
+        self._raise_if_cancelled()
 
         try:
             results = self._job_manager.collect_counts(
@@ -65,6 +73,7 @@ class QubiCJobRunner:
             )
         except Exception as exc:
             raise ExecutorError(f"QubiC execution failed: {exc}") from exc
+        self._raise_if_cancelled()
 
         if len(results) != 1:
             raise ExecutorError(
@@ -82,6 +91,10 @@ class QubiCJobRunner:
     @property
     def device(self) -> QubiCDeviceSpec:
         return self._device
+
+    def _raise_if_cancelled(self) -> None:
+        if self._cancel_requested.is_set():
+            raise ExecutorError("QubiC execution cancelled")
 
 
 def _normalize_counts(
