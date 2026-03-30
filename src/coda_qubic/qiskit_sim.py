@@ -9,6 +9,7 @@ model.  No QubiC vendor stack is required.
 from __future__ import annotations
 
 import asyncio
+import logging
 import math
 import threading
 import time
@@ -34,6 +35,8 @@ except ImportError:
     _QISKIT_AVAILABLE = False
 
 __all__ = ["QiskitNoisySimulator"]
+
+logger = logging.getLogger(__name__)
 
 
 def _require_qiskit() -> None:
@@ -73,6 +76,7 @@ class QiskitNoisySimulator:
         self._device = _synthesize_device_spec(num_qubits)
         self._noise_model = self._build_noise_model()
         self._cancel_requested = threading.Event()
+        self._current_job: Any | None = None
 
     async def run(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
         self._cancel_requested.clear()
@@ -80,6 +84,16 @@ class QiskitNoisySimulator:
 
     def cancel_current_job(self) -> None:
         self._cancel_requested.set()
+        current_job = self._current_job
+        if current_job is None:
+            return
+
+        cancel = getattr(current_job, "cancel", None)
+        if callable(cancel):
+            try:
+                cancel()
+            except Exception:
+                logger.warning("Failed to cancel active Qiskit Aer job", exc_info=True)
 
     def _execute(self, ir: NativeGateIR, shots: int) -> ExecutionResult:
         started = time.monotonic()
@@ -103,10 +117,15 @@ class QiskitNoisySimulator:
 
         try:
             backend = AerSimulator(noise_model=self._noise_model)
-            result = backend.run(circuit, shots=shots).result()
+            job = backend.run(circuit, shots=shots)
+            self._current_job = job
+            self._raise_if_cancelled()
+            result = job.result()
             raw_counts = result.get_counts(circuit)
         except Exception as exc:
             raise ExecutorError(f"Qiskit simulation failed: {exc}") from exc
+        finally:
+            self._current_job = None
         self._raise_if_cancelled()
 
         counts = _reformat_counts(raw_counts, ir.measurements)

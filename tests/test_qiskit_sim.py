@@ -316,6 +316,23 @@ class TestQiskitNoisySimulator:
         result = asyncio.run(sim.run(ir, 100))
         assert result.counts == {"0": 100}
 
+    def test_cancel_current_job_forwards_to_active_aer_job(self):
+        sim = QiskitNoisySimulator(num_qubits=1, target="cz")
+
+        class FakeJob:
+            def __init__(self) -> None:
+                self.cancel_calls = 0
+
+            def cancel(self) -> None:
+                self.cancel_calls += 1
+
+        job = FakeJob()
+        sim.__dict__["_current_job"] = job
+
+        sim.cancel_current_job()
+
+        assert job.cancel_calls == 1
+
 
 class TestConfigQiskitSim:
     def test_qiskit_sim_mode_no_calibration_paths(self):
