@@ -131,7 +131,7 @@ print(result.counts)
 ### 7. Run via coda-node (full production path)
 
 ```bash
-sudo uv run coda start --token <your-token>
+sudo uv run coda-node start --token <your-token>
 ```
 
 `sudo` is required because OpenVPN needs root to create the tunnel interface.
@@ -164,7 +164,7 @@ To override any of the auto-detected settings:
 sudo CODA_WEBAPP_URL=https://custom.example.com \
      CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
      CODA_DEVICE_CONFIG=./other/device.yaml \
-     uv run coda start --token <your-token>
+     uv run coda-node start --token <your-token>
 ```
 
 ### Things to ask the lab
@@ -241,7 +241,7 @@ print(result.counts)
 
 ```bash
 CODA_DEVICE_CONFIG=./site/device.yaml \
-uv run coda start --token <your-token>
+uv run coda-node start --token <your-token>
 ```
 
 The node registers with the coda webapp, reports a synthetic 3-qubit
@@ -321,7 +321,7 @@ If `coda-qubic` is the only backend installed and `./site/device.yaml`
 exists, all defaults are applied automatically:
 
 ```bash
-uv run coda start --token <your-token>
+uv run coda-node start --token <your-token>
 ```
 
 To be explicit:
@@ -329,7 +329,7 @@ To be explicit:
 ```bash
 CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
 CODA_DEVICE_CONFIG=./site/device.yaml \
-uv run coda start --token <your-token>
+uv run coda-node start --token <your-token>
 ```
 
 ## Architecture
@@ -374,7 +374,7 @@ CODA_DEVICE_CONFIG=./site/device.yaml \
 CODA_NODE_AUTO_VPN=false \
 CODA_VPN_REQUIRED=false \
 CODA_NODE_CONNECT_HEADERS='{"x-vercel-protection-bypass": "<secret>"}' \
-uv run coda start --token <your-staging-token>
+uv run coda-node start --token <your-staging-token>
 ```
 
 | Variable | Purpose |

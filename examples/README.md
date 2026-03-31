@@ -126,7 +126,7 @@ When running via coda-node, set the executor factory:
 ```bash
 CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \
 CODA_DEVICE_CONFIG=examples/device_sim.yaml \
-uv run coda start --token <your-token>
+uv run coda-node start --token <your-token>
 ```
 
 ## Device Topology

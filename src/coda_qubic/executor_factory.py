@@ -4,7 +4,7 @@ Usage::
 
     CODA_EXECUTOR_FACTORY=coda_qubic.executor_factory:create_executor \\
     CODA_DEVICE_CONFIG=./site/device.yaml \\
-    uv run coda start --token <token>
+    uv run coda-node start --token <token>
 """
 
 from __future__ import annotations

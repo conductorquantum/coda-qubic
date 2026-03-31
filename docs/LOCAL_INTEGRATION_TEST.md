@@ -4,7 +4,7 @@
 
 ```bash
 CODA_DEVICE_CONFIG=./examples/device_sim.yaml \
-uv run coda start --token <your-token>
+uv run coda-node start --token <your-token>
 ```
 
 This single command provisions the node against production, establishes
@@ -84,7 +84,7 @@ and assembles the full QubiC pipeline.
 
 ### Runtime: the `coda start` command
 
-When you run `coda start --token <token>`:
+When you run `coda-node start --token <token>`:
 
 1. The CLI (`cli.py`) pushes `--token` into `CODA_NODE_TOKEN`
    and starts uvicorn with `coda_node.server.app:app`.
