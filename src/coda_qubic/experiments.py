@@ -14,12 +14,19 @@ Circuit conventions:
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
 
 import numpy as np
-from coda_node.server.ir import GateOp, IRMetadata, NativeGate, NativeGateIR
+from coda_node.server.ir import NativeGateIR
 from numpy.typing import NDArray
+
+from coda_qubic.common import (
+    delay_op,
+    experiment_metadata,
+    fit_exponential_decay,
+    x90_ops,
+    x180_ops,
+)
 
 __all__ = [
     "T1FitResult",
@@ -31,39 +38,7 @@ __all__ = [
     "t2_ramsey_circuits",
 ]
 
-
-def _experiment_metadata() -> IRMetadata:
-    return IRMetadata(
-        source_hash="sha256:characterization-experiment",
-        compiled_at="2026-01-01T00:00:00Z",
-    )
-
-
-# ---------------------------------------------------------------------------
-# Gate helpers for target-agnostic circuit construction
-# ---------------------------------------------------------------------------
-
-
-def _x90_ops(qubit: int, target: str) -> list[GateOp]:
-    """Single π/2 rotation about X."""
-    if target == "cnot":
-        return [GateOp(gate=NativeGate.X90, qubits=[qubit], params=[])]
-    return [GateOp(gate=NativeGate.RX, qubits=[qubit], params=[math.pi / 2])]
-
-
-def _x180_ops(qubit: int, target: str) -> list[GateOp]:
-    """Full π rotation about X."""
-    if target == "cnot":
-        return [
-            GateOp(gate=NativeGate.X90, qubits=[qubit], params=[]),
-            GateOp(gate=NativeGate.X90, qubits=[qubit], params=[]),
-        ]
-    return [GateOp(gate=NativeGate.RX, qubits=[qubit], params=[math.pi])]
-
-
-def _delay_op(qubit: int, delay_ns: float) -> GateOp:
-    """Identity/delay gate with duration in nanoseconds."""
-    return GateOp(gate=NativeGate.ID, qubits=[qubit], params=[delay_ns])
+_METADATA_LABEL = "characterization-experiment"
 
 
 # ---------------------------------------------------------------------------
@@ -92,15 +67,15 @@ def t1_circuits(
     circuits: list[tuple[NativeGateIR, float]] = []
     for delay_ns in delay_times_ns:
         gates = [
-            *_x180_ops(qubit, target),
-            _delay_op(qubit, delay_ns),
+            *x180_ops(qubit, target),
+            delay_op(qubit, delay_ns),
         ]
         ir = NativeGateIR(
             target=target,
             num_qubits=num_qubits,
             gates=gates,
             measurements=[qubit],
-            metadata=_experiment_metadata(),
+            metadata=experiment_metadata(_METADATA_LABEL),
         )
         circuits.append((ir, delay_ns))
     return circuits
@@ -133,16 +108,16 @@ def t2_ramsey_circuits(
     circuits: list[tuple[NativeGateIR, float]] = []
     for delay_ns in delay_times_ns:
         gates = [
-            *_x90_ops(qubit, target),
-            _delay_op(qubit, delay_ns),
-            *_x90_ops(qubit, target),
+            *x90_ops(qubit, target),
+            delay_op(qubit, delay_ns),
+            *x90_ops(qubit, target),
         ]
         ir = NativeGateIR(
             target=target,
             num_qubits=num_qubits,
             gates=gates,
             measurements=[qubit],
-            metadata=_experiment_metadata(),
+            metadata=experiment_metadata(_METADATA_LABEL),
         )
         circuits.append((ir, delay_ns))
     return circuits
@@ -177,18 +152,18 @@ def t2_echo_circuits(
     for delay_ns in delay_times_ns:
         half_delay = delay_ns / 2.0
         gates = [
-            *_x90_ops(qubit, target),
-            _delay_op(qubit, half_delay),
-            *_x180_ops(qubit, target),
-            _delay_op(qubit, half_delay),
-            *_x90_ops(qubit, target),
+            *x90_ops(qubit, target),
+            delay_op(qubit, half_delay),
+            *x180_ops(qubit, target),
+            delay_op(qubit, half_delay),
+            *x90_ops(qubit, target),
         ]
         ir = NativeGateIR(
             target=target,
             num_qubits=num_qubits,
             gates=gates,
             measurements=[qubit],
-            metadata=_experiment_metadata(),
+            metadata=experiment_metadata(_METADATA_LABEL),
         )
         circuits.append((ir, delay_ns))
     return circuits
@@ -236,37 +211,11 @@ def fit_t1_decay(
     T1FitResult
         Extracted T1 time and fit parameters.
     """
-    from scipy.optimize import curve_fit
-
-    def _model(
-        t: NDArray[np.floating], a: float, t1: float, b: float
-    ) -> NDArray[np.floating]:
-        result: NDArray[np.floating] = a * np.exp(-t / t1) + b
-        return result
-
-    times = np.asarray(delay_times_ns, dtype=float)
-    probs = np.asarray(excited_state_probabilities, dtype=float)
-
-    a0 = float(np.max(probs) - np.min(probs))
-    t1_0 = float(np.max(times) - np.min(times)) / 2.0
-    b0 = float(np.min(probs))
-
-    if t1_0 <= 0:
-        t1_0 = 1000.0
-
-    popt, _ = curve_fit(
-        _model,
-        times,
-        probs,
-        p0=[a0, t1_0, b0],
-        bounds=([0, 1e-3, 0], [1, np.inf, 1]),
-        maxfev=10000,
-    )
-    a, t1, b = popt
+    fit = fit_exponential_decay(delay_times_ns, excited_state_probabilities)
     return T1FitResult(
-        t1_ns=float(t1),
-        fit_amplitude=float(a),
-        fit_offset=float(b),
+        t1_ns=fit.tau,
+        fit_amplitude=fit.fit_amplitude,
+        fit_offset=fit.fit_offset,
     )
 
 
@@ -302,40 +251,16 @@ def fit_t2_decay(
     T2FitResult
         Extracted T2 time, detuning frequency, and fit parameters.
     """
-    from scipy.optimize import curve_fit
-
-    times = np.asarray(delay_times_ns, dtype=float)
-    probs = np.asarray(survival_probabilities, dtype=float)
-
     if not with_oscillation:
-
-        def _model(
-            t: NDArray[np.floating], a: float, t2: float, b: float
-        ) -> NDArray[np.floating]:
-            result: NDArray[np.floating] = a * np.exp(-t / t2) + b
-            return result
-
-        a0 = float(np.max(probs) - np.min(probs))
-        t2_0 = float(np.max(times) - np.min(times)) / 2.0
-        b0 = float(np.min(probs))
-        if t2_0 <= 0:
-            t2_0 = 1000.0
-
-        popt, _ = curve_fit(
-            _model,
-            times,
-            probs,
-            p0=[a0, t2_0, b0],
-            bounds=([0, 1e-3, 0], [1, np.inf, 1]),
-            maxfev=10000,
-        )
-        a, t2, b = popt
+        fit = fit_exponential_decay(delay_times_ns, survival_probabilities)
         return T2FitResult(
-            t2_ns=float(t2),
-            fit_amplitude=float(a),
-            fit_offset=float(b),
+            t2_ns=fit.tau,
+            fit_amplitude=fit.fit_amplitude,
+            fit_offset=fit.fit_offset,
             frequency_hz=0.0,
         )
+
+    from scipy.optimize import curve_fit  # type: ignore[import-untyped]
 
     def _model_osc(
         t: NDArray[np.floating],
@@ -349,6 +274,9 @@ def fit_t2_decay(
             a * np.exp(-t / t2) * np.cos(2 * np.pi * f * t + phi) + b
         )
         return result
+
+    times = np.asarray(delay_times_ns, dtype=float)
+    probs = np.asarray(survival_probabilities, dtype=float)
 
     a0 = float(np.max(probs) - np.min(probs)) / 2.0
     t2_0 = float(np.max(times) - np.min(times)) / 2.0
