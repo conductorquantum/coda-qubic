@@ -26,6 +26,11 @@ jobs:
         with:
           enable-cache: true
 
+      - name: Clone coda-node dependency
+        run: |
+          mkdir -p .qubic-stack
+          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
+
       - name: Install dependencies
         run: uv sync --dev
 
@@ -60,6 +65,11 @@ jobs:
         with:
           enable-cache: true
 
+      - name: Clone coda-node dependency
+        run: |
+          mkdir -p .qubic-stack
+          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
+
       - name: Install dependencies
         run: uv sync --dev
 
@@ -91,6 +101,11 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+
+      - name: Clone coda-node dependency
+        run: |
+          mkdir -p .qubic-stack
+          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
 
       - name: Install project dependencies
         run: uv sync --dev
