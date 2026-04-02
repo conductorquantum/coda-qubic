@@ -4,10 +4,6 @@ import asyncio
 import math
 
 import pytest
-
-qiskit = pytest.importorskip("qiskit")
-pytest.importorskip("qiskit_aer")
-
 from coda_node.server.executor import ExecutionResult
 from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
@@ -19,6 +15,9 @@ from coda_qubic.qiskit_sim import (
     _reformat_counts,
     _synthesize_device_spec,
 )
+
+pytest.importorskip("qiskit")
+pytest.importorskip("qiskit_aer")
 
 
 def _metadata() -> IRMetadata:

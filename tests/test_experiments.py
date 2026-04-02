@@ -24,6 +24,7 @@ from coda_qubic.experiments import (
     t2_echo_circuits,
     t2_ramsey_circuits,
 )
+from coda_qubic.qiskit_sim import QiskitNoisySimulator, _build_circuit
 from coda_qubic.translator import QubiCCircuitTranslator
 
 
@@ -104,9 +105,7 @@ class TestT1Circuits:
             assert isinstance(ir, NativeGateIR)
             assert ir.num_qubits == 3
 
-    def test_translates_on_device(
-        self, qubic_example_qubitcfg_path: Path
-    ) -> None:
+    def test_translates_on_device(self, qubic_example_qubitcfg_path: Path) -> None:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         translator = QubiCCircuitTranslator(device)
         circuits = t1_circuits(
@@ -118,9 +117,7 @@ class TestT1Circuits:
         for ir, _ in circuits:
             translated = translator.translate(ir)
             assert len(translated.program) > 0
-            delay_instrs = [
-                g for g in translated.program if g["name"] == "delay"
-            ]
+            delay_instrs = [g for g in translated.program if g["name"] == "delay"]
             assert len(delay_instrs) == 1
 
 
@@ -170,9 +167,7 @@ class TestT2RamseyCircuits:
         id_gate = next(g for g in ir.gates if g.gate.value == "id")
         assert id_gate.params[0] == 777.0
 
-    def test_translates_on_device(
-        self, qubic_example_qubitcfg_path: Path
-    ) -> None:
+    def test_translates_on_device(self, qubic_example_qubitcfg_path: Path) -> None:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         translator = QubiCCircuitTranslator(device)
         circuits = t2_ramsey_circuits(
@@ -237,9 +232,7 @@ class TestT2EchoCircuits:
         assert math.isclose(angles[1], math.pi)
         assert math.isclose(angles[2], math.pi / 2)
 
-    def test_translates_on_device(
-        self, qubic_example_qubitcfg_path: Path
-    ) -> None:
+    def test_translates_on_device(self, qubic_example_qubitcfg_path: Path) -> None:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         translator = QubiCCircuitTranslator(device)
         circuits = t2_echo_circuits(
@@ -251,9 +244,7 @@ class TestT2EchoCircuits:
         for ir, _ in circuits:
             translated = translator.translate(ir)
             assert len(translated.program) > 0
-            delay_instrs = [
-                g for g in translated.program if g["name"] == "delay"
-            ]
+            delay_instrs = [g for g in translated.program if g["name"] == "delay"]
             assert len(delay_instrs) == 2
 
 
@@ -289,7 +280,9 @@ class TestT1Fitting:
         t1_true = 10000.0
         delays = [0.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0, 30000.0]
         probs = [
-            float(np.clip(0.9 * np.exp(-t / t1_true) + 0.05 + rng.normal(0, 0.02), 0, 1))
+            float(
+                np.clip(0.9 * np.exp(-t / t1_true) + 0.05 + rng.normal(0, 0.02), 0, 1)
+            )
             for t in delays
         ]
 
@@ -354,15 +347,14 @@ class TestT2Fitting:
 # ===================================================================
 
 
-qiskit = pytest.importorskip("qiskit")
-pytest.importorskip("qiskit_aer")
-
-from coda_qubic.qiskit_sim import QiskitNoisySimulator, _build_circuit
-
-
 class TestQiskitSimThermalRelaxation:
     """Verify that the Qiskit simulator's thermal relaxation produces
     measurable T1/T2 decay when running characterization circuits."""
+
+    @pytest.fixture(autouse=True)
+    def _require_qiskit(self) -> None:
+        pytest.importorskip("qiskit")
+        pytest.importorskip("qiskit_aer")
 
     def test_build_circuit_with_relaxation_inserts_instructions(self) -> None:
         ir = NativeGateIR(
@@ -383,8 +375,11 @@ class TestQiskitSimThermalRelaxation:
 
         assert "id" in no_relax_ops
         assert "id" not in relax_ops
-        assert any("kraus" in name or "superop" in name or name not in ("rx", "measure")
-                    for name in relax_ops if name not in ("rx", "measure"))
+        assert any(
+            "kraus" in name or "superop" in name or name not in ("rx", "measure")
+            for name in relax_ops
+            if name not in ("rx", "measure")
+        )
 
     def test_build_circuit_without_relaxation_uses_id(self) -> None:
         ir = NativeGateIR(
@@ -525,9 +520,7 @@ class TestQiskitSimThermalRelaxation:
             p1 = result.counts.get("1", 0) / result.shots_completed
             probs.append(p1)
 
-        assert probs[0] > 0.8, (
-            f"P(1) at t=0 should be near 1.0, got {probs[0]:.3f}"
-        )
+        assert probs[0] > 0.8, f"P(1) at t=0 should be near 1.0, got {probs[0]:.3f}"
         assert probs[-1] < probs[0], (
             f"P(1) should decay: t=0 gave {probs[0]:.3f}, "
             f"t={delays[-1]} gave {probs[-1]:.3f}"

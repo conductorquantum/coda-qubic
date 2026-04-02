@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          token: ${{ secrets.GH_PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,11 +22,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-
-      - name: Clone coda-node dependency
-        run: |
-          mkdir -p .qubic-stack
-          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
 
       - name: Install dependencies
         run: uv sync --dev
@@ -51,9 +43,6 @@ jobs:
         python-version: ["3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          token: ${{ secrets.GH_PAT }}
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -64,11 +53,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-
-      - name: Clone coda-node dependency
-        run: |
-          mkdir -p .qubic-stack
-          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
 
       - name: Install dependencies
         run: uv sync --dev
@@ -88,9 +72,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
-          token: ${{ secrets.GH_PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -101,11 +82,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-
-      - name: Clone coda-node dependency
-        run: |
-          mkdir -p .qubic-stack
-          git clone --depth 1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/conductorquantum/coda-node.git .qubic-stack/coda-node
 
       - name: Install project dependencies
         run: uv sync --dev

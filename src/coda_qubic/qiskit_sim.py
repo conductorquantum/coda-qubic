@@ -155,9 +155,7 @@ class QiskitNoisySimulator:
     def _build_noise_model(self) -> Any:
         noise_model = NoiseModel()
 
-        has_thermal_relaxation = (
-            self._t1_ns is not None and self._t2_ns is not None
-        )
+        has_thermal_relaxation = self._t1_ns is not None and self._t2_ns is not None
 
         if self._single_qubit_error_rate > 0:
             sq_error = depolarizing_error(self._single_qubit_error_rate, 1)
@@ -218,8 +216,13 @@ def _build_circuit(
             qc.rz(params[0], qubits[0])
         elif gate == "id":
             if use_relaxation:
+                assert t1_ns is not None and t2_ns is not None
                 _append_thermal_relaxation(
-                    qc, qubits[0], params[0], t1_ns, t2_ns  # type: ignore[arg-type]
+                    qc,
+                    qubits[0],
+                    params[0],
+                    t1_ns,
+                    t2_ns,
                 )
             else:
                 qc.id(qubits[0])
