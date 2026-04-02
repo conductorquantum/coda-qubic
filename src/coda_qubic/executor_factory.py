@@ -77,6 +77,8 @@ def build_executor(
             single_qubit_error_rate=config.single_qubit_error_rate,
             two_qubit_error_rate=config.two_qubit_error_rate,
             measurement_error_rate=config.measurement_error_rate,
+            t1_ns=config.t1_ns,
+            t2_ns=config.t2_ns,
         )
 
     cal_path = config.resolved_calibration_path

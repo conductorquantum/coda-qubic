@@ -4,21 +4,21 @@ import asyncio
 import math
 
 import pytest
-
-qiskit = pytest.importorskip("qiskit")
-pytest.importorskip("qiskit_aer")
-
 from coda_node.server.executor import ExecutionResult
 from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
 
 from coda_qubic.config import QubiCConfig, RunnerMode
 from coda_qubic.device import QubiCDeviceSpec
+from coda_qubic.executor_factory import build_executor
 from coda_qubic.qiskit_sim import (
     QiskitNoisySimulator,
     _build_circuit,
     _reformat_counts,
     _synthesize_device_spec,
 )
+
+pytest.importorskip("qiskit")
+pytest.importorskip("qiskit_aer")
 
 
 def _metadata() -> IRMetadata:
@@ -343,6 +343,8 @@ class TestConfigQiskitSim:
         )
         assert config.runner_mode == RunnerMode.QISKIT_SIM
         assert config.calibration_path == ""
+        assert config.t1_ns == 20_000.0
+        assert config.t2_ns == 5_000.0
 
     def test_qiskit_sim_with_noise_params(self):
         config = QubiCConfig(
@@ -352,10 +354,35 @@ class TestConfigQiskitSim:
             single_qubit_error_rate=0.005,
             two_qubit_error_rate=0.05,
             measurement_error_rate=0.02,
+            t1_ns=30_000.0,
+            t2_ns=12_000.0,
         )
         assert config.single_qubit_error_rate == 0.005
         assert config.two_qubit_error_rate == 0.05
         assert config.measurement_error_rate == 0.02
+        assert config.t1_ns == 30_000.0
+        assert config.t2_ns == 12_000.0
+
+    def test_qiskit_sim_requires_both_or_neither_coherence_times(self):
+        with pytest.raises(ValueError, match="t1_ns and t2_ns must both be set"):
+            QubiCConfig(
+                target="cnot",
+                num_qubits=3,
+                runner_mode="qiskit_sim",
+                t1_ns=20_000.0,
+                t2_ns=None,
+            )
+
+    def test_build_executor_passes_default_relaxation_params(self):
+        config = QubiCConfig(
+            target="cnot",
+            num_qubits=3,
+            runner_mode="qiskit_sim",
+        )
+        executor = build_executor(config)
+        assert isinstance(executor, QiskitNoisySimulator)
+        assert executor.t1_ns == 20_000.0
+        assert executor.t2_ns == 5_000.0
 
     def test_non_qiskit_mode_requires_calibration_path(self):
         with pytest.raises(ValueError, match="calibration_path is required"):

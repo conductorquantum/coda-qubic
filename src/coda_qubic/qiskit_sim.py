@@ -28,7 +28,11 @@ from coda_qubic.device import (
 try:
     from qiskit import QuantumCircuit
     from qiskit_aer import AerSimulator
-    from qiskit_aer.noise import NoiseModel, depolarizing_error
+    from qiskit_aer.noise import (
+        NoiseModel,
+        depolarizing_error,
+        thermal_relaxation_error,
+    )
 
     _QISKIT_AVAILABLE = True
 except ImportError:
@@ -66,6 +70,8 @@ class QiskitNoisySimulator:
         single_qubit_error_rate: float = 0.001,
         two_qubit_error_rate: float = 0.01,
         measurement_error_rate: float = 0.01,
+        t1_ns: float | None = None,
+        t2_ns: float | None = None,
     ) -> None:
         _require_qiskit()
         self._num_qubits = num_qubits
@@ -73,6 +79,8 @@ class QiskitNoisySimulator:
         self._single_qubit_error_rate = single_qubit_error_rate
         self._two_qubit_error_rate = two_qubit_error_rate
         self._measurement_error_rate = measurement_error_rate
+        self._t1_ns = t1_ns
+        self._t2_ns = t2_ns
         self._device = _synthesize_device_spec(num_qubits)
         self._noise_model = self._build_noise_model()
         self._cancel_requested = threading.Event()
@@ -110,7 +118,7 @@ class QiskitNoisySimulator:
             )
 
         try:
-            circuit = _build_circuit(ir)
+            circuit = _build_circuit(ir, t1_ns=self._t1_ns, t2_ns=self._t2_ns)
         except Exception as exc:
             raise ExecutorError(f"Qiskit circuit construction failed: {exc}") from exc
         self._raise_if_cancelled()
@@ -140,6 +148,14 @@ class QiskitNoisySimulator:
     def device(self) -> QubiCDeviceSpec:
         return self._device
 
+    @property
+    def t1_ns(self) -> float | None:
+        return self._t1_ns
+
+    @property
+    def t2_ns(self) -> float | None:
+        return self._t2_ns
+
     def _raise_if_cancelled(self) -> None:
         if self._cancel_requested.is_set():
             raise ExecutorError("Qiskit simulation cancelled")
@@ -147,9 +163,14 @@ class QiskitNoisySimulator:
     def _build_noise_model(self) -> Any:
         noise_model = NoiseModel()
 
+        has_thermal_relaxation = self._t1_ns is not None and self._t2_ns is not None
+
         if self._single_qubit_error_rate > 0:
             sq_error = depolarizing_error(self._single_qubit_error_rate, 1)
-            for gate in ("rx", "ry", "rz", "id"):
+            sq_gates = ["rx", "ry", "rz"]
+            if not has_thermal_relaxation:
+                sq_gates.append("id")
+            for gate in sq_gates:
                 noise_model.add_all_qubit_quantum_error(sq_error, gate)
 
         if self._two_qubit_error_rate > 0:
@@ -164,9 +185,21 @@ class QiskitNoisySimulator:
         return noise_model
 
 
-def _build_circuit(ir: NativeGateIR) -> QuantumCircuit:
-    """Convert a :class:`NativeGateIR` into a Qiskit :class:`QuantumCircuit`."""
+def _build_circuit(
+    ir: NativeGateIR,
+    *,
+    t1_ns: float | None = None,
+    t2_ns: float | None = None,
+) -> QuantumCircuit:
+    """Convert a :class:`NativeGateIR` into a Qiskit :class:`QuantumCircuit`.
+
+    When *t1_ns* and *t2_ns* are provided, ``id`` (delay) gates are
+    replaced with thermal relaxation channels whose strength is
+    proportional to the gate's duration parameter.  This enables
+    realistic T1/T2 decay simulation for characterization experiments.
+    """
     qc = QuantumCircuit(ir.num_qubits, len(ir.measurements))
+    use_relaxation = t1_ns is not None and t2_ns is not None
 
     for gate_op in ir.gates:
         gate = gate_op.gate.value
@@ -190,7 +223,17 @@ def _build_circuit(ir: NativeGateIR) -> QuantumCircuit:
         elif gate == "virtual_z":
             qc.rz(params[0], qubits[0])
         elif gate == "id":
-            qc.id(qubits[0])
+            if use_relaxation:
+                assert t1_ns is not None and t2_ns is not None
+                _append_thermal_relaxation(
+                    qc,
+                    qubits[0],
+                    params[0],
+                    t1_ns,
+                    t2_ns,
+                )
+            else:
+                qc.id(qubits[0])
         elif gate == "iswap":
             qc.iswap(qubits[0], qubits[1])
         elif gate == "cp":
@@ -202,6 +245,30 @@ def _build_circuit(ir: NativeGateIR) -> QuantumCircuit:
         qc.measure(qubit, clbit_index)
 
     return qc
+
+
+_MIN_DELAY_NS = 0.1
+
+
+def _append_thermal_relaxation(
+    qc: QuantumCircuit,
+    qubit: int,
+    delay_ns: float,
+    t1_ns: float,
+    t2_ns: float,
+) -> None:
+    """Insert a thermal relaxation channel for a delay gate.
+
+    For very short delays the relaxation is negligible and the gate
+    is replaced with a plain identity.
+    """
+    if delay_ns < _MIN_DELAY_NS:
+        qc.id(qubit)
+        return
+
+    t2_clamped = min(t2_ns, 2.0 * t1_ns)
+    error = thermal_relaxation_error(t1_ns, t2_clamped, delay_ns)
+    qc.append(error.to_instruction(), [qubit])
 
 
 def _reformat_counts(

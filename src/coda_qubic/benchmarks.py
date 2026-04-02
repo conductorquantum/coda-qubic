@@ -12,13 +12,18 @@ import random
 from dataclasses import dataclass
 
 import numpy as np
-from coda_node.server.ir import GateOp, IRMetadata, NativeGate, NativeGateIR
+from coda_node.server.ir import GateOp, NativeGate, NativeGateIR
 from numpy.typing import NDArray
 
+from coda_qubic.common import (
+    HALF_PI,
+    NEG_HALF_PI,
+    PI,
+    experiment_metadata,
+    x180_ops,
+)
+
 _SQRT2_INV = 1.0 / math.sqrt(2.0)
-_HP = math.pi / 2
-_PI = math.pi
-_NHP = -math.pi / 2
 
 # ---------------------------------------------------------------------------
 # Native gate matrices (2x2 unitary)
@@ -54,34 +59,38 @@ _NativeOp = tuple[str, list[float]]
 CLIFFORD_1Q_DECOMPOSITIONS: list[list[_NativeOp]] = [
     # --- Face I: +Z stays at +Z ---
     [],  # 0:  I
-    [("virtual_z", [_HP])],  # 1:  Z90
-    [("virtual_z", [_PI])],  # 2:  Z180
-    [("virtual_z", [_NHP])],  # 3:  Z-90
+    [("virtual_z", [HALF_PI])],  # 1:  Z90
+    [("virtual_z", [PI])],  # 2:  Z180
+    [("virtual_z", [NEG_HALF_PI])],  # 3:  Z-90
     # --- Face X90: +Z → -Y ---
     [("x90", [])],  # 4:  X90
-    [("x90", []), ("virtual_z", [_HP])],  # 5:  X90·Z90
-    [("x90", []), ("virtual_z", [_PI])],  # 6:  X90·Z180
-    [("x90", []), ("virtual_z", [_NHP])],  # 7:  X90·Z-90
+    [("x90", []), ("virtual_z", [HALF_PI])],  # 5:  X90·Z90
+    [("x90", []), ("virtual_z", [PI])],  # 6:  X90·Z180
+    [("x90", []), ("virtual_z", [NEG_HALF_PI])],  # 7:  X90·Z-90
     # --- Face X180: +Z → -Z ---
     [("x90", []), ("x90", [])],  # 8:  X180
-    [("x90", []), ("x90", []), ("virtual_z", [_HP])],  # 9:  X180·Z90
-    [("x90", []), ("x90", []), ("virtual_z", [_PI])],  # 10: X180·Z180
-    [("x90", []), ("x90", []), ("virtual_z", [_NHP])],  # 11: X180·Z-90
+    [("x90", []), ("x90", []), ("virtual_z", [HALF_PI])],  # 9:  X180·Z90
+    [("x90", []), ("x90", []), ("virtual_z", [PI])],  # 10: X180·Z180
+    [("x90", []), ("x90", []), ("virtual_z", [NEG_HALF_PI])],  # 11: X180·Z-90
     # --- Face X-90: +Z → +Y ---
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_PI])],  # 12: X-90
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_NHP])],  # 13: X-90·Z90
-    [("virtual_z", [_PI]), ("x90", [])],  # 14: X-90·Z180
-    [("virtual_z", [_PI]), ("x90", []), ("virtual_z", [_HP])],  # 15: X-90·Z-90
+    [("virtual_z", [PI]), ("x90", []), ("virtual_z", [PI])],  # 12: X-90
+    [("virtual_z", [PI]), ("x90", []), ("virtual_z", [NEG_HALF_PI])],  # 13: X-90·Z90
+    [("virtual_z", [PI]), ("x90", [])],  # 14: X-90·Z180
+    [("virtual_z", [PI]), ("x90", []), ("virtual_z", [HALF_PI])],  # 15: X-90·Z-90
     # --- Face Y-90: +Z → -X ---
     [("y_minus_90", [])],  # 16: Y-90
-    [("y_minus_90", []), ("virtual_z", [_HP])],  # 17: Y-90·Z90
-    [("y_minus_90", []), ("virtual_z", [_PI])],  # 18: Y-90·Z180
-    [("y_minus_90", []), ("virtual_z", [_NHP])],  # 19: Y-90·Z-90
+    [("y_minus_90", []), ("virtual_z", [HALF_PI])],  # 17: Y-90·Z90
+    [("y_minus_90", []), ("virtual_z", [PI])],  # 18: Y-90·Z180
+    [("y_minus_90", []), ("virtual_z", [NEG_HALF_PI])],  # 19: Y-90·Z-90
     # --- Face Y90: +Z → +X ---
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_HP])],  # 20: Y90
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_PI])],  # 21: Y90·Z90
-    [("virtual_z", [_NHP]), ("x90", []), ("virtual_z", [_NHP])],  # 22: Y90·Z180
-    [("virtual_z", [_NHP]), ("x90", [])],  # 23: Y90·Z-90
+    [("virtual_z", [NEG_HALF_PI]), ("x90", []), ("virtual_z", [HALF_PI])],  # 20: Y90
+    [("virtual_z", [NEG_HALF_PI]), ("x90", []), ("virtual_z", [PI])],  # 21: Y90·Z90
+    [
+        ("virtual_z", [NEG_HALF_PI]),
+        ("x90", []),
+        ("virtual_z", [NEG_HALF_PI]),
+    ],  # 22: Y90·Z180
+    [("virtual_z", [NEG_HALF_PI]), ("x90", [])],  # 23: Y90·Z-90
 ]
 
 
@@ -214,10 +223,7 @@ def rb_ir_circuit_1q(
         num_qubits=num_qubits,
         gates=gates,
         measurements=[qubit],
-        metadata=IRMetadata(
-            source_hash="sha256:rb-circuit",
-            compiled_at="2026-01-01T00:00:00Z",
-        ),
+        metadata=experiment_metadata("rb-circuit"),
     )
 
 
@@ -277,13 +283,6 @@ def fit_rb_decay(
 # ---------------------------------------------------------------------------
 
 
-def _rb_metadata() -> IRMetadata:
-    return IRMetadata(
-        source_hash="sha256:benchmark-circuit",
-        compiled_at="2026-01-01T00:00:00Z",
-    )
-
-
 def cnot_truth_table_circuits(
     ctrl: int,
     tgt: int,
@@ -295,45 +294,25 @@ def cnot_truth_table_circuits(
     Returns ``[(ir, expected_bitstring), ...]`` for inputs |00⟩, |10⟩,
     |01⟩, |11⟩.  The expected bitstrings assume standard CNOT action.
     """
-    _x90 = NativeGate.X90
-    _cnot = NativeGate.CNOT
-
     cases: list[tuple[list[GateOp], str]] = [
         ([], "00"),
-        (
-            [
-                GateOp(gate=_x90, qubits=[ctrl], params=[]),
-                GateOp(gate=_x90, qubits=[ctrl], params=[]),
-            ],
-            "11",
-        ),
-        (
-            [
-                GateOp(gate=_x90, qubits=[tgt], params=[]),
-                GateOp(gate=_x90, qubits=[tgt], params=[]),
-            ],
-            "01",
-        ),
-        (
-            [
-                GateOp(gate=_x90, qubits=[ctrl], params=[]),
-                GateOp(gate=_x90, qubits=[ctrl], params=[]),
-                GateOp(gate=_x90, qubits=[tgt], params=[]),
-                GateOp(gate=_x90, qubits=[tgt], params=[]),
-            ],
-            "10",
-        ),
+        ([*x180_ops(ctrl, target)], "11"),
+        ([*x180_ops(tgt, target)], "01"),
+        ([*x180_ops(ctrl, target), *x180_ops(tgt, target)], "10"),
     ]
 
     circuits: list[tuple[NativeGateIR, str]] = []
     for prep_gates, expected in cases:
-        gates = [*prep_gates, GateOp(gate=_cnot, qubits=[ctrl, tgt], params=[])]
+        gates = [
+            *prep_gates,
+            GateOp(gate=NativeGate.CNOT, qubits=[ctrl, tgt], params=[]),
+        ]
         ir = NativeGateIR(
             target=target,
             num_qubits=num_qubits,
             gates=gates,
             measurements=[ctrl, tgt],
-            metadata=_rb_metadata(),
+            metadata=experiment_metadata("benchmark-circuit"),
         )
         circuits.append((ir, expected))
     return circuits
@@ -355,11 +334,11 @@ def bell_state_circuit(
         num_qubits=num_qubits,
         gates=[
             GateOp(gate=NativeGate.Y_MINUS_90, qubits=[ctrl], params=[]),
-            GateOp(gate=NativeGate.VIRTUAL_Z, qubits=[ctrl], params=[math.pi]),
+            GateOp(gate=NativeGate.VIRTUAL_Z, qubits=[ctrl], params=[PI]),
             GateOp(gate=NativeGate.CNOT, qubits=[ctrl, tgt], params=[]),
         ],
         measurements=[ctrl, tgt],
-        metadata=_rb_metadata(),
+        metadata=experiment_metadata("benchmark-circuit"),
     )
 
 

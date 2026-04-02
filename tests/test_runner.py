@@ -64,7 +64,10 @@ class FakeJobManager:
         self.last_reads_per_shot: int | None = None
 
     def collect_counts(
-        self, program_list: list[list[dict[str, Any]]], shots: int, reads_per_shot: int = 1
+        self,
+        program_list: list[list[dict[str, Any]]],
+        shots: int,
+        reads_per_shot: int = 1,
     ) -> list[FakeCircuitCounts]:
         self.last_program_list = program_list
         self.last_shots = shots
@@ -79,7 +82,10 @@ class BlockingJobManager(FakeJobManager):
         self.release = threading.Event()
 
     def collect_counts(
-        self, program_list: list[list[dict[str, Any]]], shots: int, reads_per_shot: int = 1
+        self,
+        program_list: list[list[dict[str, Any]]],
+        shots: int,
+        reads_per_shot: int = 1,
     ) -> list[FakeCircuitCounts]:
         self.last_program_list = program_list
         self.last_shots = shots
@@ -145,7 +151,9 @@ class TestQubiCJobRunner:
             {"name": "read", "qubit": ["Q1"]},
         ]
 
-    def test_run_supports_qubic_native_ir(self, qubic_example_qubitcfg_path: Path) -> None:
+    def test_run_supports_qubic_native_ir(
+        self, qubic_example_qubitcfg_path: Path
+    ) -> None:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         job_manager = FakeJobManager()
         runner = QubiCJobRunner(
@@ -164,7 +172,9 @@ class TestQubiCJobRunner:
             "qubit": ["Q2", "Q1"],
         }
 
-    def test_run_rejects_target_mismatch(self, qubic_example_qubitcfg_path: Path) -> None:
+    def test_run_rejects_target_mismatch(
+        self, qubic_example_qubitcfg_path: Path
+    ) -> None:
         device = QubiCDeviceSpec.from_qubitcfg(qubic_example_qubitcfg_path)
         job_manager = FakeJobManager()
         runner = QubiCJobRunner(

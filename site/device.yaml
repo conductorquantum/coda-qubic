@@ -13,3 +13,5 @@ framework: qubic
 target: cnot
 num_qubits: 20
 runner_mode: qiskit_sim
+t1_ns: 50000.0
+t2_ns: 30000.0

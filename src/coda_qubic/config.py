@@ -59,12 +59,18 @@ class QubiCConfig(BaseModel):
     single_qubit_error_rate: float = Field(default=0.001, ge=0.0, le=1.0)
     two_qubit_error_rate: float = Field(default=0.01, ge=0.0, le=1.0)
     measurement_error_rate: float = Field(default=0.01, ge=0.0, le=1.0)
+    t1_ns: float | None = Field(default=20_000.0, gt=0.0)
+    t2_ns: float | None = Field(default=5_000.0, gt=0.0)
 
     _source_dir: Path | None = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     def check_runner_requirements(self) -> QubiCConfig:
         if self.runner_mode == RunnerMode.QISKIT_SIM:
+            if (self.t1_ns is None) != (self.t2_ns is None):
+                raise ValueError(
+                    "t1_ns and t2_ns must both be set or both be null when runner_mode is 'qiskit_sim'"
+                )
             return self
         if not self.calibration_path:
             raise ValueError(

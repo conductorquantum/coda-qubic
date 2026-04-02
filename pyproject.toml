@@ -19,13 +19,11 @@ qiskit = [
     "qiskit-aer>=0.13",
 ]
 
-[tool.uv.sources]
-coda-node = { path = ".qubic-stack/coda-node", editable = true }
-
 [dependency-groups]
 dev = [
     "mypy>=1.10.0",
     "numpy>=1.26.0",
+    "pre-commit>=4.0.0",
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "pytest-cov>=5.0.0",
