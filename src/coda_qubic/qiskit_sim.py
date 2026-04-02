@@ -148,6 +148,14 @@ class QiskitNoisySimulator:
     def device(self) -> QubiCDeviceSpec:
         return self._device
 
+    @property
+    def t1_ns(self) -> float | None:
+        return self._t1_ns
+
+    @property
+    def t2_ns(self) -> float | None:
+        return self._t2_ns
+
     def _raise_if_cancelled(self) -> None:
         if self._cancel_requested.is_set():
             raise ExecutorError("Qiskit simulation cancelled")
