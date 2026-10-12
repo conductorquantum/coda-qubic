@@ -8,12 +8,12 @@ import pytest
 qiskit = pytest.importorskip("qiskit")
 pytest.importorskip("qiskit_aer")
 
-from coda_node.server.executor import ExecutionResult
-from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR
+from coda_node.server.executor import ExecutionResult  # noqa: E402
+from coda_node.server.ir import GateOp, IRMetadata, NativeGateIR  # noqa: E402
 
-from coda_qubic.config import QubiCConfig, RunnerMode
-from coda_qubic.device import QubiCDeviceSpec
-from coda_qubic.qiskit_sim import (
+from coda_qubic.config import QubiCConfig, RunnerMode  # noqa: E402
+from coda_qubic.device import QubiCDeviceSpec  # noqa: E402
+from coda_qubic.qiskit_sim import (  # noqa: E402
     QiskitNoisySimulator,
     _build_circuit,
     _reformat_counts,
