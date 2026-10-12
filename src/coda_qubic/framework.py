@@ -13,10 +13,15 @@ QubiC supports two IR targets:
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from coda_qubic.config import QubiCConfig
 from coda_qubic.executor_factory import build_executor
 from coda_qubic.runner import QubiCJobRunner
 from coda_qubic.support import QubiCDependencies
+
+if TYPE_CHECKING:
+    from coda_node.server.executor import JobExecutor
 
 __all__ = ["QubiCFramework"]
 
@@ -49,7 +54,7 @@ class QubiCFramework:
         config: QubiCConfig,
         *,
         dependencies: QubiCDependencies | None = None,
-    ) -> QubiCJobRunner:
+    ) -> QubiCJobRunner | JobExecutor:
         """Construct a QubiC executor wired to the physical hardware.
 
         Reads connection parameters from *config* and assembles the full
